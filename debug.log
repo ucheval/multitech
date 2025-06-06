@@ -1,0 +1,2406 @@
+Watching for file changes with StatReloader
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 387, in landing
+    return render(request, 'core/landing.html', {'courses': courses, 'featured_portfolios': featured_portfolios, 'logo_base64': settings.LOGO_BASE64})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'login' not found. 'login' is not a valid view function or pattern name.
+Not Found: /favicon.ico
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 125, in register
+    return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'login' not found. 'login' is not a valid view function or pattern name.
+Watching for file changes with StatReloader
+Registration failed: <ul class="errorlist"><li>username<ul class="errorlist" id="id_username_error"><li>A user with that username already exists.</li></ul></li></ul>
+User mr_ucheval registered successfully with user_type: student, course: front_end
+Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 75, in register
+    latest_cohort = Cohort.objects.create(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 661, in create
+    obj = self.model(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 569, in __init__
+    raise TypeError(
+TypeError: Cohort() got unexpected keyword arguments: 'start_date'
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\forms.py changed, reloading.
+Watching for file changes with StatReloader
+User uchenna registered successfully with user_type: student, course: front_end
+Created new cohort Back-End Cohort 01 for course front_end
+Assigned uchenna to cohort Back-End Cohort 01 for course front_end
+Redirecting student uchenna to onboarding_quiz
+Not Found: /onboarding_quiz/linkedin.com/in/valentine-uchenna-678355284
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+User mr_ucheval registered successfully with user_type: student, course: front_end
+Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: core_profile.id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 36, in register
+    profile = Profile.objects.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\models.py", line 39, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: core_profile.id
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Watching for file changes with StatReloader
+User mr_valentine registered successfully with user_type: student, course: front_end
+Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: core_profile.id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 48, in register
+    profile = Profile.objects.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\models.py", line 39, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: core_profile.id
+Registration failed: <ul class="errorlist"><li>username<ul class="errorlist" id="id_username_error"><li>A user with that username already exists.</li></ul></li></ul>
+User uchechukwu registered successfully with user_type: student, course: front_end
+Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: core_profile.id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 48, in register
+    profile = Profile.objects.create(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\models.py", line 39, in save
+    super().save(*args, **kwargs)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: core_profile.id
+Watching for file changes with StatReloader
+User developer registered successfully with user_type: student, course: front_end
+Failed to create profile for developer: UNIQUE constraint failed: core_profile.id
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+User nwoke registered successfully with user_type: student, course: front_end
+Generated passcode 4605 for student nwoke
+Course front_end assigned cohort type: General
+Created new cohort General Cohort 01 for course front_end
+Assigned nwoke to cohort General Cohort 01 for course front_end
+Redirecting student nwoke to onboarding_quiz
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 801: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 801: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 801: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 798: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 803: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 803: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 567, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 806: 'endblock', expected 'elif', 'else' or 'endif'. Did you forget to register or load this tag?
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 962, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 970, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 247: 'if'. Looking for one of: elif, else, endif.
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 327, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'upload_payment_slip' with arguments '('',)' not found. 2 pattern(s) tried: ['upload_payment_slip/(?P<course_id>[0-9]+)/\\Z', 'upload_payment_slip/(?P<course_id>[0-9]+)/\\Z']
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 516, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+C:\Users\valentine obeta\Desktop\tech_school\tech_school\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\tech_school\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\tech_school\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\tech_school\settings.py changed, reloading.
+Watching for file changes with StatReloader
+User Broval registered successfully with user_type: student, course: back_end
+Generated passcode 7215 for student Broval
+Course back_end assigned cohort type: General
+Created new cohort General Cohort 01 for course back_end
+Assigned Broval to cohort General Cohort 01 for course back_end
+Redirecting student Broval to onboarding_quiz
+Not Found: /onboarding_quiz/linkedin.com/in/valentine-uchenna-678355284
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 530, in student_dashboard
+    'is_student': user.profile.user_type == 'student',
+                  ^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 530, in student_dashboard
+    'is_student': user.profile.user_type == 'student',
+                  ^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 530, in student_dashboard
+    'is_student': user.profile.user_type == 'student',
+                  ^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 514, in student_dashboard
+    'is_student': user.profile.user_type == 'student',
+                  ^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /user_login/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 173, in user_login
+    if user.profile.user_type == 'student' and not user.profile.onboarding_quiz_completed:
+       ^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Forbidden (CSRF token from POST incorrect.): /user_login/
+Watching for file changes with StatReloader
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Internal Server Error: /manage_facilitators/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 424, in manage_facilitators
+    return render(request, 'core/manage_facilitators.html', {'applications': applications, 'logo_base64': settings.LOGO_BASE64})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'admin_dashboard' not found. 'admin_dashboard' is not a valid view function or pattern name.
+Redirecting superuser ucheval to admindashboard
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 812, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)@login_required
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for @: 'HttpResponse' and 'function'
+Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 812, in student_dashboard
+    return render(request, 'core/student_dashboard.html', context)@login_required
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for @: 'HttpResponse' and 'function'
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /manage_facilitators/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 550, in manage_facilitators
+    return render(request, 'core/manage_facilitators.html', {'applications': applications, 'logo_base64': settings.LOGO_BASE64})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'admin_dashboard' not found. 'admin_dashboard' is not a valid view function or pattern name.
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+Redirecting superuser ucheval to admindashboard
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+User ucheval has no profile, redirecting to create_profile
+Profile creation failed: <ul class="errorlist"><li>username<ul class="errorlist" id="id_username_error"><li>A user with that username already exists.</li></ul></li></ul>
+Created profile for ucheval with passcode 8273
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Redirecting superuser ucheval to next_url or admindashboard
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+Superuser ucheval is authenticated
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Superuser ucheval is authenticated
+Redirecting superuser ucheval to next_url or admindashboard
+Updated WhatsApp link for cohort General Cohort 01
+Updated WhatsApp link for cohort General Cohort 01
+Internal Server Error: /manage_facilitators/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 424, in manage_facilitators
+    return render(request, 'core/manage_facilitators.html', {'applications': applications, 'logo_base64': settings.LOGO_BASE64})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'admin_dashboard' not found. 'admin_dashboard' is not a valid view function or pattern name.
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\tech_school\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\valentine obeta\Desktop\tech_school\core\views.py changed, reloading.
+Watching for file changes with StatReloader
+Redirecting superuser ucheval to next_url or admindashboard
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: core/portfolio_unavailable.html
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: core/portfolio_unavailable.html
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Redirecting superuser ucheval to next_url or admindashboard
+Superuser ucheval is authenticated
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: core/portfolio_unavailable.html
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: core/portfolio_unavailable.html
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'else'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 64: 'else'. Did you forget to register or load this tag?
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'else'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 61: 'else'. Did you forget to register or load this tag?
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'else'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 63: 'else'. Did you forget to register or load this tag?
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'else'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 61: 'else'. Did you forget to register or load this tag?
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Internal Server Error: /portfolio/Broval/
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1378, in portfolio_view
+    portfolio = Portfolio.objects.get(user__username=username, is_public=True)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+core.models.Portfolio.DoesNotExist: Portfolio matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'else'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\core\views.py", line 1382, in portfolio_view
+    return render(request, 'core/portfolio_unavailable.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\valentine obeta\Desktop\tech_school\venv\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 61: 'else'. Did you forget to register or load this tag?
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval
+Portfolio view attempted for non-existent or non-public portfolio: Broval

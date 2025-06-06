@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Live Session - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Live Session</h2>
+    <div class="card">
+        {% if live_session_url %}
+            <iframe class="w-100" style="height: 500px;" src="{{ live_session_url }}" title="Live Session" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p class="mt-3">Join our live session to interact with facilitators and peers.</p>
+        {% else %}
+            <p>No live session is currently scheduled. Check back later!</p>
+        {% endif %}
+        <a href="{% url 'recap_session' %}" class="btn btn-outline-primary mt-3">View Session Recaps</a>
+    </div>
+</div>
+{% endblock %}

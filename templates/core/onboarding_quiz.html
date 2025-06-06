@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Onboarding Quiz - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <style>
+        .quiz-container { max-width: 800px; margin: 30px auto; padding: 20px; }
+        .quiz-form { background: white; border-radius: 10px; box-shadow: var(--card-shadow); padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-weight: 500; color: var(--dark); }
+        .form-group input[type="checkbox"] { margin-right: 10px; }
+        .form-group textarea { width: 100%; min-height: 100px; }
+        .btn-primary { background: var(--primary-gradient); border: none; }
+        .btn-primary:hover { background: linear-gradient(135deg, var(--primary-dark), var(--primary-light)); }
+        .social-links { margin: 20px 0; }
+        .social-links a { margin-right: 15px; color: var(--primary); text-decoration: none; }
+        .social-links a:hover { text-decoration: underline; }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="quiz-container">
+    <h1>Onboarding Quiz</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if form %}
+        <div class="quiz-form">
+            <form method="post" action="{% url 'onboarding_quiz' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="social-links">
+                    <p>Please follow us on social media:</p>
+                    <a href="{{ social_media_links.facebook }}" target="_blank">Facebook</a>
+                    <a href="{{ social_media_links.twitter }}" target="_blank">Twitter</a>
+                    <a href="{{ social_media_links.instagram }}" target="_blank">Instagram</a>
+                    <a href="{{ social_media_links.linkedin }}" target="_blank">LinkedIn</a>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Quiz</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>No quiz available. Please contact support.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

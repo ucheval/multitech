@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Leaderboard - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Leaderboard</h2>
+    <div class="card">
+        <div class="card-body">
+            <h3>Top Performers</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Student</th>
+                        <th>Total Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in top_performers %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ record.user.username }}</td>
+                            <td>{{ record.total_score }}%</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No performance data available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

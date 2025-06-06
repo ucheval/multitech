@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Salary Approval - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Salary Approval</h2>
+    <div class="card">
+        <div class="card-body">
+            {% for submission in submissions %}
+                <div class="alert alert-{% if submission.status == 'pending' %}warning{% elif submission.status == 'approved' %}success{% else %}danger{% endif %}">
+                    <p><strong>{{ submission.facilitator.username }}</strong> - Submitted: {{ submission.submitted_at|date:"F d, Y" }}</p>
+                    <p>Bank: {{ submission.bank_name }} | Account: {{ submission.account_number }} | Routing: {{ submission.routing_number }}</p>
+                    <form method="post" action="{% url 'approve_salary' submission.id %}">
+                        {% csrf_token %}
+                        <select name="status" class="form-control d-inline w-auto">
+                            <option value="approved" {% if submission.status == 'approved' %}selected{% endif %}>Approved</option>
+                            <option value="rejected" {% if submission.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </div>
+            {% empty %}
+                <p>No pending salary submissions.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

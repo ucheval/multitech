@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Edit Portfolio - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Edit Your Portfolio</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-control" value="{{ portfolio.name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bio" class="form-label">Bio (100–200 words)</label>
+                    <textarea name="bio" class="form-control" rows="4" maxlength="200" required>{{ portfolio.bio }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="github_url" class="form-label">GitHub URL (Optional)</label>
+                    <input type="url" name="github_url" class="form-control" value="{{ portfolio.github_url }}">
+                </div>
+                <div class="mb-3">
+                    <label for="skills" class="form-label">Skills (Comma-separated)</label>
+                    <input type="text" name="skills" class="form-control" value="{{ portfolio.skills }}">
+                </div>
+                <div class="mb-3">
+                    <label for="projects" class="form-label">Projects (3–5, Brief Descriptions)</label>
+                    <textarea name="projects" class="form-control" rows="6">{{ portfolio.projects }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="certificates" class="form-label">Certificates</label>
+                    <textarea name="certificates" class="form-control" rows="4">{{ portfolio.certificates }}</textarea>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="is_public" class="form-check-input" {% if portfolio.is_public %}checked{% endif %}>
+                    <label class="form-check-label">Make Portfolio Public</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <div class="alert alert-info mt-3">
+        <strong>Guidelines:</strong> Include 3–5 projects, 100–200 word bio, no personal info (e.g., address, phone). Admin will review updates.
+    </div>
+</div>
+{% endblock %}

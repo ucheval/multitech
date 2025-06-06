@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Course Library - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Course Library</h2>
+    <form method="get" class="input-group mb-3">
+        <input type="text" name="q" class="form-control" placeholder="Search materials..." aria-label="Search materials">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
+    <div class="row">
+        {% for material in materials %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ material.title }}</h4>
+                        <p class="card-text">{{ material.course.title }} - Week {{ material.week }}</p>
+                        <a href="{{ material.file.url }}" target="_blank" class="btn btn-primary" onclick="return logAccess({{ material.id }})">View Material</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No materials available.</p>
+        {% endfor %}
+    </div>
+</div>
+<script>
+function logAccess(materialId) {
+    fetch('/log-material-access/' + materialId + '/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    });
+    return true;
+}
+</script>
+{% endblock %}

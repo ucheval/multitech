@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{ portfolio.name }}'s Portfolio - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% if request.user == portfolio.user %}
+        <a href="{% url 'edit_portfolio' %}" class="btn btn-outline-primary mb-3">Edit Portfolio</a>
+    {% endif %}
+    <h2>{{ portfolio.name }}'s Portfolio</h2>
+    <div class="card">
+        <div class="card-body">
+            <h3>About</h3>
+            <p>{{ portfolio.bio }}</p>
+            {% if portfolio.github_url %}
+                <p><a href="{{ portfolio.github_url }}" target="_blank">GitHub Profile</a></p>
+            {% endif %}
+            <h3>Skills</h3>
+            <p>{{ portfolio.skills }}</p>
+            <h3>Projects</h3>
+            <p>{{ portfolio.projects|linebreaks }}</p>
+            <h3>Certificates</h3>
+            <p>{{ portfolio.certificates|linebreaks }}</p>
+            <p><em>Powered by MultiTechSpace.com</em></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

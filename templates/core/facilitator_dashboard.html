@@ -1,0 +1,156 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Facilitator Dashboard - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <style>
+        .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .card { border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 15px; border-radius: 10px 10px 0 0; }
+        .btn-primary { background-color: #00a86a; border: none; }
+        .btn-primary:hover { background-color: #009678; }
+        .alert { margin-bottom: 20px; }
+        .application-status { margin-top: 20px; }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <h2 class="mb-4">Facilitator Dashboard</h2>
+
+    <div class="alert alert-info">
+        Welcome, {{ request.user.username }}!
+        {% if not request.user.profile.facilitator_profile_completed %}
+            <p>Please complete your facilitator application to proceed.</p>
+            <a href="{% url 'facilitator_application' %}" class="btn btn-primary">Complete Application</a>
+        {% else %}
+            <p>Facilitator profile completed!</p>
+            {% if applications %}
+                <div class="application-status">
+                    <h4>Your Applications</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Status</th>
+                                <th>Applied At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.course.title }}</td>
+                                    <td>{{ app.status|title }}</td>
+                                    <td>{{ app.applied_at|date:"F d, Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not applications|filter:status='approved' %}
+                        <p>Your application(s) are pending admin approval. You can apply for other courses via the sidebar or header.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <div class="card-header">Assigned Courses</div>
+        <div class="card-body">
+            {% if assigned_courses %}
+                <div class="row">
+                    {% for course in assigned_courses %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.title }}</h5>
+                                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                                    <p><strong>Level:</strong> {{ course.level }}</p>
+                                    <p><strong>Duration:</strong> {{ course.duration }} weeks</p>
+                                    <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No courses assigned yet. Apply for courses using the "Apply for Other Courses" link.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Available Courses</div>
+        <div class="card-body">
+            {% if available_courses %}
+                <div class="row">
+                    {% for course in available_courses %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.title }}</h5>
+                                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                                    <p><strong>Level:</strong> {{ course.level }}</p>
+                                    <p><strong>Duration:</strong> {{ course.duration }} weeks</p>
+                                    <form method="POST" action="{% url 'apply_for_course' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="course_id" value="{{ course.id }}">
+                                        <button type="submit" class="btn btn-primary">Apply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No available courses to apply for at this time.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Recent Submissions</div>
+        <div class="card-body">
+            {% if submissions %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Assignment/Project</th>
+                            <th>Submitted At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission in submissions %}
+                            <tr>
+                                <td>{{ submission.user.username }}</td>
+                                <td>{{ submission.assignment.title|default:submission.project.title }}</td>
+                                <td>{{ submission.submitted_at|date:"F d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'grade_submission' submission.id %}" class="btn btn-primary btn-sm">Grade</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No recent submissions to review.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Latest Salary Submission</div>
+        <div class="card-body">
+            {% if latest_submission %}
+                <p><strong>Bank Name:</strong> {{ latest_submission.bank_name }}</p>
+                <p><strong>Account Number:</strong> {{ latest_submission.account_number }}</p>
+                <p><strong>Status:</strong> {{ latest_submission.status|title }}</p>
+                <p><strong>Submitted At:</strong> {{ latest_submission.submitted_at|date:"F d, Y" }}</p>
+            {% else %}
+                <p>No salary submissions yet.</p>
+                <a href="{% url 'submit_salary' %}" class="btn btn-primary">Submit Salary Details</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

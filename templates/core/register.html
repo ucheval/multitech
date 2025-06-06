@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - Tech School</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+      .register-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: rgba(218, 222, 231, 0.6);
+        border-radius: 8px;
+      }
+
+      .input-box {
+        margin-bottom: 20px;
+      }
+
+      .input-box label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .input-box input,
+      .input-box select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+      }
+
+      .phone-input {
+        display: flex;
+        gap: 10px;
+      }
+
+      .phone-input select {
+        flex: 0 0 40%;
+      }
+
+      .phone-input input {
+        flex: 1;
+      }
+
+      .text-danger {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+        display: block;
+      }
+
+      .error {
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+      }
+
+      .alert {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+      }
+
+      .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.1em;
+      }
+
+      button.loading {
+        background: #0056b3;
+        cursor: not-allowed;
+      }
+
+      button:hover:not(:disabled) {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <h1>Create Your Account</h1>
+      <p>Join our tech community and start your journey</p>
+
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data" id="registrationForm">
+        {% csrf_token %}
+        <div class="input-box">
+          <label>Username</label>
+          {{ form.username }}
+          <span class="text-danger"></span>
+          {% if form.username.errors %}
+          <p class="error">{{ form.username.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>First Name</label>
+          {{ form.first_name }}
+          <span class="text-danger"></span>
+          {% if form.first_name.errors %}
+          <p class="error">{{ form.first_name.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Last Name</label>
+          {{ form.last_name }}
+          <span class="text-danger"></span>
+          {% if form.last_name.errors %}
+          <p class="error">{{ form.last_name.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Email Address</label>
+          {{ form.email }}
+          <span class="text-danger"></span>
+          {% if form.email.errors %}
+          <p class="error">{{ form.email.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Password</label>
+          {{ form.password1 }}
+          <span>Password must be at least 8 characters with letters and numbers</span>
+          <span class="text-danger"></span>
+          {% if form.password1.errors %}
+          <p class="error">{{ form.password1.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Confirm Password</label>
+          {{ form.password2 }}
+          <span class="text-danger"></span>
+          {% if form.password2.errors %}
+          <p class="error">{{ form.password2.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Registering as</label>
+          {{ form.user_type }}
+          <span class="text-danger"></span>
+          {% if form.user_type.errors %}
+          <p class="error">{{ form.user_type.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Country of Residence</label>
+          {{ form.country }}
+          <span class="text-danger"></span>
+          {% if form.country.errors %}
+          <p class="error">{{ form.country.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Phone Number</label>
+          <div class="phone-input">
+            {{ form.country_code }} {{ form.local_number }}
+          </div>
+          <p>Enter phone number without country code (e.g., 1234567890)</p>
+          <span class="text-danger"></span>
+          {% if form.country_code.errors %}
+          <p class="error">{{ form.country_code.errors.0 }}</p>
+          {% endif %}
+          {% if form.local_number.errors %}
+          <p class="error">{{ form.local_number.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Course (optional)</label>
+          {{ form.course }}
+          <span class="text-danger"></span>
+          {% if form.course.errors %}
+          <p class="error">{{ form.course.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="input-box">
+          <label>Profile Picture (optional)</label>
+          {{ form.profile_picture }}
+          <span class="text-danger"></span>
+          {% if form.profile_picture.errors %}
+          <p class="error">{{ form.profile_picture.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <button type="submit" id="submitBtn">Create Account</button>
+      </form>
+
+      <p>
+        Already have an account?
+        <a href="{% url 'user_login' %}">Sign In Instead</a>
+      </p>
+    </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
+  </body>
+</html>

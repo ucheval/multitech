@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Verify Two-Factor Authentication - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Verify Two-Factor Authentication</h2>
+    <div class="card">
+        <div class="card-body">
+            <p>Enter the OTP code from your authenticator app.</p>
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <form method="post" action="{% url 'verify_admin_access' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="otp_code" class="form-label">OTP Code</label>
+                    <input type="text" name="otp_code" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

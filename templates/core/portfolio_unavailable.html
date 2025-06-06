@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Portfolio Unavailable - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Portfolio Unavailable</h2>
+    <div class="card">
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>The portfolio for {{ username }} is not available or not public.</p>
+            {% endif %}
+            <p><a href="{% url 'course_list' %}" class="btn btn-primary">Back to Courses</a></p>
+            <p><em>Powered by MultiTechSpace.com</em></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

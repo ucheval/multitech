@@ -1,0 +1,113 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Course Enrollment - MultiTechSpace{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_enrollment.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Course Enrollment - Your Path to Success!</h2>
+
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker mb-5">
+        <div class="progress-step {% if not enrollment %}active{% endif %}">
+            <span class="step-number">1</span>
+            <span class="step-label">Select Course</span>
+        </div>
+        <div class="progress-step {% if enrollment and not payment_slip %}active{% endif %}">
+            <span class="step-number">2</span>
+            <span class="step-label">Make Payment</span>
+        </div>
+        <div class="progress-step {% if payment_slip and payment_slip.status == 'pending' %}active{% endif %}">
+            <span class="step-number">3</span>
+            <span class="step-label">Upload Payment Slip</span>
+        </div>
+        <div class="progress-step {% if enrollment and enrollment.status == 'approved' %}active{% endif %}">
+            <span class="step-number">4</span>
+            <span class="step-label">Enrollment Approved</span>
+        </div>
+    </div>
+
+    <!-- Enrollment Details -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {% if enrollment %}
+                <h4>Your Selected Course</h4>
+                <p><strong>Course:</strong> {{ enrollment.course.title }}</p>
+                <p><strong>Price:</strong> ₦{{ enrollment.course.price|floatformat:2 }}</p>
+                <p><strong>Status:</strong> {{ enrollment.status|title }}</p>
+
+                {% if enrollment.status == 'pending' %}
+                    {% if payment_slip %}
+                        <div class="alert alert-info">
+                            <p>Your payment slip is <strong>{{ payment_slip.status|title }}</strong>.</p>
+                            <p>Please wait for admin approval. You'll be notified once your enrollment is approved.</p>
+                        </div>
+                    {% else %}
+                        <!-- Payment Instructions -->
+                        <h4>Payment Instructions</h4>
+                        <p>To enroll in <strong>{{ enrollment.course.title }}</strong>, please make a payment of <strong>₦{{ enrollment.course.price|floatformat:2 }}</strong> using one of the following methods:</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header">Bank Transfer</div>
+                                    <div class="card-body">
+                                        <p><strong>Bank Name:</strong> {{ payment_details.bank.name }}</p>
+                                        <p><strong>Account Number:</strong> {{ payment_details.bank.account_number }}</p>
+                                        <p><strong>Account Name:</strong> {{ payment_details.bank.account_name }}</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-secondary copy-btn" data-text="{{ payment_details.bank.account_number }}">Copy Account Number</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header">MoMo Payment</div>
+                                    <div class="card-body">
+                                        <p><strong>MoMo Name:</strong> {{ payment_details.momo.name }}</p>
+                                        <p><strong>MoMo Number:</strong> {{ payment_details.momo.number }}</p>
+                                        <p><strong>Provider:</strong> {{ payment_details.momo.provider }}</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-secondary copy-btn" data-text="{{ payment_details.momo.number }}">Copy MoMo Number</button>
+                            </div>
+                        </div>
+                        <p class="mt-3">After making the payment, please upload your payment slip to complete the enrollment process.</p>
+                        <a href="{% url 'upload_payment_slip' enrollment.course.id %}" class="btn btn-primary btn-lg">Upload Payment Slip</a>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <p>You haven't selected a course yet. Please choose a course to start your learning journey!</p>
+                    <a href="{% url 'change_course' %}" class="btn btn-primary">Select Course</a>
+                </div>
+            {% endif %}
+            <p class="mt-3">Need to change your course? <a href="{% url 'change_course' %}">Click here</a>.</p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Copy Button -->
+<script>
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const text = button.getAttribute('data-text');
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = button.getAttribute('data-text').includes('Account') ? 'Copy Account Number' : 'Copy MoMo Number';
+                }, 2000);
+            });
+        });
+    });
+</script>
+{% endblock %}

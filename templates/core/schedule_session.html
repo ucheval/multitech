@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Schedule Live Session</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Course:</label>
+    <select name="course" required>
+        {% for course in courses %}
+            <option value="{{ course.id }}">{{ course.title }}</option>
+        {% endfor %}
+    </select>
+    <label>Cohort (optional):</label>
+    <select name="cohort">
+        <option value="">None</option>
+        {% for cohort in cohorts %}
+            <option value="{{ cohort.id }}">{{ cohort.name }}</option>
+        {% endfor %}
+    </select>
+    <label>Title:</label>
+    <input type="text" name="title" required>
+    <label>Zoom URL:</label>
+    <input type="url" name="zoom_url" required>
+    <label>Scheduled At:</label>
+    <input type="datetime-local" name="scheduled_at" required>
+    <label>End Time:</label>
+    <input type="datetime-local" name="end_time" required>
+    <label>Session Type:</label>
+    <select name="session_type">
+        <option value="lecture">Lecture</option>
+        <option value="qna">Q&A</option>
+        <option value="workshop">Workshop</option>
+        <option value="other">Other</option>
+    </select>
+    <button type="submit">Schedule Session</button>
+</form>
+{% endblock %}

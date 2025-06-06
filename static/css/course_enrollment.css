@@ -1,0 +1,80 @@
+
+/* Progress Tracker */
+.progress-tracker {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+.progress-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+.progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: -50%;
+    width: 100%;
+    height: 4px;
+    background-color: #e0e0e0;
+    z-index: -1;
+}
+.progress-step.active .step-number {
+    background-color: #007bff;
+    color: white;
+}
+.progress-step.active .step-label {
+    font-weight: bold;
+    color: #007bff;
+}
+.step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+.step-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+.card-header {
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.copy-btn {
+    margin-top: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .progress-tracker {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .progress-step:not(:last-child)::after {
+        display: none;
+    }
+    .progress-step {
+        margin-bottom: 1rem;
+    }
+}

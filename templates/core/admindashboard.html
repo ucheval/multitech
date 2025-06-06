@@ -1,0 +1,214 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Admin Dashboard - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Payment Slip Verification</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for slip in slips|slice:":5" %}
+                        <div class="alert alert-{% if slip.status == 'pending' %}warning{% elif slip.status == 'approved' %}success{% else %}danger{% endif %}">
+                            <p><strong>{{ slip.user.username }}</strong> - {{ slip.course.title }} (Uploaded: {{ slip.uploaded_at|date:"F d, Y" }})</p>
+                            <img src="{{ slip.slip.url }}" alt="Payment Slip" style="max-height: 100px;">
+                            <form method="post" action="{% url 'approve_payment' slip.id %}">
+                                {% csrf_token %}
+                                <select name="status" class="form-control d-inline w-auto">
+                                    <option value="approved" {% if slip.status == 'approved' %}selected{% endif %}>Approved</option>
+                                    <option value="rejected" {% if slip.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                            </form>
+                        </div>
+                    {% empty %}
+                        <p>No pending slips.</p>
+                    {% endfor %}
+                    <a href="{% url 'payment_approval' %}" class="btn btn-outline-primary">View All Slips</a>
+                </div>
+            </div>
+            <h3>Salary Submissions</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for submission in salary_submissions|slice:":3" %}
+                        <p>{{ submission.facilitator.username }} - Status: {{ submission.status|title }} (Submitted: {{ submission.submitted_at|date:"F d, Y" }})</p>
+                    {% empty %}
+                        <p>No pending salary submissions.</p>
+                    {% endfor %}
+                    <a href="{% url 'salary_approval' %}" class="btn btn-outline-primary">View All Submissions</a>
+                </div>
+            </div>
+            <h3>Portfolio Review</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for portfolio in portfolios|slice:":3" %}
+                        <p>{{ portfolio.user.username }} - Updated: {{ portfolio.updated_at|date:"F d, Y" }}</p>
+                        <form method="post" action="{% url 'feature_portfolio' portfolio.id %}">
+                            {% csrf_token %}
+                            <input type="checkbox" name="is_featured" {% if portfolio.is_featured %}checked{% endif %}>
+                            <label>Feature on Landing Page</label>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    {% empty %}
+                        <p>No portfolios to review.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <h3>Quiz Results</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for attempt in quiz_attempts|slice:":5" %}
+                        <p>
+                            {{ attempt.user.username }} - Score: {{ attempt.score }}/15 
+                            ({% if attempt.passed %}Passed{% else %}Failed{% endif %}) 
+                            - {{ attempt.attempted_at|date:"F d, Y" }}
+                        </p>
+                    {% empty %}
+                        <p>No quiz attempts.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <h3>Performance Management</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for record in performance_records|slice:":5" %}
+                        <p>{{ record.user.username }} - Month {{ record.month }}: {{ record.total_score }}%</p>
+                        <form method="post" action="{% url 'manage_performance' record.id %}">
+                            {% csrf_token %}
+                            <input type="checkbox" name="warning_issued" {% if record.warning_issued %}checked{% endif %}> Warning
+                            <input type="checkbox" name="suspended" {% if record.suspended %}checked{% endif %}> Suspend
+                            <select name="reward_earned" class="form-control d-inline w-auto">
+                                <option value="" {% if not record.reward_earned %}selected{% endif %}>No Reward</option>
+                                <option value="Laptop" {% if record.reward_earned == 'Laptop' %}selected{% endif %}>Laptop</option>
+                                <option value="Internship" {% if record.reward_earned == 'Internship' %}selected{% endif %}>Internship</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    {% empty %}
+                        <p>No performance records.</p>
+                    {% endfor %}
+                    <a href="{% url 'leaderboard' %}" class="btn btn-outline-primary mt-2">View Leaderboard</a>
+                </div>
+            </div>
+            <h3>Activity Feed</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for log in audit_logs|slice:":5" %}
+                        <p>{{ log.action }} - {{ log.timestamp|date:"F d, Y H:i" }}</p>
+                    {% empty %}
+                        <p>No recent activity.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <h3>Payment Details Management</h3>
+            <div class="card">
+                <div class="card-body">
+                    <h4>Update Payment Details</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="update_payment_details">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Bank Details</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Bank Name</label>
+                                    <input type="text" name="bank_name" value="{{ payment_detail.bank_name }}" class="form-control" placeholder="e.g., Access Bank" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Account Number</label>
+                                    <input type="text" name="bank_account_number" value="{{ payment_detail.bank_account_number }}" class="form-control" placeholder="e.g., 1234567890" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Account Name</label>
+                                    <input type="text" name="bank_account_name" value="{{ payment_detail.bank_account_name }}" class="form-control" placeholder="e.g., MultiTechSpace Ltd" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>MoMo Details</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">MoMo Name</label>
+                                    <input type="text" name="momo_name" value="{{ payment_detail.momo_name }}" class="form-control" placeholder="e.g., MultiTechSpace MoMo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">MoMo Number</label>
+                                    <input type="text" name="momo_number" value="{{ payment_detail.momo_number }}" class="form-control" placeholder="e.g., +2341234567890" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">MoMo Provider</label>
+                                    <input type="text" name="momo_provider" value="{{ payment_detail.momo_provider }}" class="form-control" placeholder="e.g., MTN MoMo" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Payment Details</button>
+                    </form>
+                </div>
+            </div>
+            <h3>Course Price Management</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for course in courses %}
+                        <form method="post" class="mb-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="update_course_price">
+                            <input type="hidden" name="course_id" value="{{ course.id }}">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ course.title }}</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="number" step="0.01" name="price" value="{{ course.price|floatformat:2 }}" class="form-control" placeholder="Enter price in NGN" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% empty %}
+                        <p>No courses available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Analytics</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>Total Students: {{ student_count }}</p>
+                    <p>Active Courses: {{ course_count }}</p>
+                    <p>Pending Slips: {{ slip_count }}</p>
+                    <p>Portfolio Views: {{ portfolio_views }}</p>
+                </div>
+            </div>
+            <h3>Notification Settings</h3>
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="{% url 'toggle_notifications' %}">
+                        {% csrf_token %}
+                        <div class="form-check">
+                            <input type="checkbox" name="assignment_notifications" class="form-check-input" {% if notification_settings.assignment_notifications %}checked{% endif %}>
+                            <label class="form-check-label">Assignment Notifications</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="payment_notifications" class="form-check-input" {% if notification_settings.payment_notifications %}checked{% endif %}>
+                            <label class="form-check-label">Payment Notifications</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Save Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

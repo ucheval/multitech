@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block content %}
+  <h2>Edit Course: "{{ course.title }}"</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+  </form>
+
+  <p><a href="{% url 'course_detail' course.id %}">Back to Course</a></p>
+{% endblock %}

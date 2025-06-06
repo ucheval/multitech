@@ -1,0 +1,12 @@
+def migrate_payment_details():
+    if not PaymentDetail.objects.exists():
+        payment_details = getattr(settings, 'PAYMENT_DETAILS', {})
+        PaymentDetail.objects.create(
+            bank_name=payment_details.get('bank', {}).get('name', ''),
+            bank_account_number=payment_details.get('bank', {}).get('account_number', ''),
+            bank_account_name=payment_details.get('bank', {}).get('account_name', ''),
+            momo_name=payment_details.get('momo', {}).get('name', ''),
+            momo_number=payment_details.get('momo', {}).get('number', ''),
+            momo_provider=payment_details.get('momo', {}).get('provider', '')
+        )
+        print("Payment details migrated to PaymentDetail model.")

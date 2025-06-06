@@ -1,0 +1,746 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Student Dashboard - MultiTechSpace{% endblock %}
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-light: #3b82f6;
+    --primary-dark: #1e3a8a;
+    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    --secondary: #64748b;
+    --success: #10b981;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --accent: #f59e0b;
+    --accent-light: #fcd34d;
+    --text-primary: #334155;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --sidebar-width: 250px;
+    --navbar-height: 70px;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+  }
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px;
+  }
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-in-out;
+    position: relative;
+    background-color: rgba(176, 215, 180, 0.48);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+  .profile-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(30, 64, 175, 0.5);
+}
+  .portfolio-link {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+  .portfolio-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.5);
+    color: white;
+}
+  .welcome-text {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+  }
+  .dashboard-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 10px;
+  }
+  .dashboard-header p {
+    font-size: 1.2rem;
+    color: var(--secondary);
+  }
+  .dashboard-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+  .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  .dashboard-card .card-header {
+      background: var(--primary-gradient);
+      color: white;
+      padding: 15px;
+      border-radius: 10px 10px 0 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+  }
+  .dashboard-card .card-body {
+      padding: 20px;
+  }
+  .dashboard-section-title {
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 20px;
+      position: relative;
+  }
+  .dashboard-section-title::after {
+      content: '';
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+  }
+  .summary-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      height: 100%;
+  }
+  .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+  .summary-card .card-header {
+      color: white;
+      padding: 12px;
+      border-radius: 10px 10px 0 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+  }
+  .summary-card .card-body {
+      padding: 20px;
+  }
+  .summary-card .card-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--dark);
+  }
+  .summary-card .card-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin: 10px 0;
+  }
+  .summary-card .card-label {
+      font-size: 0.9rem;
+      color: var(--secondary);
+  }
+  .summary-card.cohort-card .card-header {
+      background: linear-gradient(135deg, var(--primary-light), var(--success));
+  }
+  .summary-card.course-card .card-header {
+      background: linear-gradient(135deg, #6f42c1, #9b59b6);
+  }
+  .summary-card.assignments-card .card-header {
+      background: linear-gradient(135deg, #28a745, #20c997);
+  }
+  .summary-card.performance-card .card-header {
+      background: linear-gradient(135deg, #fd7e14, #f1c40f);
+  }
+  .task-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+  }
+  .task-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  .task-card .card-body {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+  .task-card .card-title {
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 10px;
+  }
+  .progress-bar-container {
+      margin-top: 15px;
+  }
+  .progress-bar {
+      height: 10px;
+      background: #e9ecef;
+      border-radius: 5px;
+      overflow: hidden;
+  }
+  .progress-bar-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      transition: width 1s ease-in-out;
+  }
+  .empty-state {
+      text-align: center;
+      padding: 20px;
+  }
+  .empty-state i {
+      font-size: 2rem;
+      color: var(--secondary);
+      margin-bottom: 10px;
+  }
+  .performance-record {
+      background: #f8f9fa;
+  }
+  .progress-container .progress {
+      height: 10px;
+      background: #e9ecef;
+      border-radius: 5px;
+  }
+  .progress-container .progress-bar {
+      background: var(--primary-gradient);
+  }
+  .alert {
+      margin-bottom: 20px;
+  }
+  @media (max-width: 768px) {
+      .dashboard-container {
+          padding: 10px;
+      }
+      .dashboard-header h2 {
+          font-size: 2rem;
+      }
+      .profile-picture {
+          width: 60px;
+          height: 60px;
+      }
+      .portfolio-link {
+          padding: 6px 12px;
+          font-size: 0.8rem;
+      }
+      .profile-section {
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+      }
+      .welcome-text {
+          margin-top: 10px;
+      }
+      .dashboard-card .card-header {
+          font-size: 1.1rem;
+      }
+      .dashboard-card .card-body {
+          padding: 15px;
+      }
+      .summary-card .card-value {
+          font-size: 1.3rem;
+      }
+  }
+  @keyframes fadeInDown {
+      from {
+          opacity: 0;
+          transform: translateY(-20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+  @keyframes zoomIn {
+      from {
+          opacity: 0;
+          transform: scale(0.5);
+      }
+      to {
+          opacity: 1;
+          transform: scale(1);
+      }
+  }
+  .summary-card:nth-child(1) { animation-delay: 0.2s; }
+  .summary-card:nth-child(2) { animation-delay: 0.3s; }
+  .summary-card:nth-child(3) { animation-delay: 0.4s; }
+  .summary-card:nth-child(4) { animation-delay: 0.5s; }
+  .dashboard-card:nth-child(1) { animation-delay: 0.6s; }
+  .dashboard-card:nth-child(2) { animation-delay: 0.7s; }
+  .task-card:nth-child(1) { animation-delay: 0s; }
+  .task-card:nth-child(2) { animation-delay: 0.1s; }
+  .task-card:nth-child(3) { animation-delay: 0.2s; }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="dashboard-container">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header animate__animated animate__fadeInDown">
+    <div class="profile-section">
+      {% if user.profile.profile_picture %}
+      <img src="{{ user.profile.profile_picture.url }}" alt="Student Photo" class="profile-picture animate__animated animate__zoomIn"/>
+      {% else %}
+      <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Photo" class="profile-picture animate__animated animate__zoomIn"/>
+      {% endif %}
+      <a href="/portfolio/{{ user.username }}/" target="_blank" class="portfolio-link"><i class="fas fa-briefcase"></i> View Portfolio</a>
+    </div>
+    <div class="welcome-text">
+      <h2>Welcome, {{ user.username }}! (Passcode: {{ student_passcode|default:"N/A" }})</h2>
+      <p>Your personalized learning hub at MultiTechSpace</p>
+    </div>
+  </div>
+
+  <!-- Alerts for Notifications -->
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show animate__animated animate__bounceIn" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="row g-4 mb-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="summary-card cohort-card animate__animated animate__fadeInUp">
+          <div class="card-header"><i class="fas fa-users"></i> Cohort</div>
+          <div class="card-body">
+            <i class="fas fa-users card-icon"></i>
+            <div class="card-value">{{ cohort_name|default:"Not Assigned" }}</div>
+            <div class="card-label">Your Cohort</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="summary-card course-card animate__animated animate__fadeInUp">
+          <div class="card-header"><i class="fas fa-graduation-cap"></i> Course</div>
+          <div class="card-body">
+            <i class="fas fa-book card-icon"></i>
+            <div class="card-value">{{ course_title|default:"None" }}</div>
+            <div class="card-label">Currently Studying</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="summary-card assignments-card animate__animated animate__fadeInUp">
+          <div class="card-header"><i class="fas fa-tasks"></i> Assignments</div>
+          <div class="card-body">
+            <i class="fas fa-file-alt card-icon"></i>
+            <div class="card-value">{{ assignment_submission_count|default:0 }}</div>
+            <div class="card-label">Submitted</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="summary-card performance-card animate__animated animate__fadeInUp">
+          <div class="card-header"><i class="fas fa-chart-line"></i> Performance</div>
+          <div class="card-body">
+            <i class="fas fa-trophy card-icon"></i>
+            <div class="card-value">{{ performance_record_count|default:0 }}</div>
+            <div class="card-label">Records</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="row g-4">
+    <!-- Current Course -->
+    <div class="col-lg-6">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Current Course</h3>
+        <div class="dashboard-card animate__animated">
+          <div class="card-header"><i class="fas fa-book"></i> Course Details</div>
+          <div class="card-body">
+            <p class="card-text">{{ course_title }}</p>
+            {% if enrollment_status == 'pending' %}
+            <p class="text-muted">Awaiting payment and admin approval.</p>
+            {% if enrollment.course %}
+            <a href="{% url 'upload_payment_slip' enrollment.course.id %}" class="btn btn-primary">Upload Payment Slip</a> 
+            {% endif %}
+            {% endif %}
+            {% if enrollment_status == 'approved' %}
+            <p class="text-success">Your enrollment is approved!</p>
+            {% endif %}
+            {% if enrollment_status == 'rejected' %}
+            <p class="text-danger">Your enrollment was rejected. Please contact support.</p>
+            {% endif %}
+            {% if enrollment_status == 'active' %}
+            <p class="text-success">You are actively enrolled in this course.</p>
+            {% endif %}
+            {% if enrollment_status == 'completed' %}
+            <p class="text-success">You have completed this course!</p>
+            {% endif %}
+            {% if enrollment_status == 'suspended' %}
+            <p class="text-warning">Your enrollment is suspended. Please contact support.</p>
+            {% endif %}
+            <a href="{% url 'course_list' %}" class="btn btn-outline-secondary">View Courses</a>
+            {% if is_student %}
+            <a href="{% url 'change_course' %}" class="btn btn-outline-primary">Change Course</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cohort Details -->
+<!-- Replace the entire Cohort Details section -->
+<div class="col-lg-6">
+  <div class="dashboard-section">
+    <h3 class="dashboard-section-title">Your Cohort</h3>
+    <div class="dashboard-card animate__animated">
+      <div class="card-header"><i class="fas fa-users"></i> Cohort Details</div>
+      <div class="card-body">
+        {% if cohort %}
+        <div class="row g-3 mb-3">
+          <div class="col-sm-6">
+            <strong class="text-muted">Cohort:</strong>
+            <div class="fw-bold">{{ cohort.name }}</div>
+          </div>
+          {% if cohort.student_leader %}
+          <div class="col-sm-6">
+            <strong class="text-muted">Student Leader:</strong>
+            <div class="fw-bold">{{ cohort.student_leader.username }}</div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          {% if whatsapp_link %}
+          <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-outline-success btn-sm" style="background: var(--success); color: white;">
+            <i class="fab fa-whatsapp me-1"></i> Join WhatsApp Group
+          </a>
+          {% else %}
+          <p class="text-muted"><i class="fab fa-whatsapp me-1"></i> WhatsApp group not yet set by admin.</p>
+          {% endif %}
+          {% if cohort.facebook_link %}
+          <a href="{{ cohort.facebook_link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+            <i class="fab fa-facebook me-1"></i> Facebook Group
+          </a>
+          {% endif %}
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{% url 'discussion_board' cohort.id %}" class="btn btn-primary btn-sm">
+            <i class="fas fa-comments me-1"></i> Discussion Board
+          </a>
+          <a href="{% url 'course_library' %}" class="btn btn-primary btn-sm">
+            <i class="fas fa-book me-1"></i> Course Library
+          </a>
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="fas fa-users"></i>
+          <p class="text-muted">You are not assigned to any cohort yet.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Onboarding Quiz -->
+    <div class="col-lg-6">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Onboarding Quiz</h3>
+        <div class="dashboard-card animate__animated">
+          <div class="card-header"><i class="fas fa-question-circle"></i> Quiz Status</div>
+          <div class="card-body">
+            {% if user.profile.onboarding_quiz_completed %}
+            <div class="d-flex align-items-center text-success mb-3">
+              <i class="fas fa-check-circle me-2"></i>
+              <span class="fw-bold">Onboarding quiz completed!</span>
+            </div>
+            <div class="alert alert-success" role="alert">
+              <i class="fas fa-trophy me-2"></i>
+              Great job! You've successfully completed your onboarding quiz.
+            </div>
+            {% else %}
+            <div class="alert alert-info" role="alert">
+              <i class="fas fa-info-circle me-2"></i>
+              Complete your onboarding quiz to get started with your learning journey.
+            </div>
+            <a href="{% url 'onboarding_quiz' %}" class="btn btn-primary"><i class="fas fa-play me-2"></i> Take Quiz</a>
+            {% endif %}
+            {% if latest_attempt %}
+            <div class="progress-bar-container">
+              <p>Latest Score: {{ latest_attempt.score }} / 15 ({{ quiz_score_percentage|floatformat:1 }}%)</p>
+              <p>Status: {% if quiz_score_percentage >= 50.0 %}Passed{% else %}Not Passed{% endif %}</p>
+              <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ quiz_score_percentage }}%;" aria-valuenow="{{ quiz_score_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                  {{ quiz_score_percentage|floatformat:1 }}%
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio -->
+    <div class="col-lg-6">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Portfolio</h3>
+        <div class="dashboard-card animate__animated">
+          <div class="card-header"><i class="fas fa-briefcase"></i> Your Portfolio</div>
+          <div class="card-body">
+            {% if portfolio %}
+            <p>Name: {{ portfolio.name }}</p>
+            <p>Bio: {{ portfolio.bio|truncatewords:30 }}</p>
+            <a href="{% url 'edit_portfolio' %}" class="btn btn-outline-primary">Edit Portfolio</a>
+            {% if portfolio.is_public %}
+            <a href="{% url 'portfolio_view' portfolio.user.username %}" class="btn btn-outline-success">View Public Portfolio</a>
+            {% else %}
+            <p class="text-muted">Your portfolio is not public yet.</p>
+            {% endif %}
+            {% else %}
+            <p class="text-muted">You haven't created a portfolio yet.</p>
+            <a href="{% url 'edit_portfolio' %}" class="btn btn-outline-primary">Create Portfolio</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assignments -->
+    <div class="col-12">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Assignments</h3>
+        <div class="row g-4">
+          {% for assignment in assignments %}
+          <div class="col-lg-4 col-md-6">
+            <div class="task-card animate__animated animate__fadeInUp">
+              <div class="card-body">
+                <h5 class="card-title">{{ assignment.title }}</h5>
+                <p class="text-muted"><i class="fas fa-calendar-alt me-1"></i> Due: {{ assignment.due_date|date:"F d, Y" }}</p>
+                <div class="mt-auto">
+                  <a href="{% url 'submit_assignment' assignment.id %}" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> Submit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12">
+            <div class="empty-state">
+              <i class="fas fa-tasks"></i>
+              <p class="mb-0">No assignments due.</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="col-12">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Projects</h3>
+        <div class="row g-4">
+          {% for project in assignments %}
+          <div class="col-lg-4 col-md-6">
+            <div class="task-card animate__animated animate__fadeInUp">
+              <div class="card-body">
+                <h5 class="card-title">{{ project.title }}</h5>
+                <p class="text-muted"><i class="fas fa-calendar-alt me-1"></i> Due: {{ project.due_date|date:"F d, Y" }}</p>
+                <div class="mt-auto">
+                  <a href="{% url 'submit_project' project.id %}" class="btn btn-primary btn-sm"><i class="fas fa-upload"></i> Submit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12">
+            <div class="empty-state">
+              <i class="fas fa-project-diagram"></i>
+              <p class="mb-0">No projects due.</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Sessions -->
+    <div class="col-12">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Events</h3>
+        <div class="row g-4">
+          {% for session in live_sessions %}
+          <div class="col-lg-4 col-md-6">
+            <div class="task-card animate__animated animate__fadeInUp">
+              <div class="card-body">
+                <h5 class="card-title">{{ session.title }}</h5>
+                <div class="mb-2">
+                  <small class="text-muted"><i class="fas fa-book"></i> {{ session.course.title }}</small>
+                </div>
+                {% if session.cohort %}
+                <div class="mb-2">
+                  <small class="text-muted"><i class="fas fa-users"></i> {{ session.cohort.name }}</small>
+                </div>
+                {% endif %}
+                <div class="mb-2">
+                  <small class="text-muted"><i class="fas fa-tags"></i> {{ session.session_type }}</small>
+                </div>
+                <div class="mb-3">
+                  <small class="text-muted"><i class="fas fa-clock"></i> {{ session.start|date:"F d, Y H:i" }}</small>
+                </div>
+                <div class="mt-auto">
+                  <a href="{% url 'join_session' session.id %}" class="btn btn-primary btn-sm" target="_blank"><i class="fas fa-eye"></i> Join</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12">
+            <div class="empty-state">
+              <i class="fas fa-video"></i>
+              <p class="mb-0">No upcoming events scheduled.</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance -->
+    <div class="col-12">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Performance</h3>
+        <div class="dashboard-card animate__animated">
+          <div class="card-header"><i class="fas fa-check-circle"></i> Performance Status</div>
+          <div class="card-body">
+            {% if performance_records %}
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Month</th>
+                    <th>Attendance Score</th>
+                    <th>Assignment Score</th>
+                    <th>Project Score</th>
+                    <th>Total Score</th>
+                    <th>Status</th>
+                  </tr>
+                </thead %}
+                <tbody>
+                  {% for record in performance_records %}
+                  <tr>
+                    <td>{{ record.month }}</td>
+                    <td>{{ record.attendance_score }}</td>
+                    <td>{{ record.assessment_score }}</td>
+                    <td>{{ record.project_score }}</td>
+                    <td>{{ record.total_score }}</td>
+                    <td>
+                      {% if record.warning_issued %}
+                      <span class="badge bg-warning">Warning</span>
+                      {% endif %}
+                      {% if record.suspended %}
+                      <span class="badge bg-danger">Suspended</span>
+                      {% endif %}
+                      {% if record.reward_earned %}
+                      <span class="badge bg-success">{{ record.reward_earned }}</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <p class="text-muted">No performance records available.</p>
+              <small class="text-muted">Your performance will be tracked as you complete assignments and projects.</small>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Notification polling
+  function fetchNotifications() {
+    const url = '{% url "get_notifications" %}';
+    console.log('Fetching notifications from:', url);
+    if (!url) {
+      console.error('Notification URL is empty or undefined');
+      return;
+    }
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => alert.remove());
+        if (data.notifications && Array.isArray(data.notifications)) {
+          data.notifications.forEach(notification => {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-secondary alert-dismissible fade show animate__animated animate__fadeIn';
+            const escapedMessage = notification.message.replace(/[&<>"']/g, m => ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;'
+            })[m]);
+            alertDiv.innerHTML = `
+              ${escapedMessage}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            const container = document.querySelector('.dashboard-container');
+            if (container) {
+              container.prepend(alertDiv);
+            } else {
+              console.error('Dashboard container not found');
+            }
+          });
+        } else {
+          console.warn('No notifications or invalid data structure:', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching notifications:', error);
+      });
+  }
+
+  setInterval(fetchNotifications, 30000);
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, fetching notifications');
+    fetchNotifications();
+  });
+</script>
+{% endblock %}

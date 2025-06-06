@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Manage Cohorts - MultiTechSpace{% endblock %}
+
+{% block extra_css %}
+<style>
+  .container { margin-left: 0px; padding: 20px; }
+  .cohort-card { margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+  .cohort-header { background: #007bff; color: white; padding: 12px; border-top-left-radius: 8px; border-top-right-radius: 8px; font-size: 1.25rem; }
+  .cohort-body { padding: 15px; background: white; border: 1px solid #e2e8f0; border-top: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+  .student-list { margin: 10px 0; padding-left: 20px; }
+  .whatsapp-form { margin-top: 10px; }
+  .btn-action { margin-right: 5px; }
+  .text-muted { color: #64748b; }
+  .alert { margin-bottom: 20px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Manage Cohorts</h1>
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  
+  {% if cohorts %}
+  {% for cohort in cohorts %}
+  <div class="cohort-card">
+    <div class="cohort-header">
+      {{ cohort.name }} ({{ cohort.course_title }})
+    </div>
+    <div class="cohort-body">
+      <p><strong>Student Leader:</strong> {{ cohort.student_leader|default:"None" }}</p>
+      <p><strong>Student Count:</strong> {{ cohort.student_count }}</p>
+      {% if cohort.students %}
+      <p><strong>Students:</strong></p>
+      <ul class="student-list">
+        {% for student in cohort.students %}
+        <li>{{ student.full_name }} ({{ student.username }})</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted">No students assigned.</p>
+      {% endif %}
+      <p><strong>WhatsApp Group:</strong> 
+        {% if cohort.whatsapp_link %}
+        <a href="{{ cohort.whatsapp_link }}" target="_blank" class="text-primary">{{ cohort.whatsapp_link }}</a>
+        {% else %}
+        <span class="text-muted">Not set</span>
+        {% endif %}
+      </p>
+      <form method="post" class="whatsapp-form">
+        {% csrf_token %}
+        <input type="hidden" name="cohort_id" value="{{ cohort.id }}">
+        <div class="input-group mb-2">
+          <input type="url" name="whatsapp_link" class="form-control" placeholder="Enter WhatsApp group link (e.g., https://chat.whatsapp.com/ABC123)" value="{{ cohort.whatsapp_link|default:'' }}">
+          <button type="submit" name="action" value="update_whatsapp" class="btn btn-primary">Update Link</button>
+        </div>
+      </form>
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+        <input type="hidden" name="cohort_id" value="{{ cohort.id }}">
+        <button type="submit" name="action" value="approve" class="btn btn-success btn-sm btn-action">Approve</button>
+        <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm btn-action" onclick="return confirm('Are you sure you want to delete {{ cohort.name }}?');">Delete</button>
+        <a href="{% url 'assign_student_leader' cohort.id %}" class="btn btn-primary btn-sm btn-action">Assign Leader</a>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="alert alert-warning text-center">
+    No cohorts found. Create cohorts via course enrollments or contact support.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

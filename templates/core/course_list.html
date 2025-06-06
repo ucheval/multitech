@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block title %}Courses - MultiTechSpace{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Available Courses</h2>
+    {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                            <p><strong>Duration:</strong> {{ course.duration }} weeks</p>
+                            <p><strong>Level:</strong> {{ course.level }}</p>
+                            {% if course.id in enrolled_course_ids %}
+                                <p class="text-success">Enrolled</p>
+                            {% else %}
+                                <a href="{% url 'enroll_course' course.id %}" class="btn btn-primary">Enroll</a>
+                            {% endif %}
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-info">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No courses available.</p>
+    {% endif %}
+</div>
+{% endblock %}

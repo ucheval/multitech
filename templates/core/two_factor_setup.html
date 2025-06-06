@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Setup Two-Factor Authentication - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Setup Two-Factor Authentication</h2>
+    <div class="card">
+        <div class="card-body">
+            <p>Scan the QR code with your authenticator app (e.g., Google Authenticator) or enter the key manually.</p>
+            <img src="{{ qr_code_url }}" alt="2FA QR Code" class="mb-3">
+            <p><strong>Key:</strong> {{ totp_key }}</p>
+            <form method="post" action="{% url 'two_factor_setup' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="otp_code" class="form-label">Enter OTP Code</label>
+                    <input type="text" name="otp_code" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify and Enable 2FA</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

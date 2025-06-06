@@ -1,0 +1,209 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Facilitator Application - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <style>
+        .form-container {
+            max-width: 650px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .form-header h2 {
+            color: #1b2b5e;
+            font-weight: 600;
+        }
+        .btn-register {
+            background-color: #00a86a;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 168, 106, 0.2);
+            transition: all 0.3s ease;
+        }
+        .btn-register:hover {
+            background-color: #009960;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 168, 106, 0.25);
+        }
+        label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #1b2b5e;
+        }
+        .form-control:focus {
+            border-color: #00a86a;
+            box-shadow: 0 0 0 0.2rem rgba(0, 168, 106, 0.25);
+        }
+        .custom-select-lg {
+            height: calc(1.5em + 1rem + 2px);
+            font-size: 1.25rem;
+        }
+        .application-status {
+            margin-top: 20px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+    <div class="container">
+        <div class="alert alert-info mt-4">
+            <strong>How it works:</strong> Choose a course, fill the form, we will contact you! Note: You can apply for multiple courses until one is approved.
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Facilitator Application</h2>
+                <p class="text-muted">Please fill out the form to complete your facilitator profile or apply for another course.</p>
+            </div>
+
+            <form id="registrationForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group mb-4">
+                    <label for="{{ form.course.id_for_label }}">Select Course</label>
+                    {{ form.course }}
+                    {% if form.course.errors %}
+                        <div class="text-danger">{{ form.course.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="{{ form.linkedin.id_for_label }}">LinkedIn Profile</label>
+                    {{ form.linkedin }}
+                    {% if form.linkedin.errors %}
+                        <div class="text-danger">{{ form.linkedin.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="{{ form.twitter.id_for_label }}">Twitter Profile</label>
+                    {{ form.twitter }}
+                    {% if form.twitter.errors %}
+                        <div class="text-danger">{{ form.twitter.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="{{ form.github.id_for_label }}">GitHub Profile</label>
+                    {{ form.github }}
+                    {% if form.github.errors %}
+                        <div class="text-danger">{{ form.github.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="{{ form.facebook.id_for_label }}">Facebook Profile</label>
+                    {{ form.facebook }}
+                    {% if form.facebook.errors %}
+                        <div class="text-danger">{{ form.facebook.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-4">
+                    <div class="custom-control custom-checkbox">
+                        {{ form.internship_available }}
+                        <label class="custom-control-label" for="{{ form.internship_available.id_for_label }}">I am available for internship opportunities</label>
+                    </div>
+                    {% if form.internship_available.errors %}
+                        <div class="text-danger">{{ form.internship_available.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-block btn-register">Submit Application</button>
+                </div>
+            </form>
+
+            {% if applications %}
+                <div class="application-status">
+                    <h4>Your Applications</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Status</th>
+                                <th>Applied At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.course.title }}</td>
+                                    <td>{{ app.status|title }}</td>
+                                    <td>{{ app.applied_at|date:"F d, Y" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = this;
+    const formData = new FormData(form);
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Submitting...';
+
+    fetch("{% url 'facilitator_application' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+    })
+    .then(response => response.json().then(data => ({status: response.status, body: data})))
+    .then(({status, body}) => {
+        const oldAlert = document.getElementById('formAlert');
+        if (oldAlert) oldAlert.remove();
+
+        let alertBox = document.createElement('div');
+        alertBox.id = 'formAlert';
+        alertBox.className = `alert ${status === 200 ? 'alert-success' : 'alert-danger'} mt-3`;
+        alertBox.innerText = body.message || 'An error occurred';
+        form.parentNode.insertBefore(alertBox, form);
+
+        if (status === 200) {
+            form.reset();
+            window.location.href = '{% url 'facilitator_application_dashboard' %}';
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Submit Application';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const oldAlert = document.getElementById('formAlert');
+        if (oldAlert) oldAlert.remove();
+
+        let alertBox = document.createElement('div');
+        alertBox.id = 'formAlert';
+        alertBox.className = 'alert alert-danger mt-3';
+        alertBox.innerText = 'An error occurred while submitting the form.';
+        form.parentNode.insertBefore(alertBox, form);
+
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Submit Application';
+    });
+});
+</script>
+{% endblock %}

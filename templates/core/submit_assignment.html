@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Submit Assignment - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Submit Assignment: {{ assignment.title }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <p>{{ assignment.description }}</p>
+            <p><strong>Due:</strong> {{ assignment.due_date|date:"F d, Y" }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="submission_url" class="form-label">GitHub/URL Submission</label>
+                    <input type="url" name="submission_url" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Discussion Board - MultiTechSpace{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+  .cohort-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cohort-info h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1e293b;
+  }
+  .whatsapp-btn {
+    background: #10b981;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  .whatsapp-btn:hover {
+    background: #0a8f63;
+    transform: translateY(-2px);
+    color: white;
+  }
+  .text-muted {
+    font-size: 0.9rem;
+    color: #64748b;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="cohort-info">
+    <h2>Discussion Board: {{ cohort.name }}</h2>
+    {% if whatsapp_link %}
+    <a href="{{ whatsapp_link }}" target="_blank" class="whatsapp-btn">
+      <i class="fab fa-whatsapp me-1"></i> Join WhatsApp Group
+    </a>
+    {% else %}
+    <p class="text-muted"><i class="fab fa-whatsapp me-1"></i> WhatsApp group not yet set by admin.</p>
+    {% endif %}
+  </div>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h3>Create Post</h3>
+      <form method="post" action="{% url 'create_discussion_post' cohort.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="content" class="form-label">Content</label>
+          <textarea name="content" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+    </div>
+  </div>
+  {% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>{{ post.title }}</h4>
+      <p>{{ post.content|linebreaks }}</p>
+      <p><small>Posted by {{ post.user.username }} on {{ post.created_at|date:"F d, Y" }}</small></p>
+      <h5>Comments</h5>
+      {% for comment in post.comments.all %}
+      <p>{{ comment.content|linebreaks }} <small>— {{ comment.user.username }}, {{ comment.created_at|date:"F d, Y" }}</small></p>
+      {% endfor %}
+      <form method="post" action="{% url 'add_discussion_comment' post.id %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <textarea name="content" class="form-control" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-sm">Add Comment</button>
+      </form>
+    </div>
+  </div>
+  {% empty %}
+  <p>No posts yet. Start a discussion!</p>
+  {% endfor %}
+</div>
+{% endblock %}

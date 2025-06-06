@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Change Course - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <style>
+        .change-course-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .change-course-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="change-course-container">
+    <h2>Change Your Course</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.course.id_for_label }}">Select New Course</label>
+            {{ form.course }}
+            {% if form.course.errors %}
+                <div class="text-danger">{{ form.course.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+    </form>
+</div>
+{% endblock %}

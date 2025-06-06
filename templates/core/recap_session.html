@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Session Recaps - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Session Recaps</h2>
+    <div class="row">
+        {% for recap in recaps %}
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <iframe class="w-100" style="height: 300px;" src="{{ recap.youtube_url }}" title="{{ recap.title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ recap.title }}</h4>
+                        <p class="card-text">{{ recap.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No session recaps available yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

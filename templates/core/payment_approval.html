@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Payment Approval - MultiTechSpace{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Payment Slip Approval</h2>
+    <div class="row">
+        {% for slip in slips %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ slip.slip_image.url }}" class="card-img-top" alt="Payment Slip" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ slip.user.username }} - {{ slip.course.title }}</h4>
+                        <p class="card-text">Status: {{ slip.status|title }}</p>
+                        <p class="card-text">Uploaded: {{ slip.uploaded_at|date:"F d, Y" }}</p>
+                        <form method="post" action="{% url 'approve_payment' slip.id %}">
+                            {% csrf_token %}
+                            <select name="status" class="form-control mb-2">
+                                <option value="approved" {% if slip.status == 'approved' %}selected{% endif %}>Approved</option>
+                                <option value="rejected" {% if slip.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update Status</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No payment slips pending approval.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
