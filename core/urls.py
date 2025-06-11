@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.landing, name='landing'),
+    path('create_course/', views.create_course, name='create_course'),
     path('courses/', views.course_list, name='course_list'),
     path('course_enrollment/', views.course_enrollment, name='course_enrollment'),
     path('courses/<int:course_id>/', views.course_detail, name='course_detail'),
@@ -48,4 +50,10 @@ urlpatterns = [
     path('get_notifications/', views.get_notifications, name='get_notifications'),
     path('apply_for_course/', views.apply_for_course, name='apply_for_course'),
     path('create_profile/', views.create_profile, name='create_profile'),  # Added
+    path('password_reset/', auth_views.PasswordResetView.as_view(template_name='core/password_reset.html'), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='core/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='core/password_reset_confirm.html'), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='core/password_reset_complete.html'), name='password_reset_complete'),
 ]
+
+

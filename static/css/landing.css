@@ -23,18 +23,7 @@ body {
     background-color: var(--light);
 }
 
-/* this was moved to inline to avoid color breakage */
-/* nav.navbar.navbar-expand-lg.navbar-dark .mynav{
-    background: var(--primary-gradient) !important;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    top: 0;
-} */
-
+/* Navigation Styles */
 .navbar-brand {
     color: white !important;
     font-size: 1.5rem;
@@ -74,7 +63,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted {
     color: #333 !important;
 }
 
-/* Rest of landing.css remains unchanged */
+/* Hero Section */
 .hero {
     padding-top: 6rem;
     padding-bottom: 3rem;
@@ -105,6 +94,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted {
     opacity: 0.9;
 }
 
+/* Buttons */
 .btn {
     display: inline-block;
     padding: 0.8rem 1.8rem;
@@ -139,7 +129,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted {
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-
+/* Features Section */
 .features {
     padding: 5rem 2rem;
     background-color: var(--light);
@@ -217,6 +207,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted {
     margin-bottom: 1rem;
 }
 
+/* Courses Section */
 .courses {
     padding: 5rem 2rem;
     background-color: #f9f9f9;
@@ -266,127 +257,11 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted {
     color: var(--secondary);
 }
 
+/* Carousel */
 .carousel {
     position: relative;
     overflow: hidden;
     margin: 2rem 0;
-}
-
-.testimonials {
-    padding: 5rem 2rem;
-    background: linear-gradient(135deg, var(--light) 0%, #e2e8f0 100%);
-}
-
-.testimonial-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    margin: 1rem;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-.testimonial-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-
-.testimonial-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    background-color: #ddd;
-    background-size: cover;
-    background-position: center;
-}
-
-.testimonial-text {
-    font-style: italic;
-    color: #555;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
-
-.testimonial-author {
-    font-weight: bold;
-    color: #333;
-}
-
-.testimonial-role {
-    font-size: 0.9rem;
-    color: var(--secondary);
-}
-
-.cta {
-    padding: 5rem 2rem;
-    background: var(--primary-gradient);
-    color: white;
-    text-align: center;
-}
-
-footer {
-    background-color: var(--dark);
-    color: white;
-    padding: 3rem 2rem;
-    text-align: center;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
-}
-
-.footer-links a {
-    color: white;
-    margin: 0 1rem;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.footer-links a:hover {
-    color: var(--highlight);
-}
-
-.social-icons {
-    margin: 1rem 0;
-}
-
-.social-icons a {
-    color: white;
-    font-size: 1.5rem;
-    margin: 0 0.5rem;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.social-icons a:hover {
-    color: var(--highlight);
-    transform: translateY(-3px);
-}
-
-.count-container {
-    display: flex;
-    justify-content: space-around;
-    margin: 3rem 0;
-}
-
-.count-item {
-    text-align: center;
-}
-
-.count-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 0.5rem;
-}
-
-.count-label {
-    color: rgba(255,255,255,0.8);
-    font-size: 1rem;
 }
 
 .carousel-inner {
@@ -445,29 +320,152 @@ footer {
     background-color: var(--primary);
 }
 
-@media (max-width: 768px) {
-    .row {
-        flex-direction: column;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .count-container {
-        flex-wrap: wrap;
-    }
-
-    .count-item {
-        width: 50%;
-        margin-bottom: 2rem;
-    }
-
-    .navbar-nav {
-        display: none;
-    }
+/* Testimonials */
+.testimonials {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, var(--light) 0%, #e2e8f0 100%);
 }
 
+.testimonial-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.testimonial-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    background-color: #ddd;
+    background-size: cover;
+    background-position: center;
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: #333;
+}
+
+.testimonial-role {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+/* CTA Section */
+.cta {
+    padding: 5rem 2rem;
+    background: var(--primary-gradient);
+    color: white;
+    text-align: center;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark);
+    color: white;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: white;
+    margin: 0 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--highlight);
+}
+
+.social-icons {
+    margin: 1rem 0;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.social-icons a:hover {
+    color: var(--highlight);
+    transform: translateY(-3px);
+}
+
+/* Count Container */
+.count-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.count-item {
+    text-align: center;
+}
+
+.count-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.count-label {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+}
+
+/* Language Icons */
+.language-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.language-icon {
+    margin: 1rem;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Animations */
 .animation-fade-in {
     animation: fadeIn 1s ease-in;
 }
@@ -477,6 +475,7 @@ footer {
     to { opacity: 1; }
 }
 
+/* Floating Shapes */
 .floating-shapes {
     position: absolute;
     width: 100%;
@@ -545,23 +544,383 @@ footer {
     }
 }
 
-.language-icons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 2rem 0;
+/* RESPONSIVE DESIGN - TABLET (MEDIUM SCREENS) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .container {
+        max-width: 90%;
+        padding: 0 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+    }
+    
+    .section-title h2 {
+        font-size: 2.2rem;
+    }
+    
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+        padding: 1.5rem;
+    }
+    
+    .count-number {
+        font-size: 2.5rem;
+    }
+    
+    .language-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        margin: 0.8rem;
+    }
+    
+    .features,
+    .courses,
+    .testimonials,
+    .cta {
+        padding: 4rem 2rem;
+    }
 }
 
-.language-icon {
-    margin: 1rem;
-    width: 60px;
-    height: 60px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    font-size: 2rem;
-    color: #333;
+/* RESPONSIVE DESIGN - SMALL TABLET (768px and below) */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+    
+    .col {
+        min-width: 100%;
+        padding: 10px;
+    }
+    
+    .hero {
+        padding-top: 4rem;
+        padding-bottom: 2rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-content {
+        padding: 1.5rem;
+    }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+    
+    .features,
+    .courses,
+    .testimonials,
+    .cta {
+        padding: 3rem 1.5rem;
+    }
+    
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+        padding: 1.5rem;
+        margin: 0.5rem 0;
+    }
+    
+    .count-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .count-item {
+        width: 50%;
+        margin-bottom: 2rem;
+    }
+    
+    .count-number {
+        font-size: 2.2rem;
+    }
+    
+    .navbar-nav {
+        display: none;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .footer-links a {
+        margin: 0.5rem 0;
+    }
+    
+    .btn {
+        padding: 0.7rem 1.5rem;
+        margin: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    .carousel-control {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .testimonial-card {
+        margin: 0.5rem;
+    }
+    
+    .language-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.6rem;
+        margin: 0.6rem;
+    }
+}
+
+/* RESPONSIVE DESIGN - MOBILE (480px and below) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .hero {
+        padding-top: 3rem;
+        padding-bottom: 1.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero p {
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .hero-content {
+        padding: 1rem;
+    }
+    
+    .section-title {
+        margin-bottom: 2rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+    
+    .features,
+    .courses,
+    .testimonials,
+    .cta {
+        padding: 2.5rem 1rem;
+    }
+    
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+        padding: 1.2rem;
+        margin: 0.3rem 0;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-card h3,
+    .course-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .count-container {
+        margin: 2rem 0;
+    }
+    
+    .count-item {
+        width: 50%;
+        margin-bottom: 1.5rem;
+    }
+    
+    .count-number {
+        font-size: 1.8rem;
+    }
+    
+    .count-label {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        margin: 0.2rem;
+        display: block;
+        text-align: center;
+        max-width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0.5rem;
+    }
+    
+    .carousel-control {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    
+    .carousel-indicator {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .testimonial-img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .testimonial-text {
+        font-size: 0.9rem;
+    }
+    
+    .social-icons a {
+        font-size: 1.3rem;
+        margin: 0 0.3rem;
+    }
+    
+    .language-icons {
+        margin: 1.5rem 0;
+    }
+    
+    .language-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+        margin: 0.4rem;
+    }
+    
+    footer {
+        padding: 2rem 1rem;
+    }
+    
+    .course-img {
+        height: 150px;
+    }
+    
+    .course-content {
+        padding: 1rem;
+    }
+    
+    .course-meta {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    /* Floating shapes adjustments for mobile */
+    .shape {
+        display: none; /* Hide floating shapes on very small screens for performance */
+    }
+}
+
+/* RESPONSIVE DESIGN - EXTRA SMALL MOBILE (360px and below) */
+@media (max-width: 360px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.6rem;
+    }
+    
+    .features,
+    .courses,
+    .testimonials,
+    .cta {
+        padding: 2rem 0.8rem;
+    }
+    
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+        padding: 1rem;
+    }
+    
+    .count-number {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .language-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        margin: 0.3rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+/* LANDSCAPE ORIENTATION ADJUSTMENTS */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero p {
+        margin-bottom: 1rem;
+    }
+    
+    .count-container {
+        margin: 1.5rem 0;
+    }
+}
+
+/* HIGH DPI DISPLAYS */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .feature-icon,
+    .language-icon {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* HOVER EFFECTS - DISABLE ON TOUCH DEVICES */
+@media (hover: none) and (pointer: coarse) {
+    .feature-card:hover,
+    .course-card:hover,
+    .testimonial-card:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .social-icons a:hover {
+        transform: none;
+        box-shadow: initial;
+    }
+    
+    .feature-card,
+    .course-card,
+    .testimonial-card {
+        transition: none;
+    }
 }

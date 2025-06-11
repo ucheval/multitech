@@ -2,10 +2,85 @@
 {% block content %}
 <div class="container mt-5">
     <h2>Create a New Course</h2>
-    <form method="POST">
+    {% if messages %}
+        <ul class="messages list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form method="POST" class="needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="mb-3">
+            <label for="id_title" class="form-label">Title:</label>
+            <input type="text" name="title" id="id_title" class="form-control" value="{{ form.title.value|default_if_none:'' }}" required>
+            {% if form.title.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.title.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description:</label>
+            <textarea name="description" id="id_description" class="form-control" rows="5" required>{{ form.description.value|default_if_none:'' }}</textarea>
+            {% if form.description.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.description.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_duration" class="form-label">Duration (weeks):</label>
+            <input type="number" name="duration" id="id_duration" class="form-control" value="{{ form.duration.value|default_if_none:'' }}" min="1" required>
+            {% if form.duration.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.duration.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_level" class="form-label">Level:</label>
+            <select name="level" id="id_level" class="form-select" required>
+                {% for value, label in form.level.field.choices %}
+                    <option value="{{ value }}" {% if form.level.value == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            {% if form.description.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.level.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_price" class="form-label">Price (₦):</label>
+            <input type="number" name="price" id="id_price" class="form-control" value="{{ form.price.value|default_if_none:'' }}" step="0.01" min="0" required>
+            {% if form.price.errors %}
+                <div class="invalid-feedback d-block">
+                    {{ form.price.errors|join:", " }}
+                </div>
+            {% endif %}
+        </div>
         <button type="submit" class="btn btn-success">Create Course</button>
+        <a href="{% url 'admindashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
     </form>
 </div>
+<script>
+    // Bootstrap form validation
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 {% endblock %}

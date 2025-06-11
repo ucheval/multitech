@@ -7,6 +7,30 @@ import re
 import pycountry
 import phonenumbers
 from phonenumbers import PhoneNumberFormat, parse, format_number, is_valid_number, region_code_for_country_code
+from .models import Course
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['title', 'description', 'duration', 'level', 'price']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5}),
+            'duration': forms.NumberInput(attrs={'min': 1}),
+            'price': forms.NumberInput(attrs={'step': '0.01', 'min': '0.00'}),
+        }
+
+    def clean_duration(self):
+        duration = self.cleaned_data['duration']
+        if duration <= 0:
+            raise forms.ValidationError('Duration must be a positive integer.')
+        return duration
+
+    def clean_price(self):
+        price = self.cleaned_data['price']
+        if price < 0:
+            raise forms.ValidationError('Price cannot be negative.')
+        return price
+    
 COUNTRY_CHOICES = [
     (country.alpha_2, country.name) for country in sorted(pycountry.countries, key=lambda c: c.name)
 ]

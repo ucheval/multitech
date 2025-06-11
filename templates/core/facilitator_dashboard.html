@@ -3,13 +3,420 @@
 {% block title %}Facilitator Dashboard - MultiTechSpace{% endblock %}
 {% block extra_css %}
     <style>
-        .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .card { border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .card-header { background: linear-gradient(135deg, #007bff, #0056b3); color: white; padding: 15px; border-radius: 10px 10px 0 0; }
-        .btn-primary { background-color: #00a86a; border: none; }
-        .btn-primary:hover { background-color: #009678; }
-        .alert { margin-bottom: 20px; }
-        .application-status { margin-top: 20px; }
+:root {
+  --primary: #00a86a;
+  --primary-dark: #009678;
+  --primary-gradient: linear-gradient(135deg, #00a86a, #007b4f);
+  --secondary: #64748b;
+  --dark: #1e293b;
+  --light: #f8fafc;
+  --border-color: #e2e8f0;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+  --border-radius: 10px;
+  --font-primary: #334155;
+  --font-secondary: #64748b;
+}
+
+body {
+  background-color: var(--light);
+  color: var(--font-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 20px;
+  background: white;
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 15px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.card-text {
+  color: var(--font-secondary);
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.alert {
+  margin-bottom: 20px;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1rem;
+  background-color: #e7f3fe;
+  color: var(--font-primary);
+  border: 1px solid #b3d7ff;
+}
+
+.alert-info {
+  background-color: #e7f3fe;
+  color: var(--font-primary);
+}
+
+h2.mb-4 {
+  font-size: 2.5rem;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+h2.mb-4::after {
+  content: '';
+  width: 50px;
+  height: 3px;
+  background: var(--primary);
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+.table th {
+  background: var(--light);
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.table td {
+  color: var(--font-secondary);
+}
+
+.application-status h4 {
+  font-size: 1.5rem;
+  color: var(--dark);
+  margin-bottom: 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.333%;
+  padding: 15px;
+}
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  h2.mb-4 {
+    font-size: 2.2rem;
+  }
+
+  .card-header {
+    font-size: 1.15rem;
+    padding: 12px;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+  }
+
+  .btn-primary {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+  }
+
+  .alert {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .application-status h4 {
+    font-size: 1.4rem;
+  }
+
+  .col-md-4 {
+    flex: 0 0 50%;
+    padding: 10px;
+  }
+}
+
+/* Large Phones (576px - 768px) */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  h2.mb-4 {
+    font-size: 2rem;
+  }
+
+  h2.mb-4::after {
+    width: 40px;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .card-header {
+    font-size: 1.1rem;
+    padding: 10px;
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .btn-primary {
+    padding: 7px 14px;
+    font-size: 0.9rem;
+  }
+
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+
+  .alert {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .application-status h4 {
+    font-size: 1.3rem;
+  }
+
+  .col-md-4 {
+    flex: 0 0 100%;
+    padding: 10px;
+  }
+}
+
+/* Small Phones (up to 576px) */
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 8px;
+  }
+
+  h2.mb-4 {
+    font-size: 1.8rem;
+  }
+
+  h2.mb-4::after {
+    width: 30px;
+    height: 2px;
+  }
+
+  .card {
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.85rem;
+  }
+
+  .btn-primary {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .alert {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 6px;
+    font-size: 0.85rem;
+  }
+
+  .application-status h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .col-md-4 {
+    flex: 0 0 100%;
+    padding: 8px;
+  }
+}
+
+/* Extra Small Phones (up to 360px) */
+@media (max-width: 360px) {
+  .dashboard-container {
+    padding: 5px;
+  }
+
+  h2.mb-4 {
+    font-size: 1.6rem;
+  }
+
+  h2.mb-4::after {
+    width: 25px;
+    height: 2px;
+  }
+
+  .card {
+    margin-bottom: 10px;
+  }
+
+  .card-header {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+
+  .card-body {
+    padding: 8px;
+  }
+
+  .card-title {
+    font-size: 0.9rem;
+  }
+
+  .card-text {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .btn-primary {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .btn-sm {
+    padding: 3px 6px;
+    font-size: 0.75rem;
+  }
+
+  .alert {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .table th,
+  .table td {
+    padding: 5px;
+    font-size: 0.8rem;
+  }
+
+  .application-status h4 {
+    font-size: 1.1rem;
+  }
+}
     </style>
 {% endblock %}
 {% block content %}

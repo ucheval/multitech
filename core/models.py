@@ -50,10 +50,9 @@ class Course(models.Model):
     duration = models.IntegerField()
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
     facilitator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Add price
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     def __str__(self):
         return self.title
-
 class Cohort(models.Model):
     name = models.CharField(max_length=100)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -205,6 +204,7 @@ class LiveSession(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='scheduled')
     session_type = models.CharField(max_length=20, choices=SESSION_TYPE_CHOICES, default='lecture')
     is_visible = models.BooleanField(default=True)
+    is_open_to_all = models.BooleanField(default=False)  # New field for open sessions
 
     def __str__(self):
         return f"{self.title} - {self.course.title} ({self.get_status_display()})"

@@ -100,6 +100,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'salary_approval' %}"><i class="fas fa-wallet me-2"></i> Salary Approval</a>
                             </li>
+                            <li><a class ="nav-link" href="{% url 'create_course' %}"><i class="fas fa-book me-2"></i>Create Course</a></li> 
                         {% elif user.profile.user_type == 'student' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'student_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
@@ -125,6 +126,8 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'change_course' %}"><i class="fas fa-exchange-alt me-2"></i> Change Course</a>
                             </li>
+                            <li><a class="nav-link" href="{% url 'live_session' %}"><i class="fas fa-video me-2"></i>Join Live Classes</a></li>
+
                         {% elif user.profile.user_type == 'facilitator' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'facilitator_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i> Facilitator Dashboard</a>
@@ -141,6 +144,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'schedule_session' %}"><i class="fas fa-calendar-alt me-2"></i> Schedule Session</a>
                             </li>
+                            <li><a href="{% url 'create_course' %}">Create Course</a></li>
                         {% endif %}
                     </ul>
                 </div>

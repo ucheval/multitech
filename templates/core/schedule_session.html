@@ -1,36 +1,54 @@
 {% extends 'core/base.html' %}
 {% block content %}
 <h2>Schedule Live Session</h2>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 <form method="POST">
     {% csrf_token %}
-    <label>Course:</label>
-    <select name="course" required>
-        {% for course in courses %}
-            <option value="{{ course.id }}">{{ course.title }}</option>
-        {% endfor %}
-    </select>
-    <label>Cohort (optional):</label>
-    <select name="cohort">
-        <option value="">None</option>
-        {% for cohort in cohorts %}
-            <option value="{{ cohort.id }}">{{ cohort.name }}</option>
-        {% endfor %}
-    </select>
-    <label>Title:</label>
-    <input type="text" name="title" required>
-    <label>Zoom URL:</label>
-    <input type="url" name="zoom_url" required>
-    <label>Scheduled At:</label>
-    <input type="datetime-local" name="scheduled_at" required>
-    <label>End Time:</label>
-    <input type="datetime-local" name="end_time" required>
-    <label>Session Type:</label>
-    <select name="session_type">
-        <option value="lecture">Lecture</option>
-        <option value="qna">Q&A</option>
-        <option value="workshop">Workshop</option>
-        <option value="other">Other</option>
-    </select>
+    <div>
+        <label for="course">Course:</label>
+        <select name="course" id="course" required>
+            {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" value="{{ request.POST.title|default_if_none:'' }}" required>
+    </div>
+    <div>
+        <label for="zoom_url">Zoom URL:</label>
+        <input type="url" name="zoom_url" id="zoom_url" value="{{ request.POST.zoom_url|default_if_none:'' }}" placeholder="https://zoom.us/j/..." required>
+    </div>
+    <div>
+        <label for="scheduled_at">Scheduled At:</label>
+        <input type="datetime-local" name="scheduled_at" id="scheduled_at" value="{{ request.POST.scheduled_at|default_if_none:'' }}" required>
+    </div>
+    <div>
+        <label for="end_time">End Time:</label>
+        <input type="datetime-local" name="end_time" id="end_time" value="{{ request.POST.end_time|default_if_none:'' }}" required>
+    </div>
+    <div>
+        <label for="session_type">Session Type:</label>
+        <select name="session_type" id="session_type">
+            <option value="lecture" {% if request.POST.session_type == 'lecture' %}selected{% endif %}>Lecture</option>
+            <option value="qna" {% if request.POST.session_type == 'qna' %}selected{% endif %}>Q&A</option>
+            <option value="workshop" {% if request.POST.session_type == 'workshop' %}selected{% endif %}>Workshop</option>
+            <option value="other" {% if request.POST.session_type == 'other' %}selected{% endif %}>Other</option>
+        </select>
+    </div>
+    <div>
+        <label for="is_open_to_all">
+            <input type="checkbox" name="is_open_to_all" id="is_open_to_all" {% if request.POST.is_open_to_all %}checked{% endif %}>
+            Open to all students
+        </label>
+    </div>
     <button type="submit">Schedule Session</button>
 </form>
 {% endblock %}

@@ -7,7 +7,7 @@ from django_otp.decorators import otp_required
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from django_otp import devices_for_user
 from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
-from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, DiscussionPostForm
+from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm
 from django.utils import timezone
 from django.db.models import Count, Sum, Avg
 from django.utils.html import escape
@@ -509,7 +509,7 @@ def enroll_course(request, course_id):
     else:
         messages.info(request, f'You are already enrolled or have a pending request for {course.title}.')
     return redirect('course_enrollment')
-# ... (other views unchanged)@login_required
+
 @login_required
 @user_passes_test(lambda u: u.is_staff or u.is_superuser)
 # @otp_required
@@ -767,35 +767,69 @@ def manage_cohorts(request):
 def schedule_session(request):
     if request.method == 'POST':
         course_id = request.POST.get('course')
-        cohort_id = request.POST.get('cohort')
         title = request.POST.get('title')
         zoom_url = request.POST.get('zoom_url')
         scheduled_at = request.POST.get('scheduled_at')
         end_time = request.POST.get('end_time')
         session_type = request.POST.get('session_type')
+        is_open_to_all = request.POST.get('is_open_to_all') == 'on'
+
+        if not all([course_id, title, zoom_url, scheduled_at, end_time]):
+            messages.error(request, 'All required fields must be filled.')
+            return redirect('schedule_session')
+
+        try:
+            scheduled_at = timezone.datetime.strptime(scheduled_at, '%Y-%m-%dT%H:%M')
+            end_time = timezone.datetime.strptime(end_time, '%Y-%m-%dT%H:%M')
+            scheduled_at = timezone.make_aware(scheduled_at, timezone.get_current_timezone())
+            end_time = timezone.make_aware(end_time, timezone.get_current_timezone())
+
+            if scheduled_at < timezone.now():
+                messages.error(request, 'Scheduled time must be in the future.')
+                return redirect('schedule_session')
+            if end_time <= scheduled_at:
+                messages.error(request, 'End time must be after scheduled time.')
+                return redirect('schedule_session')
+            URLValidator()(zoom_url)
+        except (ValueError, ValidationError) as e:
+            messages.error(request, f'Invalid input: {str(e)}')
+            return redirect('schedule_session')
+
         course = get_object_or_404(Course, id=course_id)
-        cohort = get_object_or_404(Cohort, id=cohort_id) if cohort_id else None
         if request.user.profile.user_type == 'facilitator' and course.facilitator != request.user:
             messages.error(request, 'You can only schedule sessions for courses you facilitate.')
             return redirect('schedule_session')
+
         session = LiveSession.objects.create(
             course=course,
-            cohort=cohort,
             title=title,
             zoom_url=zoom_url,
             scheduled_at=scheduled_at,
             end_time=end_time,
             created_by=request.user,
             session_type=session_type,
-            is_visible=True
+            is_visible=True,
+            is_open_to_all=is_open_to_all
         )
-        recipients = cohort.students.all() if cohort else CourseEnrollment.objects.filter(course=course, status='approved').values_list('user', flat=True)
-        for user_id in recipients:
-            Notification.objects.create(
+
+        # Notify students
+        if is_open_to_all:
+            recipients = User.objects.filter(profile__user_type='student').values_list('id', flat=True)
+        else:
+            recipients = CourseEnrollment.objects.filter(
+                course=course, status='approved'
+            ).values_list('user_id', flat=True)
+
+        notifications = [
+            Notification(
                 user_id=user_id,
                 type='general',
                 message=f"New live session '{session.title}' scheduled for {session.scheduled_at}. Join at: {session.zoom_url}"
             )
+            for user_id in recipients
+        ]
+        Notification.objects.bulk_create(notifications)
+
         messages.success(request, f'Session {title} scheduled.')
         AuditLog.objects.create(
             user=request.user,
@@ -803,14 +837,95 @@ def schedule_session(request):
             details=f"Scheduled session {session.title} for course {course.title}"
         )
         return redirect('live_session')
+
     courses = Course.objects.filter(facilitator=request.user) if request.user.profile.user_type == 'facilitator' else Course.objects.all()
-    cohorts = Cohort.objects.filter(course__facilitator=request.user) if request.user.profile.user_type == 'facilitator' else Cohort.objects.all()
     return render(request, 'core/schedule_session.html', {
         'courses': courses,
-        'cohorts': cohorts,
         'logo_base64': settings.LOGO_BASE64
     })
 
+@login_required
+def live_session(request):
+    current_time = timezone.now()
+    sessions = LiveSession.objects.filter(
+        is_visible=True,
+        status='scheduled',
+        scheduled_at__gte=current_time
+    ).order_by('scheduled_at')
+
+    if request.user.profile.user_type == 'student':
+        enrolled_courses = CourseEnrollment.objects.filter(
+            user=request.user, status='approved'
+        ).values_list('course_id', flat=True)
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': session.is_open_to_all or session.course.id in enrolled_courses
+            }
+            for session in sessions
+        ]
+    elif request.user.profile.user_type == 'facilitator':
+        sessions = sessions.filter(course__facilitator=request.user)
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': True
+            }
+            for session in sessions
+        ]
+    else:  # Admins
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': True
+            }
+            for session in sessions
+        ]
+
+    return render(request, 'core/live_session.html', {
+        'sessions': sessions,
+        'logo_base64': settings.LOGO_BASE64
+    })
+    
+    
+@login_required
+def join_session(request, session_id):
+    session = get_object_or_404(LiveSession, id=session_id, is_visible=True, status__in=['scheduled', 'ongoing'])
+    if request.user.profile.user_type == 'student':
+        if not session.is_open_to_all:
+            enrolled_courses = CourseEnrollment.objects.filter(
+                user=request.user, status='approved'
+            ).values_list('course_id', flat=True)
+            if session.course.id not in enrolled_courses:
+                messages.error(request, 'You are not authorized to join this session.')
+                return redirect('student_dashboard')
+    SessionAttendance.objects.create(
+        session=session,
+        user=request.user
+    )
+    AuditLog.objects.create(
+        user=request.user,
+        action='Session Joined',
+        details=f"Joined session {session.title}"
+    )
+    Notification.objects.create(
+        user=session.created_by,
+        type='general',
+        message=f"{request.user.username} joined your session '{session.title}'."
+    )
+    return redirect(session.zoom_url)
 def landing(request):
     courses = Course.objects.all()
     featured_portfolios = Portfolio.objects.filter(is_public=True, is_featured=True)
@@ -967,31 +1082,66 @@ def live_session(request):
         is_visible=True,
         status='scheduled',
         scheduled_at__gte=current_time
-    )
+    ).order_by('scheduled_at')
+
+    # For students, mark which sessions they can join
     if request.user.profile.user_type == 'student':
-        enrolled_courses = CourseEnrollment.objects.filter(user=request.user, status='approved').values_list('course', flat=True)
-        cohorts = Cohort.objects.filter(students=request.user)
-        sessions = sessions.filter(
-            course__in=enrolled_courses
-        ) | sessions.filter(
-            cohort__in=cohorts
-        )
+        enrolled_courses = CourseEnrollment.objects.filter(
+            user=request.user, status='approved'
+        ).values_list('course_id', flat=True)
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': session.is_open_to_all or session.course.id in enrolled_courses
+            }
+            for session in sessions
+        ]
     elif request.user.profile.user_type == 'facilitator':
         sessions = sessions.filter(course__facilitator=request.user)
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': True  # Facilitators can join their own sessions
+            }
+            for session in sessions
+        ]
+    else:  # Admins
+        sessions = [
+            {
+                'id': session.id,
+                'title': session.title,
+                'course': session.course.title,
+                'scheduled_at': session.scheduled_at,
+                'session_type': session.session_type,
+                'can_join': True  # Admins can join any session
+            }
+            for session in sessions
+        ]
+
     return render(request, 'core/live_session.html', {
-        'sessions': sessions.order_by('scheduled_at'),
+        'sessions': sessions,
         'logo_base64': settings.LOGO_BASE64
     })
-
 @login_required
 def join_session(request, session_id):
-    session = get_object_or_404(LiveSession, id=session_id, is_visible=True, status='scheduled')
+    session = get_object_or_404(LiveSession, id=session_id, is_visible=True, status__in=['scheduled', 'ongoing'])
     if request.user.profile.user_type == 'student':
-        enrolled_courses = CourseEnrollment.objects.filter(user=request.user, status='approved').values_list('course', flat=True)
-        cohorts = Cohort.objects.filter(students=request.user)
-        if not (session.course.id in enrolled_courses or (session.cohort and session.cohort in cohorts)):
-            messages.error(request, 'You are not authorized to join this session.')
-            return redirect('student_dashboard')
+        if not session.is_open_to_all:
+            enrolled_courses = CourseEnrollment.objects.filter(
+                user=request.user, status='approved'
+            ).values_list('course_id', flat=True)
+            if session.course.id not in enrolled_courses:
+                messages.error(request, 'You are not authorized to join this session.')
+                return redirect('student_dashboard')
+    # Admins and facilitators can join any session
     SessionAttendance.objects.create(
         session=session,
         user=request.user
@@ -1007,7 +1157,6 @@ def join_session(request, session_id):
         message=f"{request.user.username} joined your session '{session.title}'."
     )
     return redirect(session.zoom_url)
-
 def recap_session(request):
     recaps = SessionRecap.objects.all()
     return render(request, 'core/recap_session.html', {'recaps': recaps, 'logo_base64': settings.LOGO_BASE64})
@@ -1753,3 +1902,135 @@ def apply_for_course(request):
             'message': f'Application for {course.title} submitted successfully.'
         })
     return redirect('course_list')
+
+@login_required
+def take_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    questions = quiz.questions.prefetch_related('answers')
+    if request.method == 'POST':
+        score = 0
+        total_questions = questions.count()
+        for question in questions:
+            selected_answer_id = request.POST.get(f'q_{question.id}')
+            if selected_answer_id and Answer.objects.filter(id=selected_answer_id, question=question, is_correct=True).exists():
+                score += 1
+        passed = score >= total_questions / 2
+        QuizAttempt.objects.create(
+            user=request.user,
+            quiz=quiz,
+            score=score,
+            passed=passed
+        )
+        messages.success(request, f'Quiz completed! Score: {score}/{total_questions}')
+        return redirect('student_dashboard')
+    return render(request, 'core/take_quiz.html', {'quiz': quiz, 'questions': questions})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff or u.profile.user_type == 'facilitator')
+def upload_material(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    if request.user.profile.user_type == 'facilitator' and course.facilitator != request.user:
+        messages.error(request, 'You can only upload materials for your courses.')
+        return redirect('facilitator_dashboard')
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        file = request.FILES.get('file')
+        if title and file:
+            CourseMaterial.objects.create(course=course, title=title, file=file)
+            messages.success(request, 'Material uploaded successfully.')
+            return redirect('course_library')
+        messages.error(request, 'Title and file are required.')
+    return render(request, 'core/upload_material.html', {'course': course})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff or u.profile.user_type == 'facilitator')
+def create_assignment(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    if request.user.profile.user_type == 'facilitator' and course.facilitator != request.user:
+        messages.error(request, 'You can only create assignments for your courses.')
+        return redirect('facilitator_dashboard')
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        due_date = request.POST.get('due_date')
+        if title and description and due_date:
+            Assignment.objects.create(
+                course=course,
+                title=title,
+                description=description,
+                due_date=timezone.datetime.strptime(due_date, '%Y-%m-%dT%H:%M')
+            )
+            messages.success(request, 'Assignment created successfully.')
+            return redirect('facilitator_dashboard')
+        messages.error(request, 'All fields are required.')
+    return render(request, 'core/create_assignment.html', {'course': course})
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = CustomRegistrationForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            request.user.email = form.cleaned_data['email']
+            request.user.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('student_dashboard')
+    else:
+        form = CustomRegistrationForm(instance=profile, initial={'email': request.user.email})
+    return render(request, 'core/edit_profile.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def create_course(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            try:
+                course = form.save()
+                logger.info(f"Course {course.title} created by {request.user.username}")
+                
+                # Log the action
+                AuditLog.objects.create(
+                    user=request.user,
+                    action='Course Created',
+                    details=f"Created course {course.title} with price ₦{course.price:,.2f}"
+                )
+                
+                # Notify admin
+                Notification.objects.create(
+                    user=request.user,
+                    type='general',
+                    message=f"Course '{course.title}' has been successfully created."
+                )
+                
+                # Notify approved facilitators
+                facilitators = User.objects.filter(
+                    profile__user_type='facilitator',
+                    facilitatorapplication__status='approved'
+                ).distinct()
+                notifications = [
+                    Notification(
+                        user=facilitator,
+                        type='general',
+                        message=f"A new course '{course.title}' is available. Apply to facilitate it."
+                    )
+                    for facilitator in facilitators
+                ]
+                Notification.objects.bulk_create(notifications)
+                
+                messages.success(request, f"Course '{course.title}' created successfully.")
+                return redirect('admin_dashboard')
+            except Exception as e:
+                logger.error(f"Failed to create course: {str(e)}")
+                messages.error(request, f"An error occurred: {str(e)}")
+        else:
+            logger.warning(f"Course creation failed: {form.errors}")
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = CourseForm()
+    
+    return render(request, 'core/create_course.html', {
+        'form': form,
+        'logo_base64': settings.LOGO_BASE64
+    })
