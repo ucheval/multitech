@@ -10,20 +10,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
 SECRET_KEY = 'django-insecure-0#b5q2k7z!x2j#v^9#v@5k!q#h!v#z#v#z#v#z#v#z#v#z#v'  # Change in production
-DEBUG = True  # Set to False in production
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']  # Add domain in production
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000', 'https://yourdomain.com']  # Update in production
+DEBUG = False  # Set to False in production
+ALLOWED_HOSTS = ['techinovaedu.com', 'www.techinovaedu.com', 'tech-school.onrender.com', '127.0.0.1', 'localhost']  # Add domain in production
+CSRF_TRUSTED_ORIGINS = ['https://techinovaedu.com', 'https://www.techinovaedu.com', 'https://tech-school.onrender.com']  # Update in production
 
 # Session security
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = True       # Changed to True for HTTPS
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = 1800  # 30 minutes
-CSRF_COOKIE_SECURE = False  # Set to True in production
-SECURE_SSL_REDIRECT = False  # Set to True in production
-SECURE_HSTS_SECONDS = 0  # Set to 31536000 in production
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False  # Set to True in production
-SECURE_HSTS_PRELOAD = False  # Set to True in production
-
+SESSION_COOKIE_AGE = 1800          # 30 minutes
+CSRF_COOKIE_SECURE = True         # Changed to True for HTTPS
+SECURE_SSL_REDIRECT = True         # Changed to True to force HTTP to HTTPS redirects
+SECURE_HSTS_SECONDS = 31536000     # Changed from 0 to 1 year (Standard production value)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Changed to True to protect all subdomains
+SECURE_HSTS_PRELOAD = True         # Changed to True for modern browser security preloading
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
