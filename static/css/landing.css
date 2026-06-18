@@ -924,3 +924,55 @@ footer {
         transition: none;
     }
 }
+
+/* ==========================================================================
+   PRODUCTION MOBILE PATCH - TECHINOVAEDU OPTIMIZATION
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Fix the overlapping floating language badges */
+    .hero-image-container .language-icon {
+        display: none !important; /* Hides the erratic drifting badges on phone viewports */
+    }
+
+    /* 2. Scale down the main heading text to fit perfectly on narrow mobile screens */
+    .hero h1 {
+        font-size: 2rem !important;
+        line-height: 1.25 !important;
+        word-wrap: break-word !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* 3. Stabilize section padding so layouts look clean, spaced, and comfortable */
+    .section {
+        padding: 3rem 1rem !important;
+    }
+
+    /* 4. Fix the invisible Join Today / Sign Up anchor link contrast */
+    .cta-container a.btn-secondary,
+    .bg-gradient a,
+    .cta-section a {
+        background-color: var(--white, #ffffff) !important;
+        color: var(--primary, #1e40af) !important;
+        border: 1px solid var(--white, #ffffff) !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 4px !important;
+        display: inline-block !important;
+        font-weight: bold !important;
+        text-decoration: none !important;
+        margin-top: 1rem !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* 5. Clean up mobile course card flexbox stretching */
+    .courses-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    .course-card {
+        width: 100% !important;
+        margin: 0 0 1rem 0 !important;
+    }
+}
