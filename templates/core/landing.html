@@ -105,13 +105,15 @@
         </div>
         <div class="container">
             <div class="row g-4 row-cols-1 row-cols-md-3 justify-content-center">
-                {% for course in courses|slice:":3" %}
+                {% for course in courses|slice:":6" %}
                     <div class="col">
                         <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit; display: block; height: 100%;">
                             <div class="premium-card-wrapper">
-                                <div class="course-img-header" style="background-image: url('{% static 'images/course-' %}{{ forloop.counter }}.jpg');">
+                                {% with 'images/course-'|add:forloop.counter|add:'.jpg' as image_path %}
+                                <div class="course-img-header" style="background-image: url('{% static image_path %}');">
                                     <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
                                 </div>
+                                {% endwith %}
                                 <div class="premium-card-body">
                                     <h3 class="fw-bold">{{ course.title }}</h3>
                                     <p class="text-muted mb-3">{{ course.description|truncatewords:18 }}</p>
