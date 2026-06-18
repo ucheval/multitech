@@ -109,7 +109,7 @@
                     <div class="col">
                         <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit; display: block; height: 100%;">
                             <div class="premium-card-wrapper">
-                                <div class="course-img-header"style="background-image: url('{% if 'python' in course.title.lower % Rose%https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=600&auto=format&fit=crop{% elif 'data' in course.title.lower or 'ai' in course.title.lower %}https://images.unsplash.com/photo-1527474305487-b87b222841cc?q=80&w=600&auto=format&fit=crop{% elif 'web' in course.title.lower or 'javascript' in course.title.lower or 'react' in course.title.lower %}https://images.unsplash.com/photo-1547658719-da2b81166b58?q=80&w=600&auto=format&fit=crop{% else %}https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop{% endif %}');">
+                                <div class="course-img-header" style="background-image: url('{% static 'images/course-placeholder.jpg' %}');">
                                     <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
                                 </div>
                                 <div class="premium-card-body">
