@@ -4,11 +4,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to MultiTechSpace</title>
+    <title>Techinovaedu | Digital Skills & Technical Training</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    
+    <style>
+        :root {
+            --premium-dark: #0f172a;
+            --premium-gray-bg: #f8fafc;
+            --premium-card-border: #e2e8f0;
+            --accent-gold: #fbbf24;
+        }
+        
+        body {
+            background-color: var(--premium-gray-bg);
+        }
+
+        /* Fixed Mobile Navbar Adjustments */
+        .navbar {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Course Cards Styling Inspired by One Million Coders */
+        .courses-grid-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .premium-card-wrapper {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid var(--premium-card-border);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .premium-card-wrapper:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .course-img-header {
+            height: 190px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .track-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(30, 64, 175, 0.9);
+            color: #ffffff;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .premium-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .premium-card-body h3 {
+            font-size: 1.25rem;
+            color: var(--premium-dark);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .premium-card-body p {
+            font-size: 0.925rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .premium-meta-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--premium-card-border);
+        }
+
+        .meta-pill {
+            background: #f1f5f9;
+            color: #334155;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Section Specific Theming Layouts */
+        .features {
+            background-color: #ffffff !important;
+            border-top: 1px solid var(--premium-card-border);
+            border-bottom: 1px solid var(--premium-card-border);
+        }
+
+        .portfolios {
+            background-color: #f1f5f9 !important;
+        }
+
+        .testimonials {
+            background-color: var(--premium-dark) !important;
+            color: #ffffff;
+        }
+
+        .testimonials h2 {
+            color: #ffffff !important;
+        }
+
+        /* Fix Mobile View Breaking on Heading Scales */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.1rem !important;
+                line-height: 1.3 !important;
+            }
+            .navbar-nav {
+                background: #1e40af;
+                padding: 1rem;
+                border-radius: 8px;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--primary-gradient) !important;
@@ -21,9 +160,8 @@
     top: 0;">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'course_list' %}">
-                <img src="data:image/png;base64,{{ logo_base64 }}" alt="MultiTechSpace Logo" style="height: 40px;">
-                Multi
-                <span>TechSpace</span>
+                <img src="data:image/png;base64,{{ logo_base64 }}" alt="Techinovaedu Logo" style="height: 40px;">
+                Techinovaedu
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -49,6 +187,7 @@
             </div>
         </div>
     </nav>
+
     <section class="hero">
         <div class="floating-shapes">
             <div class="shape"></div>
@@ -58,8 +197,8 @@
             <div class="shape"></div>
         </div>
         <div class="hero-content mt-4">
-            <h1 class="animation-fade-in ">Learn, Connect, and Grow with MultiTechSpace</h1>
-            <p>Master cutting-edge technologies with expert-led courses and a vibrant community.</p>
+            <h1 class="animation-fade-in">Learn, Connect, and Grow with Techinovaedu</h1>
+            <p>Master cutting-edge technologies with expert-led courses and a vibrant global developer community.</p>
             <div class="language-icons">
                 <div class="language-icon"><i class="fab fa-python"></i></div>
                 <div class="language-icon"><i class="fab fa-js"></i></div>
@@ -90,142 +229,118 @@
             </div>
         </div>
     </section>
-    <section class="features">
+
+    <section class="features" id="why-us">
         <div class="section-title">
-            <h2>Why Choose MultiTechSpace?</h2>
+            <h2>Why Choose Techinovaedu?</h2>
         </div>
-        <div class="container">
-            <div class="row">
+        <div class="container py-4">
+            <div class="row g-4 row-cols-1 row-cols-md-3">
                 <div class="col">
                     <div class="feature-card">
                         <div class="feature-icon">📚</div>
                         <h3>Expert-Led Courses</h3>
-                        <p>Learn from industry professionals in AI, web development, and more.</p>
+                        <p>Learn from industry professionals in AI, software testing, cloud architecture, and fullstack frameworks.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="feature-card">
                         <div class="feature-icon">🌐</div>
                         <h3>Community Learning</h3>
-                        <p>Connect with peers and facilitators through messaging and live sessions.</p>
+                        <p>Connect with industry peers and technical facilitators through direct messaging and peer workshops.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="feature-card">
                         <div class="feature-icon">🎥</div>
                         <h3>Flexible Access</h3>
-                        <p>Watch live sessions or recaps at your convenience.</p>
+                        <p>Watch standard live programming labs or clean video recaps at your convenience anywhere.</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
                 <div class="col">
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
+                        <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
                         <h3>All Programming Languages</h3>
-                        <p>Learn any language you want, from Python and JavaScript to C++, Java, Ruby, and more.</p>
+                        <p>Learn any environment you need, from foundational Python and JavaScript to production C++, Java, and Ruby.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <h3>Expert Instructors</h3>
-                        <p>Learn from industry veterans with years of real-world experience in software development.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-project-diagram"></i>
-                        </div>
+                        <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
                         <h3>Project-Based Learning</h3>
-                        <p>Build real projects that you can add to your portfolio and showcase to employers.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3>Learn at Your Own Pace</h3>
-                        <p>Access course materials 24/7 and progress through lessons on your own schedule.</p>
+                        <p>Build enterprise architecture applications that you can add directly to your technical portfolio.</p>
                     </div>
                 </div>
                 <div class="col">
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3>Community Support</h3>
-                        <p>Join our vibrant community of learners and instructors for help and collaboration.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <h3>Industry Recognized Certificates</h3>
-                        <p>Earn certificates that showcase your skills and knowledge to potential employers.</p>
+                        <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+                        <h3>Verified Certificates</h3>
+                        <p>Earn signed credentials and industry-recognized verification certificates to advance your employment profile.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="courses">
+
+<!-- Popular Courses Premium Matrix Grid -->
+    <section class="courses" id="courses">
         <div class="section-title">
-            <h2>Popular Courses</h2>
+            <h2>Popular Training Programs</h2>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="courses-grid-enhanced">
                 {% for course in courses|slice:":3" %}
-                    <div class="col">
-                        <div class="course-card">
-                            <div class="course-img" style="background-image: url('{% static 'images/course-placeholder.jpg' %}');"></div>
-                            <div class="course-content">
-                                <h3>{{ course.title }}</h3>
-                                <p>{{ course.description|truncatewords:20 }}</p>
-                                <div class="course-meta">
-                                    <span>{{ course.duration }} hours</span>
-                                    <span>{{ course.level }}</span>
+                    <!-- Dynamic Dynamic Link wrapper linking straight to course detail parameters -->
+                    <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit;">
+                        <div class="premium-card-wrapper">
+                            <div class="course-img-header" style="background-image: url('{% static 'images/course-placeholder.jpg' %}');">
+                                <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
+                            </div>
+                            <div class="premium-card-body">
+                                <h3 class="fw-bold">{{ course.title }}</h3>
+                                <p class="text-muted mb-3">{{ course.description|truncatewords:18 }}</p>
+                                <div class="premium-meta-tags">
+                                    <span class="meta-pill"><i class="far fa-clock"></i> {{ course.duration }} hours</span>
+                                    <span class="meta-pill" style="background-color: rgba(59, 130, 246, 0.1); color: #2563eb;">
+                                        <i class="fas fa-arrow-right"></i> Learn More
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 {% empty %}
-                    <p>No courses available yet.</p>
+                    <div class="w-100 text-center py-5">
+                        <div class="text-muted mb-2"><i class="fas fa-graduation-cap fa-2x"></i></div>
+                        <p class="text-muted">No specific training paths configured yet.</p>
+                    </div>
                 {% endfor %}
             </div>
         </div>
     </section>
+
     <section class="portfolios">
         <div class="section-title">
             <h2>Featured Student Portfolios</h2>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row g-4 row-cols-1 row-cols-md-3">
                 {% for portfolio in featured_portfolios|slice:":3" %}
                     <div class="col">
-                        <div class="feature-card">
-                            <h3>{{ portfolio.name }}</h3>
-                            <p>{{ portfolio.bio|truncatewords:20 }}</p>
-                            <a href="{% url 'portfolio_view' portfolio.user.username %}" class="custom-btn-primary">View Portfolio</a>
+                        <div class="feature-card h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="fw-bold mb-2"><i class="far fa-user-circle me-2"></i>{{ portfolio.name }}</h3>
+                                <p class="text-secondary">{{ portfolio.bio|truncatewords:20 }}</p>
+                            </div>
+                            <a href="{% url 'portfolio_view' portfolio.user.username %}" class="custom-btn-primary mt-3 w-100 text-center">View Profile</a>
                         </div>
                     </div>
                 {% empty %}
-                    <p>No featured portfolios yet.</p>
+                    <p class="text-muted text-center w-100">No featured developer portfolios available yet.</p>
                 {% endfor %}
             </div>
         </div>
     </section>
+
     <section class="testimonials">
         <div class="section-title">
             <h2>What Our Students Say</h2>
@@ -235,7 +350,7 @@
                 <div class="carousel-item">
                     <div class="testimonial-card">
                         <div class="testimonial-img" style="background-image: url('{% static 'images/testimonial1.jpg' %}');"></div>
-                        <p class="testimonial-text">"MultiTechSpace transformed my career with practical, hands-on courses."</p>
+                        <p class="testimonial-text">"Techinovaedu completely accelerated my career transition into tech with real hands-on portfolio milestones."</p>
                         <h3 class="testimonial-author">Jane Doe</h3>
                         <p class="testimonial-role">Web Developer</p>
                     </div>
@@ -243,9 +358,9 @@
                 <div class="carousel-item">
                     <div class="testimonial-card">
                         <div class="testimonial-img" style="background-image: url('{% static 'images/testimonial2.jpg' %}');"></div>
-                        <p class="testimonial-text">"The community and live sessions made learning engaging."</p>
+                        <p class="testimonial-text">"The real-time workspace access and platform structure made tracking complex features easy."</p>
                         <h3 class="testimonial-author">John Smith</h3>
-                        <p class="testimonial-role">AI Enthusiast</p>
+                        <p class="testimonial-role">AI Consultant</p>
                     </div>
                 </div>
             </div>
@@ -259,16 +374,18 @@
             </div>
         </div>
     </section>
+
     <section class="cta">
-        <h2>Join MultiTechSpace Today</h2>
-        <p>Start your tech journey with a community that supports your growth.</p>
+        <h2>Join Techinovaedu Today</h2>
+        <p>Kickstart your technology journey alongside thousands of active digital builders worldwide.</p>
         <a href="{% url 'register' %}" class="custom-btn-primary">Sign Up Now</a>
     </section>
+
     <footer>
         <div class="footer-links">
             <a href="{% url 'landing' %}">Home</a>
             <a href="{% url 'course_list' %}">Courses</a>
-            <a href="{% url 'inbox' %}">Contact</a>
+            <a href="{% url 'inbox' %}">Contact Hub</a>
         </div>
         <div class="social-icons">
             <a href="#"><i class="fab fa-facebook"></i></a>
@@ -277,8 +394,9 @@
             <a href="#"><i class="fab fa-linkedin"></i></a>
             <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
-        <p class="copyright">© 2025 MultiTechSpace. All rights reserved.</p>
+        <p class="copyright">© 2026 Techinovaedu. All rights reserved.</p>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -290,21 +408,25 @@
             let currentIndex = 0;
 
             function updateCarousel() {
-                carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
-                indicators.forEach((indicator, i) => {
-                    indicator.classList.toggle('active', i === currentIndex);
-                });
+                if (carouselInner) {
+                    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    indicators.forEach((indicator, i) => {
+                        indicator.classList.toggle('active', i === currentIndex);
+                    });
+                }
             }
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + items.length) % items.length;
-                updateCarousel();
-            });
+            if (prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                    updateCarousel();
+                });
 
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % items.length;
-                updateCarousel();
-            });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    updateCarousel();
+                });
+            }
 
             indicators.forEach((indicator, i) => {
                 indicator.addEventListener('click', () => {
@@ -314,14 +436,18 @@
             });
 
             setInterval(() => {
-                currentIndex = (currentIndex + 1) % items.length;
-                updateCarousel();
+                if (items.length > 0) {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    updateCarousel();
+                }
             }, 5000);
 
             function animateCountNumbers() {
                 const countSection = document.querySelector('.count-container');
                 const countNumbers = document.querySelectorAll('.count-number');
                 let hasAnimated = false;
+
+                if (!countSection) return;
 
                 function isInViewport(element) {
                     const rect = element.getBoundingClientRect();
@@ -375,6 +501,7 @@
 
             window.addEventListener('scroll', function () {
                 const navbar = document.querySelector('.navbar');
+                if (!navbar) return;
                 if (window.scrollY > 50) {
                     navbar.style.padding = '0.5rem 2rem';
                     navbar.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
@@ -384,59 +511,9 @@
                 }
             });
 
-            const mobileMenuButton = document.createElement('button');
-            mobileMenuButton.classList.add('mobile-menu-button');
-            mobileMenuButton.innerHTML = '<i class="fas fa-bars"></i>';
-            document.querySelector('.navbar').appendChild(mobileMenuButton);
-
-            mobileMenuButton.addEventListener('click', function () {
-                const navbarNav = document.querySelector('.navbar-nav');
-                navbarNav.classList.toggle('show');
-            });
-
-            const style = document.createElement('style');
-            style.textContent = `
-                .mobile-menu-button {
-                    display: none;
-                    background: none;
-                    border: none;
-                    color: white;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    margin-left: auto;
-                }
-
-                @media (max-width: 768px) {
-                    .mobile-menu-button {
-                        display: block;
-                    }
-
-                    .navbar-nav {
-                        position: absolute;
-                        top: 100%;
-                        left: 0;
-                        right: 0;
-                        background: var(--primary);
-                        flex-direction: column;
-                        align-items: center;
-                        padding: 1rem 0;
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                        display: none;
-                    }
-
-                    .navbar-nav.show {
-                        display: flex;
-                    }
-
-                    .nav-item {
-                        margin: 0.5rem 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-
+            // Intersection Observer Style Animations
             const animateOnScroll = function () {
-                const elements = document.querySelectorAll('.feature-card, .course-card, .testimonial-card, .count-item');
+                const elements = document.querySelectorAll('.feature-card, .premium-card-wrapper, .testimonial-card, .count-item');
                 elements.forEach(element => {
                     const elementPosition = element.getBoundingClientRect().top;
                     const windowHeight = window.innerHeight;
@@ -448,7 +525,7 @@
                 });
             };
 
-            const elementsToAnimate = document.querySelectorAll('.feature-card, .course-card, .testimonial-card, .count-item');
+            const elementsToAnimate = document.querySelectorAll('.feature-card, .premium-card-wrapper, .testimonial-card, .count-item');
             elementsToAnimate.forEach(element => {
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(20px)';
