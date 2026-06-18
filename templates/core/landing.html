@@ -109,7 +109,7 @@
                     <div class="col">
                         <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit; display: block; height: 100%;">
                             <div class="premium-card-wrapper">
-                                <div class="course-img-header" style="background-image: url('{% static 'images/course-placeholder.jpg' %}');">
+                                <div class="course-img-header" style="background-image: url('{% static 'images/course-' %}{{ forloop.counter }}.jpg');">
                                     <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
                                 </div>
                                 <div class="premium-card-body">
