@@ -233,13 +233,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted:hover {
 /* ==========================================================================
    4. PREMIUM COURSE PATHWAYS 
    ========================================================================== */
-.courses-grid-enhanced {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-    padding: 1rem 0;
-}
-
+/* Update this block inside Section 4 of landing.css */
 .premium-card-wrapper {
     background: #ffffff;
     border-radius: 20px;
@@ -250,6 +244,16 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
+    flex-grow: 1; /* Added to enforce equal height flex filling */
+}
+
+/* Update or add fallback restriction to the custom enhanced grid rule */
+.courses-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-columns: max-content;
+    gap: 2.5rem;
+    padding: 1rem 0;
 }
 
 .premium-card-wrapper:hover {
