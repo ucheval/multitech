@@ -102,6 +102,7 @@
     <!-- Popular Courses Section -->
 
 
+<!-- Popular Courses Section -->
 <section class="courses" id="courses">
     <div class="section-title">  
         <h2>Popular Training Programs</h2>  
@@ -113,10 +114,12 @@
                 <div class="col">
                     <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit; display: block; height: 100%;">
                         <div class="premium-card-wrapper">
-                            {# Using a hardcoded static check to avoid manifest errors #}
-                            <div class="course-img-header" style="background-image: url('{% static 'images/course-'|add:forloop.counter|add:'.jpg' %}');">
+                            {# Manually build the URL string to satisfy the static manifest #}
+                            {% with 'images/course-'|add:forloop.counter|add:'.jpg' as img_url %}
+                            <div class="course-img-header" style="background-image: url('{% get_static_prefix %}{{ img_url }}');">
                                 <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
                             </div>
+                            {% endwith %}
                             <div class="premium-card-body">
                                 <h3 class="fw-bold">{{ course.title }}</h3>
                                 <p class="text-muted mb-3">{{ course.description|truncatewords:18 }}</p>
@@ -138,7 +141,6 @@
         </div>
     </div>
 </section>
-
     <!-- Value Propositions (Features) -->
     <section class="features" id="why-us">
         <div class="section-title">
