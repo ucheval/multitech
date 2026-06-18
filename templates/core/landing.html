@@ -22,8 +22,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'course_list' %}">
                 <img src="data:image/png;base64,{{ logo_base64 }}" alt="Techinovaedu Logo" style="height: 40px;">
-                Tech
-                <span>inovaedu</span>
+                Tech<span>inovaedu</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -92,67 +91,14 @@
         </div>
     </section>
 
-    <section class="features" id="why-us">
-        <div class="section-title">
-            <h2>Why Choose Techinovaedu?</h2>
-        </div>
-        <div class="container py-4">
-            <div class="row g-4 row-cols-1 row-cols-md-3">
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">📚</div>
-                        <h3>Expert-Led Courses</h3>
-                        <p>Learn from industry professionals in AI, software testing, cloud architecture, and fullstack frameworks.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">🌐</div>
-                        <h3>Community Learning</h3>
-                        <p>Connect with industry peers and technical facilitators through direct messaging and peer workshops.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon">🎥</div>
-                        <h3>Flexible Access</h3>
-                        <p>Watch standard live programming labs or clean video recaps at your convenience anywhere.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
-                        <h3>All Programming Languages</h3>
-                        <p>Learn any environment you need, from foundational Python and JavaScript to production C++, Java, and Ruby.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
-                        <h3>Project-Based Learning</h3>
-                        <p>Build enterprise architecture applications that you can add directly to your technical portfolio.</p>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-certificate"></i></div>
-                        <h3>Verified Certificates</h3>
-                        <p>Earn signed credentials and industry-recognized verification certificates to advance your employment profile.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<!-- Popular Courses Premium Matrix Grid -->
     <section class="courses" id="courses">
         <div class="section-title">
             <h2>Popular Training Programs</h2>
+            <p>Accelerate your career track with verified, elite engineering credentials.</p>
         </div>
         <div class="container">
             <div class="courses-grid-enhanced">
                 {% for course in courses|slice:":3" %}
-                    <!-- Dynamic Dynamic Link wrapper linking straight to course detail parameters -->
                     <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit;">
                         <div class="premium-card-wrapper">
                             <div class="course-img-header" style="background-image: url('{% static 'images/course-placeholder.jpg' %}');">
@@ -163,8 +109,8 @@
                                 <p class="text-muted mb-3">{{ course.description|truncatewords:18 }}</p>
                                 <div class="premium-meta-tags">
                                     <span class="meta-pill"><i class="far fa-clock"></i> {{ course.duration }} hours</span>
-                                    <span class="meta-pill" style="background-color: rgba(59, 130, 246, 0.1); color: #2563eb;">
-                                        <i class="fas fa-arrow-right"></i> Learn More
+                                    <span class="meta-pill" style="background-color: rgba(59, 130, 246, 0.1); color: #2563eb; font-weight:700;">
+                                        Learn More <i class="fas fa-arrow-right ms-1"></i>
                                     </span>
                                 </div>
                             </div>
@@ -180,9 +126,63 @@
         </div>
     </section>
 
+    <section class="features" id="why-us">
+        <div class="section-title">
+            <h2>Why Choose Techinovaedu?</h2>
+            <p>Engineered for conversion. Designed for global production developers.</p>
+        </div>
+        <div class="container">
+            <div class="row g-4 row-cols-1 row-cols-md-3">
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">📚</div>
+                        <h3>Expert-Led Courses</h3>
+                        <p>Learn from industry professionals deploying production-scale AI frameworks, secure cloud architecture clusters, and robust automation test suites globally.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">🌐</div>
+                        <h3>Community Learning</h3>
+                        <p>Connect instantly with thousands of peers. Exchange architectural feedback, audit git logs, and discover workspace opportunities within active peer groups.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">🎥</div>
+                        <h3>Flexible Access</h3>
+                        <p>Access pristine high-definition video lecture recaps, standard engineering sandboxes, and virtual interactive code laboratories synchronously at any hour.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper"><i class="fas fa-laptop-code"></i></div>
+                        <h3>All Environments</h3>
+                        <p>Master any software ecosystem you require. We offer structured modules tracking everything from foundational Python and JS to compiled enterprise patterns like Java and C++.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper"><i class="fas fa-project-diagram"></i></div>
+                        <h3>Project-Based Core</h3>
+                        <p>Move past trivial syntax tutorials. Complete full-stack deployments, service-mesh tasks, and application builds that stand out directly to global engineering tech leads.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper"><i class="fas fa-certificate"></i></div>
+                        <h3>Verified Credentials</h3>
+                        <p>Receive signed, verifiable cryptographic completion certificates linked straight to your professional profiles to boost your recruitment discoverability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="portfolios">
         <div class="section-title">
             <h2>Featured Student Portfolios</h2>
+            <p>Inspect production applications constructed live by our active alumni ecosystem.</p>
         </div>
         <div class="container">
             <div class="row g-4 row-cols-1 row-cols-md-3">
@@ -240,7 +240,7 @@
     <section class="cta">
         <h2>Join Techinovaedu Today</h2>
         <p>Kickstart your technology journey alongside thousands of active digital builders worldwide.</p>
-        <a href="{% url 'register' %}" class="custom-btn-primary">Sign Up Now</a>
+        <a href="{% url 'register' %}" class="custom-btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 30px;">Sign Up Now</a>
     </section>
 
     <footer>
@@ -373,7 +373,7 @@
                 }
             });
 
-            // Intersection Observer Style Animations
+            // Intersection Observer Animation Setup
             const animateOnScroll = function () {
                 const elements = document.querySelectorAll('.feature-card, .premium-card-wrapper, .testimonial-card, .count-item');
                 elements.forEach(element => {
