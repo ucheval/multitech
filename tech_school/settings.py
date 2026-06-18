@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security settings
 SECRET_KEY = 'django-insecure-0#b5q2k7z!x2j#v^9#v@5k!q#h!v#z#v#z#v#z#v#z#v#z#v'  # Change in production
 DEBUG = False  # Set to False in production
-ALLOWED_HOSTS = ['techinovaedu.com', 'www.techinovaedu.com', 'tech-school.onrender.com', '127.0.0.1', 'localhost']  # Add domain in production
+ALLOWED_HOSTS = ['techinovaedu.com', 'www.techinovaedu.com', 'tech-school.onrender.com', 'tech-school-w1s2.onrender.com', '127.0.0.1', 'localhost']  # Add domain in production
 CSRF_TRUSTED_ORIGINS = ['https://techinovaedu.com', 'https://www.techinovaedu.com', 'https://tech-school.onrender.com']  # Update in production
 
 # Session security

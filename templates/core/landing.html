@@ -102,22 +102,21 @@
     <!-- Popular Courses Section -->
 
 
-    <section class="courses" id="courses">
-        <div class="section-title">  
-            <h2>Popular Training Programs</h2>  
-            <p>Accelerate your career track with verified, elite engineering credentials.</p>
-        </div>
-        <div class="container">    
-            <div class="row g-4 row-cols-1 row-cols-md-3 justify-content-center">
+<section class="courses" id="courses">
+    <div class="section-title">  
+        <h2>Popular Training Programs</h2>  
+        <p>Accelerate your career track with verified, elite engineering credentials.</p>
+    </div>
+    <div class="container">    
+        <div class="row g-4 row-cols-1 row-cols-md-3 justify-content-center">
             {% for course in courses|slice:":6" %}
                 <div class="col">
                     <a href="{% url 'course_detail' course.id %}" class="text-decoration-none" style="color: inherit; display: block; height: 100%;">
                         <div class="premium-card-wrapper">
-                            {% with 'images/course-'|add:forloop.counter|add:'.jpg' as img_name %}
-                            <div class="course-img-header" style="background-image: url('{% static img_name %}');">
+                            {# Using a hardcoded static check to avoid manifest errors #}
+                            <div class="course-img-header" style="background-image: url('{% static 'images/course-'|add:forloop.counter|add:'.jpg' %}');">
                                 <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
                             </div>
-                            {% endwith %}
                             <div class="premium-card-body">
                                 <h3 class="fw-bold">{{ course.title }}</h3>
                                 <p class="text-muted mb-3">{{ course.description|truncatewords:18 }}</p>
@@ -133,13 +132,11 @@
                 </div>
             {% empty %}
                 <div class="w-100 text-center py-5">
-                    <div class="text-muted mb-2"><i class="fas fa-graduation-cap fa-2x"></i></div>
                     <p class="text-muted">No specific training paths configured yet.</p>
                 </div>
             {% endfor %}
         </div>
     </div>
-
 </section>
 
     <!-- Value Propositions (Features) -->
