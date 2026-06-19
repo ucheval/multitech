@@ -48,7 +48,7 @@ body {
 .hero {
   min-height: calc(100vh);
   padding-top: 5rem; /* Matches your header height */
-  padding-bottom: 0;
+  padding-bottom: 1rem;
   background: radial-gradient(circle at top right, #1e3a8a 0%, #0f172a 100%);
   color: white;
   text-align: center;
@@ -826,3 +826,4 @@ footer {
     padding: 2rem 1rem;
   }
 }
+
