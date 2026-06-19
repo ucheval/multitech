@@ -928,6 +928,8 @@ def join_session(request, session_id):
     return redirect(session.zoom_url)
 def landing(request):
     courses = Course.objects.all()
+    for i, course in enumerate(courses):
+        course.image_path = f'images/course-{(i % 6) + 1}.jpg'
     featured_portfolios = Portfolio.objects.filter(is_public=True, is_featured=True)
     return render(request, 'core/landing.html', {'courses': courses, 'featured_portfolios': featured_portfolios, 'logo_base64': settings.LOGO_BASE64})
 

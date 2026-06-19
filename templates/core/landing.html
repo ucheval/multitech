@@ -116,9 +116,9 @@
                         <div class="premium-card-wrapper">
                             {# Manually build the URL string to satisfy the static manifest #}
                             {% with 'images/course-'|add:forloop.counter|add:'.jpg' as img_url %}
-                            <div class="course-img-header" style="background-image: url('{% get_static_prefix %}{{ img_url }}');">
-                                <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
-                            </div>
+                           <div class="course-img-header" style="background-image: url('{% static course.image_path %}');">
+                            <span class="track-badge">{{ course.level|default:"Tech Track" }}</span>
+                        </div>
                             {% endwith %}
                             <div class="premium-card-body">
                                 <h3 class="fw-bold">{{ course.title }}</h3>
