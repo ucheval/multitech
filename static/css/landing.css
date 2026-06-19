@@ -684,7 +684,8 @@ footer {
 @media (max-width: 768px) {
     .hero {
        padding-top: 4rem !important; 
-        padding-bottom: 2rem !important;
+       font-family: 'Times New Roman', Times, serif !important;
+        padding-bottom: 1rem !important;
     }
     
     .hero h1 {
