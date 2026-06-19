@@ -77,7 +77,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tech_school.wsgi.application'
 
 # Database
-DATABASES = {
+DATABASES ={ {
     'default':  dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
 }
