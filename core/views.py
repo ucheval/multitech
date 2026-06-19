@@ -21,7 +21,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 import logging
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
 
