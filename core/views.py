@@ -1159,6 +1159,8 @@ def join_session(request, session_id):
         message=f"{request.user.username} joined your session '{session.title}'."
     )
     return redirect(session.zoom_url)
+
+@login_required
 def recap_session(request):
     recaps = SessionRecap.objects.all()
     return render(request, 'core/recap_session.html', {'recaps': recaps, 'logo_base64': settings.LOGO_BASE64})
@@ -1803,7 +1805,9 @@ def create_discussion_post(request, cohort_id):
             messages.error(request, 'Please provide both title and content.')
     else:
         form = DiscussionPostForm()
-    return render(request, 'core/create_discussion', {'form': form, 'cohort': cohort, 'logo_base64': settings.LOGO_BASE64})@login_required
+    return render(request, 'core/create_discussion', {'form': form, 'cohort': cohort, 'logo_base64': settings.LOGO_BASE64})
+
+@login_required
 def add_discussion_comment(request, post_id):
     post = get_object_or_404(DiscussionPost, id=post_id)
     if request.method == 'POST':
