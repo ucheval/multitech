@@ -46,13 +46,19 @@ body {
    2. STYLISH SECTION ALTERNATION & VISUAL RHYTHM
    ========================================================================== */
 .hero {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    min-height: calc(100vh - 32px); 
+    padding-top: 2rem; /* Matches your header height */
+    padding-bottom: 0;
     background: radial-gradient(circle at top right, #1e3a8a 0%, #0f172a 100%);
     color: white;
     text-align: center;
     position: relative;
     overflow: hidden;
+
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
 }
 
 /* Section 1: Soft Ice-Blue Gradient Backing for Courses */
@@ -176,7 +182,7 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted:hover {
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
     z-index: 2;
     position: relative;
 }
@@ -518,9 +524,10 @@ nav.navbar-dark .navbar-nav .nav-link.highlighted:hover {
 .count-container {
     display: flex;
     justify-content: space-around;
-    margin: 4rem 0 1rem 0;
+    margin: 2rem 0 0 0; /* Reduced top margin to keep it visible */
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
+    width: 100%;
 }
 
 .count-item {
@@ -683,9 +690,9 @@ footer {
 
 @media (max-width: 768px) {
     .hero {
-       padding-top: 4rem !important; 
-       font-family: 'Times New Roman', Times, serif !important;
-        padding-bottom: 1rem !important;
+       min-height: auto; /* Allow natural height on very small screens */
+       padding-top: 4rem;
+       padding-bottom: 2rem;
     }
     
     .hero h1 {

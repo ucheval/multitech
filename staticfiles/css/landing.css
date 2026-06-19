@@ -55,10 +55,10 @@ body {
     position: relative;
     overflow: hidden;
 
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 /* Section 1: Soft Ice-Blue Gradient Backing for Courses */
@@ -690,10 +690,9 @@ footer {
 
 @media (max-width: 768px) {
     .hero {
-       padding-top: 4rem !important; 
-       font-family: 'Times New Roman', Times, serif !important;
-       padding-bottom: 2rem !important;
        min-height: auto; /* Allow natural height on very small screens */
+       padding-top: 4rem;
+       padding-bottom: 2rem;
     }
     
     .hero h1 {
