@@ -21,6 +21,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 import logging
+from ratelimit.decorators import ratelimit
 from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
 
@@ -153,6 +154,7 @@ def register(request):
         form = CustomRegistrationForm()
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 
+@ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
     next_url = request.GET.get('next', None)
     if request.user.is_authenticated:

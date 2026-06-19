@@ -4,12 +4,16 @@ Django settings for tech_school project.
 from pathlib import Path
 import base64
 import os
+import dj_database_url
+from dotenv import load_dotenv
 
+# Load the .env file
+load_dotenv()
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security settings
-SECRET_KEY = 'django-insecure-0#b5q2k7z!x2j#v^9#v@5k!q#h!v#z#v#z#v#z#v#z#v#z#v'  # Change in production
+SECRET_KEY = os.environ.get('SECRET_KEY', 'a-very-long-fallback-key-only-for-local-dev')
 DEBUG = False  # Set to False in production
 ALLOWED_HOSTS = ['techinovaedu.com', 'www.techinovaedu.com', 'tech-school.onrender.com', 'tech-school-w1s2.onrender.com', '127.0.0.1', 'localhost']  # Add domain in production
 CSRF_TRUSTED_ORIGINS = ['https://techinovaedu.com', 'https://www.techinovaedu.com', 'https://tech-school.onrender.com']  # Update in production
@@ -33,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_otp',
     'django_otp.plugins.otp_totp',
+    'two_factor',
     'phonenumber_field',
     'core',
 ]
@@ -73,9 +78,7 @@ WSGI_APPLICATION = 'tech_school.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default':  dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
 }
 
@@ -119,7 +122,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'updatevlogandpress@gmail.com'
-EMAIL_HOST_PASSWORD = 'uefz bqof ekna xtsf'  # Consider environment variables in production
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'MultiTechSpace <updatevlogandpress@gmail.com>'
 
 # Authentication settings
