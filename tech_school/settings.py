@@ -77,9 +77,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tech_school.wsgi.application'
 
 # Database
-DATABASES ={ {
-    'default':  dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-    }
+# Change your DATABASES block to this:
+# Change your DATABASES block to this:
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
 
 # Password validation
