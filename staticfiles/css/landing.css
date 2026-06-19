@@ -46,7 +46,7 @@ body {
    2. STYLISH SECTION ALTERNATION & VISUAL RHYTHM
    ========================================================================== */
 .hero {
-    min-height: calc(100vh - 32px); 
+    min-height: calc(100vh); 
     padding-top: 2rem; /* Matches your header height */
     padding-bottom: 0;
     background: radial-gradient(circle at top right, #1e3a8a 0%, #0f172a 100%);
