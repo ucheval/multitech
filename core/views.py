@@ -84,6 +84,46 @@ def user_login(request):
     else:
         form = AuthenticationForm()
     return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
+def create_profile(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    
+    if hasattr(request.user, 'profile'):
+        logger.info(f"User {request.user.username} already has a profile, redirecting to student_dashboard")
+        return redirect('student_dashboard')
+    
+    if request.method == 'POST':
+        form = CustomRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                profile = Profile.objects.create(
+                    user=request.user,
+                    user_type=form.cleaned_data['user_type'],
+                    profile_picture=form.cleaned_data['profile_picture'],
+                    mobile_number=form.cleaned_data.get('mobile_number', ''),
+                    country=form.cleaned_data['country'],
+                    onboarding_quiz_completed=False if form.cleaned_data['user_type'] == 'student' else True,
+                    facilitator_profile_completed=False if form.cleaned_data['user_type'] == 'facilitator' else True
+                )
+                logger.info(f"Created profile for {request.user.username} with passcode {profile.student_passcode}")
+                messages.success(request, 'Profile created successfully.')
+                AuditLog.objects.create(
+                    user=request.user,
+                    action='Profile Created',
+                    details=f"User {request.user.username} created profile as {form.cleaned_data['user_type']}"
+                )
+                if form.cleaned_data['user_type'] == 'student' and not form.cleaned_data['course']:
+                    return redirect('onboarding_quiz')
+                return redirect('student_dashboard')
+            except Exception as e:
+                logger.error(f"Failed to create profile for {request.user.username}: {str(e)}")
+                messages.error(request, 'An error occurred. Please try again or contact support.')
+        else:
+            logger.warning(f"Profile creation failed: {form.errors}")
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = CustomRegistrationForm()
+    return render(request, 'core/create_profile.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 def user_logout(request):
     logout(request)
     return redirect('landing')
