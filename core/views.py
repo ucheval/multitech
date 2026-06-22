@@ -3,29 +3,22 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from django_otp.decorators import otp_required
-from django_otp.plugins.otp_totp.models import TOTPDevice
-from django_otp import devices_for_user
-from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
-from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm
-from django.utils import timezone
-from django.db.models import Count, Sum, Avg
-from django.utils.html import escape
-import qrcode
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
-from io import BytesIO
-import base64
-from django.http import JsonResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-import logging
+from django.utils import timezone
+from django.utils.html import escape
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 from django_ratelimit.decorators import ratelimit
-from phonenumbers import parse, is_valid_number, NumberParseException
-from decimal import Decimal, InvalidOperation
+import logging
+
+from .models import Course, PaymentSlip, LiveSession, Cohort, AuditLog, Portfolio, Notification, FacilitatorApplication, Profile, CourseEnrollment, PerformanceRecord, Assignment, Project, SessionAttendance
+from .forms import CustomRegistrationForm, CourseChangeForm
 
 logger = logging.getLogger(__name__)
+
+# --- AUTHENTICATION VIEWS ---
 
 def register(request):
     if request.method == 'POST':
@@ -33,246 +26,53 @@ def register(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists. Please choose a different one.')
+                messages.error(request, 'Username already exists.')
                 return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
             
             user = form.save()
             user.email = form.cleaned_data['email']
             user.save()
-            logger.info(f"User {user.username} registered successfully with user_type: {form.cleaned_data['user_type']}, course: {form.cleaned_data['course'].title if form.cleaned_data['course'] else 'None'}")
             
-            if Profile.objects.filter(user=user).exists():
-                messages.error(request, 'A profile already exists for this user. Please contact support.')
-                return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-            
-            try:
-                profile = Profile.objects.create(
-                    user=user,
-                    user_type=form.cleaned_data['user_type'],
-                    profile_picture=form.cleaned_data['profile_picture'],
-                    mobile_number=form.cleaned_data.get('mobile_number', ''),
-                    country=form.cleaned_data['country'],
-                    onboarding_quiz_completed=False if form.cleaned_data['user_type'] == 'student' else True,
-                    facilitator_profile_completed=False if form.cleaned_data['user_type'] == 'facilitator' else True
-                )
-                logger.info(f"Generated passcode {profile.student_passcode} for student {user.username}")
-            except Exception as e:
-                logger.error(f"Failed to create profile for {user.username}: {str(e)}")
-                user.delete()
-                messages.error(request, 'An error occurred during registration. Please try again or contact support.')
-                return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-            
-            course = form.cleaned_data['course']
-            if form.cleaned_data['user_type'] == 'facilitator' and course:
-                FacilitatorApplication.objects.create(
-                    user=user,
-                    course=course,
-                    status='pending'
-                )
-                logger.info(f"FacilitatorApplication created for {user.username} for course {course.title}")
-                Notification.objects.create(
-                    user=user,
-                    type='courses',
-                    message=f'Your application to facilitate {course.title} has been submitted and is pending admin approval.'
-                )
-            elif form.cleaned_data['user_type'] == 'student' and course:
-                front_end_keywords = ['HTML', 'CSS', 'JavaScript', 'React', 'Frontend', 'Front-end', 'Web Development', 'UI', 'UX']
-                back_end_keywords = ['Python', 'Django', 'Node', 'Backend', 'Back-end', 'Database', 'API']
-                course_title_lower = course.title.lower()
-                if any(keyword.lower() in course_title_lower for keyword in front_end_keywords):
-                    cohort_type = 'Front-end'
-                elif any(keyword.lower() in course_title_lower for keyword in back_end_keywords):
-                    cohort_type = 'Back-end'
-                else:
-                    cohort_type = 'General'
-                logger.info(f"Course {course.title} assigned cohort type: {cohort_type}")
-                
-                latest_cohort = Cohort.objects.filter(
-                    course=course,
-                    name__startswith=f"{cohort_type} Cohort"
-                ).order_by('-name').first()
-                
-                if not latest_cohort or latest_cohort.students.count() >= 15:
-                    if latest_cohort:
-                        try:
-                            last_number = int(latest_cohort.name.split()[-1])
-                            new_number = last_number + 1
-                        except ValueError:
-                            new_number = 1
-                    else:
-                        new_number = 1
-                    cohort_name = f"{cohort_type} Cohort {new_number:02d}"
-                    latest_cohort = Cohort.objects.create(
-                        course=course,
-                        name=cohort_name,
-                        whatsapp_link=f"https://chat.whatsapp.com/{cohort_name.replace(' ', '_')}_placeholder"
-                    )
-                    logger.info(f"Created new cohort {cohort_name} for course {course.title} with placeholder WhatsApp link")
-                
-                enrollment = CourseEnrollment.objects.create(
-                    user=user,
-                    course=course,
-                    status='pending'
-                )
-                latest_cohort.students.add(user)
-                logger.info(f"Assigned {user.username} to cohort {latest_cohort.name} for course {course.title}")
-                
-                Notification.objects.create(
-                    user=user,
-                    type='courses',
-                    message=f'Your enrollment request for {course.title} is pending approval. You have been assigned to {latest_cohort.name}.'
-                )
-                send_mail(
-                    'Enrollment Request',
-                    f'Your enrollment request for {course.title} is pending approval. You have been assigned to {latest_cohort.name}. Join the WhatsApp group: {latest_cohort.whatsapp_link}',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [user.email],
-                    fail_silently=True,
-                )
+            Profile.objects.create(
+                user=user,
+                user_type=form.cleaned_data['user_type'],
+                profile_picture=form.cleaned_data.get('profile_picture'),
+                mobile_number=form.cleaned_data.get('mobile_number', ''),
+                country=form.cleaned_data.get('country', ''),
+                onboarding_quiz_completed=(form.cleaned_data['user_type'] != 'student'),
+                facilitator_profile_completed=(form.cleaned_data['user_type'] != 'facilitator')
+            )
             login(request, user)
             messages.success(request, 'Registration successful.')
-            AuditLog.objects.create(
-                user=user,
-                action='User Registered',
-                details=f"User {user.username} registered as {form.cleaned_data['user_type']} with course {course.title if course else 'None'}"
-            )
-            next_url = request.GET.get('next')
-            
-            if user.is_superuser:
-                # If they were trying to access /admin/, let them go there
-                if next_url and next_url.startswith('/admin/'):
-                    return redirect(next_url)
-                # Otherwise, default to your custom dashboard
-                return redirect('admindashboard')
-            
-            elif profile.user_type == 'facilitator':
-                logger.info(f"Redirecting facilitator {user.username} to facilitator_application")
-                return redirect('facilitator_application')
-            else:
-                logger.info(f"Redirecting student {user.username} to onboarding_quiz")
-                return redirect('onboarding_quiz')
+            return redirect('onboarding_quiz')
         else:
-            logger.warning(f"Registration failed: {form.errors}")
             messages.error(request, 'Please correct the errors below.')
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'errors': form.errors.as_json()})
     else:
         form = CustomRegistrationForm()
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 
 @ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
-    next_url = request.GET.get('next', None)
+    next_url = request.GET.get('next')
     if request.user.is_authenticated:
-       try:
-            profile = request.user.profile
-            if request.user.is_superuser:
-                if next_url and next_url.startswith('/admin/'):
-                    return redirect(next_url)
-                return redirect('admindashboard')
-            if profile.user_type == 'student' and not profile.onboarding_quiz_completed:
-                return redirect('onboarding_quiz')
-            return redirect(next_url) if next_url else redirect('student_dashboard')
-        except Profile.DoesNotExist:
-            return redirect('create_profile')
+        return redirect(next_url or 'student_dashboard')
     
-    # Handle Login POST
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
+            if user:
                 login(request, user)
-                try:
-                    profile = user.profile
-                    if user.is_superuser:
-                        # NEW LOGIC: Allow admin access if next_url is present
-                        if next_url and next_url.startswith('/admin/'):
-                            return redirect(next_url)
-                        return redirect('admindashboard')
-                    if profile.user_type == 'student' and not profile.onboarding_quiz_completed:
-                        return redirect('onboarding_quiz')
-                    return redirect(next_url) if next_url else redirect('student_dashboard')
-                except Profile.DoesNotExist:
-                    return redirect('create_profile')
-            else:
-                messages.error(request, 'Invalid username or password.')
-        else:
+                AuditLog.objects.create(user=user, action='login', details='User logged in')
+                return redirect(next_url or 'student_dashboard')
             messages.error(request, 'Invalid username or password.')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-def create_profile(request):
-    if not request.user.is_authenticated:
-        return redirect('user_login')
-    
-    if hasattr(request.user, 'profile'):
-        logger.info(f"User {request.user.username} already has a profile, redirecting to student_dashboard")
-        return redirect('student_dashboard')
-    
-    if request.method == 'POST':
-        form = CustomRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            try:
-                profile = Profile.objects.create(
-                    user=request.user,
-                    user_type=form.cleaned_data['user_type'],
-                    profile_picture=form.cleaned_data['profile_picture'],
-                    mobile_number=form.cleaned_data.get('mobile_number', ''),
-                    country=form.cleaned_data['country'],
-                    onboarding_quiz_completed=False if form.cleaned_data['user_type'] == 'student' else True,
-                    facilitator_profile_completed=False if form.cleaned_data['user_type'] == 'facilitator' else True
-                )
-                logger.info(f"Created profile for {request.user.username} with passcode {profile.student_passcode}")
-                messages.success(request, 'Profile created successfully.')
-                AuditLog.objects.create(
-                    user=request.user,
-                    action='Profile Created',
-                    details=f"User {request.user.username} created profile as {form.cleaned_data['user_type']}"
-                )
-                if form.cleaned_data['user_type'] == 'student' and not form.cleaned_data['course']:
-                    return redirect('onboarding_quiz')
-                return redirect('student_dashboard')
-            except Exception as e:
-                logger.error(f"Failed to create profile for {request.user.username}: {str(e)}")
-                messages.error(request, 'An error occurred. Please try again or contact support.')
         else:
-            logger.warning(f"Profile creation failed: {form.errors}")
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        form = CustomRegistrationForm()
-    return render(request, 'core/create_profile.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-
-    if request.user.is_authenticated:
-        return redirect('student_dashboard')
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Login successful.')
-                AuditLog.objects.create(
-                    user=user,
-                    action='login',
-                    details='User logged in successfully'
-                )
-                if user.profile.user_type == 'student' and not user.profile.onboarding_quiz_completed:
-                    return redirect('onboarding_quiz')
-                return redirect('student_dashboard')
-            else:
-                messages.error(request, 'Invalid username or password.')
-        else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid input.')
     else:
         form = AuthenticationForm()
     return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 def user_logout(request):
     logout(request)
-    messages.success(request, 'Logged out successfully.')
     return redirect('landing')
 from django.urls import reverse
 
@@ -512,7 +312,10 @@ def enroll_course(request, course_id):
 @login_required
 @user_passes_test(lambda u: u.is_staff or u.is_superuser)
 # @otp_required
+@login_required
+@user_passes_test(lambda u: u.is_staff or u.is_superuser)
 def manage_cohorts(request):
+    # Fetch all cohorts once
     cohorts = Cohort.objects.all().select_related('course').prefetch_related('students').order_by('name')
     
     if request.method == 'POST':
@@ -526,233 +329,44 @@ def manage_cohorts(request):
                 courseenrollment__status='approved'
             ).exclude(cohorts=cohort)
             cohort.students.add(*approved_students)
-            logger.info(f"Approved cohort {cohort.name} with {approved_students.count()} students added")
-            messages.success(request, f'Cohort {cohort.name} approved with {approved_students.count()} students added.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Approved',
-                details=f"Approved cohort {cohort.name} with {approved_students.count()} students"
-            )
+            messages.success(request, f'Cohort {cohort.name} updated with {approved_students.count()} students.')
+            AuditLog.objects.create(user=request.user, action='Cohort Approved', details=f"Approved cohort {cohort.name}")
+            
         elif action == 'delete':
             cohort_name = cohort.name
             cohort.delete()
-            logger.info(f"Deleted cohort {cohort_name}")
             messages.success(request, f'Cohort {cohort_name} deleted.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Deleted',
-                details=f"Deleted cohort {cohort_name}"
-            )
+            AuditLog.objects.create(user=request.user, action='Cohort Deleted', details=f"Deleted cohort {cohort_name}")
+            
         elif action == 'update_whatsapp':
             whatsapp_link = request.POST.get('whatsapp_link', '').strip()
-            if whatsapp_link:
-                validate = URLValidator()
-                try:
+            validate = URLValidator()
+            try:
+                if whatsapp_link:
                     validate(whatsapp_link)
                     if not whatsapp_link.startswith('https://chat.whatsapp.com/'):
-                        raise ValidationError('Invalid WhatsApp group link.')
-                    cohort.whatsapp_link = whatsapp_link
-                    cohort.save()
-                    logger.info(f"Updated WhatsApp link for cohort {cohort.name}")
-                    messages.success(request, f'WhatsApp link for {cohort.name} updated.')
-                    AuditLog.objects.create(
-                        user=request.user,
-                        action='WhatsApp Link Updated',
-                        details=f"Updated WhatsApp link for cohort {cohort.name}"
-                    )
-                except ValidationError:
-                    logger.warning(f"Invalid WhatsApp link for cohort {cohort.name}: {whatsapp_link}")
-                    messages.error(request, 'Please provide a valid WhatsApp group link (e.g., https://chat.whatsapp.com/ABC123).')
-            else:
-                cohort.whatsapp_link = ''
+                        raise ValidationError('Invalid link.')
+                cohort.whatsapp_link = whatsapp_link
                 cohort.save()
-                logger.info(f"Cleared WhatsApp link for cohort {cohort.name}")
-                messages.success(request, f'WhatsApp link for {cohort.name} cleared.')
-                AuditLog.objects.create(
-                    user=request.user,
-                    action='WhatsApp Link Cleared',
-                    details=f"Cleared WhatsApp link for cohort {cohort.name}"
-                )
+                messages.success(request, 'WhatsApp link updated.')
+            except ValidationError:
+                messages.error(request, 'Please provide a valid WhatsApp group link.')
         
         return redirect('manage_cohorts')
     
+    # Prepare data for template
     cohort_data = [
         {
             'id': cohort.id,
             'name': cohort.name,
             'course_title': cohort.course.title,
             'students': [
-                {'username': student.username, 'full_name': f"{student.first_name} {student.last_name}".strip()}
-                for student in cohort.students.all()
+                {'username': s.username, 'full_name': f"{s.first_name} {s.last_name}".strip()}
+                for s in cohort.students.all()
             ],
             'student_count': cohort.students.count(),
             'whatsapp_link': cohort.whatsapp_link or '',
-            'student_leader': cohort.student_leader.username if cohort.student_leader else 'None',
-        }
-        for cohort in cohorts
-    ]
-    
-    return render(request, 'core/manage_cohorts.html', {
-        'cohorts': cohort_data,
-        'logo_base64': settings.LOGO_BASE64
-    })
-    cohorts = Cohort.objects.all().select_related('course').prefetch_related('students').order_by('name')
-    
-    if request.method == 'POST':
-        cohort_id = request.POST.get('cohort_id')
-        action = request.POST.get('action')
-        cohort = get_object_or_404(Cohort, id=cohort_id)
-        
-        if action == 'approve':
-            approved_students = User.objects.filter(
-                courseenrollment__course=cohort.course,
-                courseenrollment__status='approved'
-            ).exclude(cohorts=cohort)
-            cohort.students.add(*approved_students)
-            logger.info(f"Approved cohort {cohort.name} with {approved_students.count()} students added")
-            messages.success(request, f'Cohort {cohort.name} approved with {approved_students.count()} students added.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Approved',
-                details=f"Approved cohort {cohort.name} with {approved_students.count()} students"
-            )
-        elif action == 'delete':
-            cohort_name = cohort.name
-            cohort.delete()
-            logger.info(f"Deleted cohort {cohort_name}")
-            messages.success(request, f'Cohort {cohort_name} deleted.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Deleted',
-                details=f"Deleted cohort {cohort_name}"
-            )
-        elif action == 'update_whatsapp':
-            whatsapp_link = request.POST.get('whatsapp_link', '').strip()
-            if whatsapp_link:
-                validate = URLValidator()
-                try:
-                    validate(whatsapp_link)
-                    if not whatsapp_link.startswith('https://chat.whatsapp.com/'):
-                        raise ValidationError('Invalid WhatsApp group link.')
-                    cohort.whatsapp_link = whatsapp_link
-                    cohort.save()
-                    logger.info(f"Updated WhatsApp link for cohort {cohort.name}")
-                    messages.success(request, f'WhatsApp link for {cohort.name} updated.')
-                    AuditLog.objects.create(
-                        user=request.user,
-                        action='WhatsApp Link Updated',
-                        details=f"Updated WhatsApp link for cohort {cohort.name}"
-                    )
-                except ValidationError:
-                    logger.warning(f"Invalid WhatsApp link for cohort {cohort.name}: {whatsapp_link}")
-                    messages.error(request, 'Please provide a valid WhatsApp group link (e.g., https://chat.whatsapp.com/ABC123).')
-            else:
-                cohort.whatsapp_link = ''
-                cohort.save()
-                logger.info(f"Cleared WhatsApp link for cohort {cohort.name}")
-                messages.success(request, f'WhatsApp link for {cohort.name} cleared.')
-                AuditLog.objects.create(
-                    user=request.user,
-                    action='WhatsApp Link Cleared',
-                    details=f"Cleared WhatsApp link for cohort {cohort.name}"
-                )
-        
-        return redirect('manage_cohorts')
-    
-    cohort_data = [
-        {
-            'id': cohort.id,
-            'name': cohort.name,
-            'course_title': cohort.course.title,
-            'students': [
-                {'username': student.username, 'full_name': f"{student.first_name} {student.last_name}".strip()}
-                for student in cohort.students.all()
-            ],
-            'student_count': cohort.students.count(),
-            'whatsapp_link': cohort.whatsapp_link or '',
-            'student_leader': cohort.student_leader.username if cohort.student_leader else 'None',
-        }
-        for cohort in cohorts
-    ]
-    
-    return render(request, 'core/manage_cohorts.html', {
-        'cohorts': cohort_data,
-        'logo_base64': settings.LOGO_BASE64
-    })
-    cohorts = Cohort.objects.all().select_related('course').prefetch_related('students').order_by('name')
-    
-    if request.method == 'POST':
-        cohort_id = request.POST.get('cohort_id')
-        action = request.POST.get('action')
-        cohort = get_object_or_404(Cohort, id=cohort_id)
-        
-        if action == 'approve':
-            approved_students = User.objects.filter(
-                courseenrollment__course=cohort.course,
-                courseenrollment__status='approved'
-            ).exclude(cohorts=cohort)
-            cohort.students.add(*approved_students)
-            logger.info(f"Approved cohort {cohort.name} with {approved_students.count()} students added")
-            messages.success(request, f'Cohort {cohort.name} approved with {approved_students.count()} students added.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Approved',
-                details=f"Approved cohort {cohort.name} with {approved_students.count()} students"
-            )
-        elif action == 'delete':
-            cohort_name = cohort.name
-            cohort.delete()
-            logger.info(f"Deleted cohort {cohort_name}")
-            messages.success(request, f'Cohort {cohort_name} deleted.')
-            AuditLog.objects.create(
-                user=request.user,
-                action='Cohort Deleted',
-                details=f"Deleted cohort {cohort_name}"
-            )
-        elif action == 'update_whatsapp':
-            whatsapp_link = request.POST.get('whatsapp_link', '').strip()
-            if whatsapp_link:
-                validate = URLValidator()
-                try:
-                    validate(whatsapp_link)
-                    if not whatsapp_link.startswith('https://chat.whatsapp.com/'):
-                        raise ValidationError('Invalid WhatsApp group link.')
-                    cohort.whatsapp_link = whatsapp_link
-                    cohort.save()
-                    logger.info(f"Updated WhatsApp link for cohort {cohort.name}")
-                    messages.success(request, f'WhatsApp link for {cohort.name} updated.')
-                    AuditLog.objects.create(
-                        user=request.user,
-                        action='WhatsApp Link Updated',
-                        details=f"Updated WhatsApp link for cohort {cohort.name}"
-                    )
-                except ValidationError:
-                    logger.warning(f"Invalid WhatsApp link for cohort {cohort.name}: {whatsapp_link}")
-                    messages.error(request, 'Please provide a valid WhatsApp group link (e.g., https://chat.whatsapp.com/ABC123).')
-            else:
-                cohort.whatsapp_link = ''
-                cohort.save()
-                logger.info(f"Cleared WhatsApp link for cohort {cohort.name}")
-                messages.success(request, f'WhatsApp link for {cohort.name} cleared.')
-                AuditLog.objects.create(
-                    user=request.user,
-                    action='WhatsApp Link Cleared',
-                    details=f"Cleared WhatsApp link for cohort {cohort.name}"
-                )
-        
-        return redirect('manage_cohorts')
-    
-    cohort_data = [
-        {
-            'id': cohort.id,
-            'name': cohort.name,
-            'course_title': cohort.course.title,
-            'students': [
-                {'username': student.username, 'full_name': f"{student.first_name} {student.last_name}".strip()}
-                for student in cohort.students.all()
-            ],
-            'student_count': cohort.students.count(),
-            'whatsapp_link': cohort.whatsapp_link or '',
+            'student_leader': cohort.student_leader.username if hasattr(cohort, 'student_leader') and cohort.student_leader else 'None',
         }
         for cohort in cohorts
     ]
