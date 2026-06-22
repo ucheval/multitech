@@ -9,7 +9,7 @@ admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     # 1. The official Django backend management (requires OTP)
-    path('ogatechinovadmin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     
     # 2. Your core application, including your custom /admin_dashboard/ view
     path('', include('core.urls')),
