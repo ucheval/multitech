@@ -136,9 +136,15 @@ def register(request):
                 action='User Registered',
                 details=f"User {user.username} registered as {form.cleaned_data['user_type']} with course {course.title if course else 'None'}"
             )
+            next_url = request.GET.get('next')
+            
             if user.is_superuser:
-                logger.info(f"Redirecting superuser {user.username} to admindashboard")
+                # If they were trying to access /admin/, let them go there
+                if next_url and next_url.startswith('/admin/'):
+                    return redirect(next_url)
+                # Otherwise, default to your custom dashboard
                 return redirect('admindashboard')
+            
             elif profile.user_type == 'facilitator':
                 logger.info(f"Redirecting facilitator {user.username} to facilitator_application")
                 return redirect('facilitator_application')
@@ -158,45 +164,36 @@ def register(request):
 def user_login(request):
     next_url = request.GET.get('next', None)
     if request.user.is_authenticated:
-        try:
+       try:
             profile = request.user.profile
             if request.user.is_superuser:
-                logger.info(f"Superuser {request.user.username} is authenticated")
-                return redirect(next_url) if next_url else redirect('admindashboard')
+                if next_url and next_url.startswith('/admin/'):
+                    return redirect(next_url)
+                return redirect('admindashboard')
             if profile.user_type == 'student' and not profile.onboarding_quiz_completed:
-                logger.info(f"Redirecting student {request.user.username} to onboarding_quiz")
                 return redirect('onboarding_quiz')
             return redirect(next_url) if next_url else redirect('student_dashboard')
         except Profile.DoesNotExist:
-            logger.warning(f"User {request.user.username} has no profile, redirecting to create_profile")
             return redirect('create_profile')
     
+    # Handle Login POST
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Login successful.')
-                AuditLog.objects.create(
-                    user=user,
-                    action='login',
-                    details='User logged in successfully'
-                )
                 try:
                     profile = user.profile
                     if user.is_superuser:
-                        logger.info(f"Redirecting superuser {user.username} to next_url or admindashboard")
-                        return redirect(next_url) if next_url else redirect('admindashboard')
+                        # NEW LOGIC: Allow admin access if next_url is present
+                        if next_url and next_url.startswith('/admin/'):
+                            return redirect(next_url)
+                        return redirect('admindashboard')
                     if profile.user_type == 'student' and not profile.onboarding_quiz_completed:
-                        logger.info(f"Redirecting student {user.username} to onboarding_quiz")
                         return redirect('onboarding_quiz')
                     return redirect(next_url) if next_url else redirect('student_dashboard')
                 except Profile.DoesNotExist:
-                    logger.warning(f"User {user.username} has no profile, redirecting to create_profile")
                     return redirect('create_profile')
             else:
                 messages.error(request, 'Invalid username or password.')
