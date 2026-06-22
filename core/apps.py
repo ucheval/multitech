@@ -6,22 +6,17 @@ class CoreConfig(AppConfig):
     name = 'core'
 
     def ready(self):
-        # Import your signals to keep application features working
         import core.signals
-
-        # Auto-create superuser only on the live Render server
+        
         if os.environ.get('RENDER'):
             from django.contrib.auth.models import User
             
-            # --- UPDATE THESE VALUES ---
-            username = 'myadmin'
-            email = 'admin@techinovaedu.com'
-            password = 'YourSecurePassword123'
-            # ---------------------------
+            # These values come from your Render Environment tab
+            username = os.environ.get('ADMIN_USER')
+            email = os.environ.get('ADMIN_EMAIL')
+            password = os.environ.get('ADMIN_PASS')
             
-            try:
+            if username and email and password:
                 if not User.objects.filter(username=username).exists():
                     User.objects.create_superuser(username, email, password)
-                    print(f"--- Superuser {username} created successfully! ---")
-            except Exception as e:
-                print(f"--- Could not create superuser: {e} ---")
+                    print(f"--- Superuser {username} created! ---")
