@@ -3,16 +3,29 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django_otp.decorators import otp_required
+from django_otp.plugins.otp_totp.models import TOTPDevice
+from django_otp import devices_for_user
+from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
+from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm
+from django.utils import timezone
+from django.db.models import Count, Sum, Avg
+from django.utils.html import escape
+import qrcode
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+from io import BytesIO
+import base64
+from django.http import JsonResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
-from django.utils import timezone
-from django.utils.html import escape
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
-from django_ratelimit.decorators import ratelimit
 import logging
+from django_ratelimit.decorators import ratelimit
+from phonenumbers import parse, is_valid_number, NumberParseException
+from decimal import Decimal, InvalidOperation
 
+logger = logging.getLogger(__name__)
 from .models import Course, PaymentSlip, LiveSession, Cohort, AuditLog, Portfolio, Notification, FacilitatorApplication, Profile, CourseEnrollment, PerformanceRecord, Assignment, Project, SessionAttendance
 from .forms import CustomRegistrationForm, CourseChangeForm
 
