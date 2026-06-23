@@ -1023,6 +1023,7 @@ def admin_dashboard(request):
             'logo_base64': settings.LOGO_BASE64
         }
     )
+    
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def verify_admin_access(request):
