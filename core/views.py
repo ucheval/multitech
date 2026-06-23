@@ -73,7 +73,7 @@ def register(request):
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 
 
-@ratelimit(key='ip', rate='5/m', block=True)
+# @ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
 
     next_url = request.GET.get('next')
@@ -107,6 +107,7 @@ def user_login(request):
 
                 # Superuser goes to OTP flow
                 if user.is_superuser:
+                    request.session['2fa_verified'] = False
                     return redirect('two_factor_setup')
 
                 return redirect(next_url or 'student_dashboard')
