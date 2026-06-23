@@ -73,7 +73,6 @@ def register(request):
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 
 
-# @ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
 
     next_url = request.GET.get('next')
@@ -96,8 +95,12 @@ def user_login(request):
 
                 login(request, user)
 
-                # IMPORTANT: reset 2FA every login
-                request.session.pop('2fa_verified', None)
+                # reset 2FA session EVERY login
+                request.session['2fa_verified_user'] = user.id
+                # reset 2FA status every login
+                request.session['2fa_verified'] = False
+                
+            
 
                 AuditLog.objects.create(
                     user=user,
@@ -105,11 +108,11 @@ def user_login(request):
                     details='User logged in'
                 )
 
-                # Superuser goes to OTP flow
+                # ✅ SUPERUSER FLOW (must pass OTP)
                 if user.is_superuser:
-                    request.session['2fa_verified'] = False
                     return redirect('two_factor_setup')
 
+                # normal users go straight to dashboard
                 return redirect(next_url or 'student_dashboard')
 
             messages.error(request, 'Invalid username or password.')
@@ -128,6 +131,7 @@ def user_login(request):
             'logo_base64': settings.LOGO_BASE64
         }
     )
+
 def create_profile(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
@@ -885,12 +889,12 @@ def inbox(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
 
-    # 2FA enforcement
+    # 🔐 ensure same logged-in user owns this 2FA session
+    if request.session.get('2fa_verified_user') != request.user.id:
+        return redirect('verify_admin_access')
+
+    # 🔐 ensure 2FA was completed
     if not request.session.get('2fa_verified'):
-        messages.warning(
-            request,
-            'Please complete two-factor authentication to access the admin dashboard.'
-        )
         return redirect('verify_admin_access')
 
     slips = PaymentSlip.objects.filter(status='pending').order_by('-uploaded_at')
