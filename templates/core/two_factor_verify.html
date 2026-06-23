@@ -2,136 +2,169 @@
 {% block title %}Verify Identity{% endblock %}
 
 {% block content %}
+
 <div class="auth-container" style="max-width:420px;margin:60px auto;padding:32px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);">
 
-  <div style="text-align:center;margin-bottom:24px;">
-    {% if logo_base64 %}
-      <img src="data:image/png;base64,{{ logo_base64 }}" alt="Logo" style="height:48px;margin-bottom:16px;">
-    {% endif %}
-    <h2 style="font-size:1.4rem;font-weight:700;color:#1a1a2e;">Two-Factor Verification</h2>
-    <p style="color:#666;font-size:.95rem;margin-top:8px;">
-      Open your authenticator app and enter the current 6-digit code.
-    </p>
-  </div>
+    <div style="text-align:center;margin-bottom:24px;">
 
-  {% if error %}
-    <div style="background:#fff0f0;border:1px solid #f5c6c6;color:#c0392b;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
-      ⚠️ {{ error }}
+        {% if logo_base64 %}
+            <img src="data:image/png;base64,{{ logo_base64 }}" alt="Logo" style="height:48px;margin-bottom:16px;">
+        {% endif %}
+
+        <h2 style="font-size:1.4rem;font-weight:700;color:#1a1a2e;">
+            Two-Factor Verification
+        </h2>
+
+        <p style="color:#666;font-size:.95rem;margin-top:8px;">
+            Enter the 6-digit code from your authenticator app.
+        </p>
+
     </div>
-  {% endif %}
 
-  {% if messages %}
-    {% for message in messages %}
-      <div style="background:#f0fff4;border:1px solid #c6f0d0;color:#1e7e34;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div style="background:#f0fff4;border:1px solid #c6f0d0;color:#1e7e34;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-<div id="alert-container"></div>
-  <form id="otpForm" method="post">
-    {% csrf_token %}
-    <label for="otp_code" style="display:block;font-weight:600;margin-bottom:6px;font-size:.9rem;">Authenticator code</label>
-    <input
-      type="text"
-      id="otp_code"
-      name="otp_code"
-      maxlength="6"
-      inputmode="numeric"
-      pattern="[0-9]{6}"
-      autocomplete="one-time-code"
-      placeholder="000000"
-      required
-      autofocus
-      style="width:100%;padding:12px;font-size:1.4rem;letter-spacing:.4rem;text-align:center;border:1px solid #ddd;border-radius:8px;margin-bottom:16px;box-sizing:border-box;"
-    >
-    <button
-      type="submit"
-      style="width:100%;padding:13px;background:#1a1a2e;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;">
-      Verify
-    </button>
-  </form>
+    {% if error %}
+        <div style="background:#fff0f0;border:1px solid #f5c6c6;color:#c0392b;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
+            ⚠️ {{ error }}
+        </div>
+    {% endif %}
 
-  <p style="text-align:center;margin-top:20px;font-size:.8rem;color:#999;">
-    Lost access to your authenticator? Contact your system administrator.
-  </p>
+    <div id="alert-container"></div>
+
+    <form id="otpForm" method="post">
+        {% csrf_token %}
+
+        <label for="otp_code" style="display:block;font-weight:600;margin-bottom:6px;font-size:.9rem;">
+            Authenticator Code
+        </label>
+
+        <input
+            type="text"
+            id="otp_code"
+            name="otp_code"
+            maxlength="6"
+            inputmode="numeric"
+            pattern="[0-9]{6}"
+            autocomplete="one-time-code"
+            placeholder="000000"
+            required
+            autofocus
+            style="width:100%;padding:12px;font-size:1.4rem;letter-spacing:.4rem;text-align:center;border:1px solid #ddd;border-radius:8px;margin-bottom:16px;box-sizing:border-box;"
+        >
+
+        <button
+            type="submit"
+            style="width:100%;padding:13px;background:#1a1a2e;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;"
+        >
+            Verify
+        </button>
+
+    </form>
+
+    <p style="text-align:center;margin-top:20px;font-size:.8rem;color:#999;">
+        Lost access? Contact your administrator.
+    </p>
+
 </div>
-{% endblock %}
 
-
+<!-- ✅ FIXED & SAFE JAVASCRIPT -->
 <script>
-document.getElementById('otpForm').addEventListener('submit', function(e) {
+document.addEventListener("DOMContentLoaded", function () {
 
-    e.preventDefault();
+    const form = document.getElementById("otpForm");
+    const alertBox = document.getElementById("alert-container");
+    const button = form.querySelector("button");
 
-    const formData = new FormData(this);
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    fetch("{% url 'verify_admin_access' %}", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "X-Requested-With": "XMLHttpRequest"
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
+        button.disabled = true;
+        button.innerText = "Verifying...";
 
-        const alertContainer =
-            document.getElementById('alert-container');
+        const formData = new FormData(form);
 
-        if (data.status === 'success') {
+        fetch("{% url 'verify_admin_access' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
 
-            alertContainer.innerHTML = `
-                <div style="
-                    background:#f0fff4;
-                    border:1px solid #c6f0d0;
-                    color:#1e7e34;
-                    padding:12px;
-                    border-radius:6px;
-                    margin-bottom:16px;
-                ">
-                    ✅ Verification successful. Redirecting...
-                </div>
-            `;
+            button.disabled = false;
+            button.innerText = "Verify";
 
-            setTimeout(function() {
-                window.location.href = data.redirect;
-            }, 1500);
+            if (data.status === "success") {
 
-        } else {
+                alertBox.innerHTML = `
+                    <div style="
+                        background:#f0fff4;
+                        border:1px solid #c6f0d0;
+                        color:#1e7e34;
+                        padding:12px;
+                        border-radius:6px;
+                        font-weight:600;
+                        margin-bottom:16px;
+                    ">
+                        ✅ Verification successful. Redirecting...
+                    </div>
+                `;
 
-            alertContainer.innerHTML = `
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 1200);
+
+            } else {
+
+                alertBox.innerHTML = `
+                    <div style="
+                        background:#fff0f0;
+                        border:1px solid #f5c6c6;
+                        color:#c0392b;
+                        padding:12px;
+                        border-radius:6px;
+                        font-weight:600;
+                        margin-bottom:16px;
+                    ">
+                        ⚠️ ${data.message || "Invalid OTP"}
+                    </div>
+                `;
+            }
+
+        })
+        .catch(error => {
+
+            button.disabled = false;
+            button.innerText = "Verify";
+
+            alertBox.innerHTML = `
                 <div style="
                     background:#fff0f0;
                     border:1px solid #f5c6c6;
                     color:#c0392b;
                     padding:12px;
                     border-radius:6px;
+                    font-weight:600;
                     margin-bottom:16px;
                 ">
-                    ⚠️ ${data.message}
+                    ⚠️ Server error. Please try again.
                 </div>
             `;
-        }
 
-    })
-    .catch(error => {
+            console.error(error);
+        });
 
-        document.getElementById('alert-container').innerHTML = `
-            <div style="
-                background:#fff0f0;
-                border:1px solid #f5c6c6;
-                color:#c0392b;
-                padding:12px;
-                border-radius:6px;
-                margin-bottom:16px;
-            ">
-                ⚠️ Server error. Please try again.
-            </div>
-        `;
-
-        console.error(error);
     });
 
 });
 </script>
+
+{% endblock %}
