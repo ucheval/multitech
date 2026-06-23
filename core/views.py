@@ -24,6 +24,8 @@ import logging
 from django_ratelimit.decorators import ratelimit
 from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
+from django.urls import reverse
+
 
 logger = logging.getLogger(__name__)
 from .models import Course, PaymentSlip, LiveSession, Cohort, AuditLog, Portfolio, Notification, FacilitatorApplication, Profile, CourseEnrollment, PerformanceRecord, Assignment, Project, SessionAttendance
@@ -69,43 +71,62 @@ def register(request):
     else:
         form = CustomRegistrationForm()
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
+
+
 @ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
+
     next_url = request.GET.get('next')
+
     if request.user.is_authenticated:
         return redirect(next_url or 'student_dashboard')
- 
+
     if request.method == 'POST':
+
         form = AuthenticationForm(request, data=request.POST)
+
         if form.is_valid():
+
             user = authenticate(
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password']
             )
+
             if user:
+
                 login(request, user)
-                AuditLog.objects.create(user=user, action='login', details='User logged in')
- 
-                # Superusers must pass OTP before reaching admin dashboard
+
+                # IMPORTANT: reset 2FA every login
+                request.session.pop('2fa_verified', None)
+
+                AuditLog.objects.create(
+                    user=user,
+                    action='login',
+                    details='User logged in'
+                )
+
+                # Superuser goes to OTP flow
                 if user.is_superuser:
-                    return redirect('two_factor_setup')   # redirects to verify if device exists
- 
+                    return redirect('two_factor_setup')
+
                 return redirect(next_url or 'student_dashboard')
+
             messages.error(request, 'Invalid username or password.')
+
         else:
             messages.error(request, 'Invalid input.')
+
     else:
         form = AuthenticationForm()
+
     return render(
-    request,
-    'core/login.html',
-    {
-        'form': form,
-        'logo_base64': settings.LOGO_BASE64
-    }
-)
-
-
+        request,
+        'core/login.html',
+        {
+            'form': form,
+            'logo_base64': settings.LOGO_BASE64
+        }
+    )
 def create_profile(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
@@ -147,9 +168,9 @@ def create_profile(request):
         form = CustomRegistrationForm()
     return render(request, 'core/create_profile.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 def user_logout(request):
+    request.session.pop('2fa_verified', None)
     logout(request)
     return redirect('landing')
-from django.urls import reverse
 
 def course_detail(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -862,27 +883,42 @@ def inbox(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
+
+    # 2FA enforcement
+    if not request.session.get('2fa_verified'):
+        messages.warning(
+            request,
+            'Please complete two-factor authentication to access the admin dashboard.'
+        )
+        return redirect('verify_admin_access')
+
     slips = PaymentSlip.objects.filter(status='pending').order_by('-uploaded_at')
     salary_submissions = SalarySubmission.objects.filter(status='pending').order_by('-submitted_at')
     portfolios = Portfolio.objects.all()
     quiz_attempts = QuizAttempt.objects.order_by('-attempted_at')
     performance_records = PerformanceRecord.objects.all()
+
     student_count = User.objects.filter(is_staff=False).count()
     course_count = Course.objects.count()
     slip_count = slips.count()
+
     audit_logs = AuditLog.objects.order_by('-timestamp')[:5]
     portfolio_views = AuditLog.objects.filter(action='Portfolio Viewed').count()
+
     notification_settings = {
         'assignment_notifications': True,
         'payment_notifications': True
     }
+
     payment_detail = PaymentDetail.objects.first() or PaymentDetail.objects.create()
     courses = Course.objects.all().order_by('title')
 
     if request.method == 'POST':
+
         action = request.POST.get('action')
-        
+
         if action == 'update_payment_details':
+
             bank_name = request.POST.get('bank_name', '').strip()
             bank_account_number = request.POST.get('bank_account_number', '').strip()
             bank_account_name = request.POST.get('bank_account_name', '').strip()
@@ -891,11 +927,13 @@ def admin_dashboard(request):
             momo_provider = request.POST.get('momo_provider', '').strip()
 
             errors = []
+
             if not bank_name or not bank_account_number or not bank_account_name:
                 errors.append("All bank details are required.")
+
             if not momo_name or not momo_number or not momo_provider:
                 errors.append("All MoMo details are required.")
-            
+
             try:
                 if momo_number:
                     phone = parse(momo_number)
@@ -916,7 +954,9 @@ def admin_dashboard(request):
                 payment_detail.momo_provider = momo_provider
                 payment_detail.updated_by = request.user
                 payment_detail.save()
+
                 messages.success(request, "Payment details updated successfully.")
+
                 AuditLog.objects.create(
                     user=request.user,
                     action='Payment Details Updated',
@@ -924,78 +964,116 @@ def admin_dashboard(request):
                 )
 
         elif action == 'update_course_price':
+
             course_id = request.POST.get('course_id')
             price = request.POST.get('price', '').strip()
+
             course = get_object_or_404(Course, id=course_id)
-            
+
             try:
                 price = Decimal(price)
+
                 if price < 0:
                     raise InvalidOperation
+
                 course.price = price
                 course.save()
-                messages.success(request, f"Price for {course.title} updated to ₦{price:,.2f}.")
+
+                messages.success(
+                    request,
+                    f"Price for {course.title} updated to ₦{price:,.2f}."
+                )
+
                 AuditLog.objects.create(
                     user=request.user,
                     action='Course Price Updated',
                     details=f"Updated price for {course.title} to ₦{price:,.2f}"
                 )
+
             except (InvalidOperation, ValueError):
-                messages.error(request, f"Invalid price for {course.title}. Please enter a valid number.")
+                messages.error(
+                    request,
+                    f"Invalid price for {course.title}. Please enter a valid number."
+                )
 
         return redirect('admindashboard')
 
-    return render(request, 'core/admindashboard.html', {
-        'slips': slips,
-        'salary_submissions': salary_submissions,
-        'portfolios': portfolios,
-        'quiz_attempts': quiz_attempts,
-        'performance_records': performance_records,
-        'student_count': student_count,
-        'course_count': course_count,
-        'slip_count': slip_count,
-        'audit_logs': audit_logs,
-        'portfolio_views': portfolio_views,
-        'notification_settings': notification_settings,
-        'payment_detail': payment_detail,
-        'courses': courses,
-        'logo_base64': settings.LOGO_BASE64
-    })
+    return render(
+        request,
+        'core/admindashboard.html',
+        {
+            'slips': slips,
+            'salary_submissions': salary_submissions,
+            'portfolios': portfolios,
+            'quiz_attempts': quiz_attempts,
+            'performance_records': performance_records,
+            'student_count': student_count,
+            'course_count': course_count,
+            'slip_count': slip_count,
+            'audit_logs': audit_logs,
+            'portfolio_views': portfolio_views,
+            'notification_settings': notification_settings,
+            'payment_detail': payment_detail,
+            'courses': courses,
+            'logo_base64': settings.LOGO_BASE64
+        }
+    )
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def verify_admin_access(request):
+
     if not request.user.is_superuser:
-        return JsonResponse({'status': 'error', 'message': 'Unauthorized'}, status=403)
-    
-    devices = devices_for_user(request.user)
+        return JsonResponse(
+            {'status': 'error', 'message': 'Unauthorized'},
+            status=403
+        )
+
+    devices = list(devices_for_user(request.user))
+
     if not devices:
         return redirect('two_factor_setup')
-    
+
     if request.method == 'POST':
         otp_code = request.POST.get('otp_code')
-        verified = False
-        for device in devices:
-            if device.verify_token(otp_code):
-                verified = True
-                break
+
+        verified = any(
+            device.verify_token(otp_code)
+            for device in devices
+        )
+
         if verified:
+            request.session['2fa_verified'] = True
+
             AuditLog.objects.create(
                 user=request.user,
                 action='2FA Verified',
                 details='Successful 2FA verification'
             )
-            request.session['2fa_verified'] = True
-            return JsonResponse({'status': 'success', 'redirect': '/admindashboard/'})
-        else:
-            AuditLog.objects.create(
-                user=request.user,
-                action='2FA Failed',
-                details='Failed 2FA verification attempt'
-            )
-            return render(request, 'core/two_factor_verify.html', {'error': 'Invalid OTP code', 'logo_base64': settings.LOGO_BASE64})
-    
-    return render(request, 'core/two_factor_verify.html', {'logo_base64': settings.LOGO_BASE64})
 
+            return JsonResponse({
+                'status': 'success',
+                'redirect': reverse('admindashboard')
+            })
+
+        AuditLog.objects.create(
+            user=request.user,
+            action='2FA Failed',
+            details='Failed 2FA verification attempt'
+        )
+
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Invalid OTP code'
+        })
+
+    return render(
+        request,
+        'core/two_factor_verify.html',
+        {
+            'logo_base64': settings.LOGO_BASE64
+        }
+    )
+    
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def feature_portfolio(request, portfolio_id):

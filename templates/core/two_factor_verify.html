@@ -28,7 +28,8 @@
     {% endfor %}
   {% endif %}
 
-  <form method="post">
+<div id="alert-container"></div>
+  <form id="otpForm" method="post">
     {% csrf_token %}
     <label for="otp_code" style="display:block;font-weight:600;margin-bottom:6px;font-size:.9rem;">Authenticator code</label>
     <input
@@ -56,3 +57,81 @@
   </p>
 </div>
 {% endblock %}
+
+
+<script>
+document.getElementById('otpForm').addEventListener('submit', function(e) {
+
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("{% url 'verify_admin_access' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        const alertContainer =
+            document.getElementById('alert-container');
+
+        if (data.status === 'success') {
+
+            alertContainer.innerHTML = `
+                <div style="
+                    background:#f0fff4;
+                    border:1px solid #c6f0d0;
+                    color:#1e7e34;
+                    padding:12px;
+                    border-radius:6px;
+                    margin-bottom:16px;
+                ">
+                    ✅ Verification successful. Redirecting...
+                </div>
+            `;
+
+            setTimeout(function() {
+                window.location.href = data.redirect;
+            }, 1500);
+
+        } else {
+
+            alertContainer.innerHTML = `
+                <div style="
+                    background:#fff0f0;
+                    border:1px solid #f5c6c6;
+                    color:#c0392b;
+                    padding:12px;
+                    border-radius:6px;
+                    margin-bottom:16px;
+                ">
+                    ⚠️ ${data.message}
+                </div>
+            `;
+        }
+
+    })
+    .catch(error => {
+
+        document.getElementById('alert-container').innerHTML = `
+            <div style="
+                background:#fff0f0;
+                border:1px solid #f5c6c6;
+                color:#c0392b;
+                padding:12px;
+                border-radius:6px;
+                margin-bottom:16px;
+            ">
+                ⚠️ Server error. Please try again.
+            </div>
+        `;
+
+        console.error(error);
+    });
+
+});
+</script>
