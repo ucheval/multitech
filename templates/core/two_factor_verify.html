@@ -1,27 +1,58 @@
-{% extends 'core/base.html' %}
-{% load static %}
-{% block title %}Verify Two-Factor Authentication - MultiTechSpace{% endblock %}
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
+{% extends "core/base.html" %}
+{% block title %}Verify Identity{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h2>Verify Two-Factor Authentication</h2>
-    <div class="card">
-        <div class="card-body">
-            <p>Enter the OTP code from your authenticator app.</p>
-            {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endif %}
-            <form method="post" action="{% url 'verify_admin_access' %}">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="otp_code" class="form-label">OTP Code</label>
-                    <input type="text" name="otp_code" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Verify</button>
-            </form>
-        </div>
+<div class="auth-container" style="max-width:420px;margin:60px auto;padding:32px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.08);">
+
+  <div style="text-align:center;margin-bottom:24px;">
+    {% if logo_base64 %}
+      <img src="data:image/png;base64,{{ logo_base64 }}" alt="Logo" style="height:48px;margin-bottom:16px;">
+    {% endif %}
+    <h2 style="font-size:1.4rem;font-weight:700;color:#1a1a2e;">Two-Factor Verification</h2>
+    <p style="color:#666;font-size:.95rem;margin-top:8px;">
+      Open your authenticator app and enter the current 6-digit code.
+    </p>
+  </div>
+
+  {% if error %}
+    <div style="background:#fff0f0;border:1px solid #f5c6c6;color:#c0392b;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
+      ⚠️ {{ error }}
     </div>
+  {% endif %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div style="background:#f0fff4;border:1px solid #c6f0d0;color:#1e7e34;padding:12px;border-radius:6px;margin-bottom:16px;font-size:.9rem;">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="otp_code" style="display:block;font-weight:600;margin-bottom:6px;font-size:.9rem;">Authenticator code</label>
+    <input
+      type="text"
+      id="otp_code"
+      name="otp_code"
+      maxlength="6"
+      inputmode="numeric"
+      pattern="[0-9]{6}"
+      autocomplete="one-time-code"
+      placeholder="000000"
+      required
+      autofocus
+      style="width:100%;padding:12px;font-size:1.4rem;letter-spacing:.4rem;text-align:center;border:1px solid #ddd;border-radius:8px;margin-bottom:16px;box-sizing:border-box;"
+    >
+    <button
+      type="submit"
+      style="width:100%;padding:13px;background:#1a1a2e;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;">
+      Verify
+    </button>
+  </form>
+
+  <p style="text-align:center;margin-top:20px;font-size:.8rem;color:#999;">
+    Lost access to your authenticator? Contact your system administrator.
+  </p>
 </div>
 {% endblock %}

@@ -41,50 +41,62 @@ def register(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Username already exists.')
                 return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-            
+ 
+            # save() creates the User → signal fires → Profile auto-created
             user = form.save()
             user.email = form.cleaned_data['email']
             user.save()
-            
-            Profile.objects.create(
-                user=user,
-                user_type=form.cleaned_data['user_type'],
-                profile_picture=form.cleaned_data.get('profile_picture'),
-                mobile_number=form.cleaned_data.get('mobile_number', ''),
-                country=form.cleaned_data.get('country', ''),
-                onboarding_quiz_completed=(form.cleaned_data['user_type'] != 'student'),
-                facilitator_profile_completed=(form.cleaned_data['user_type'] != 'facilitator')
-            )
+ 
+            # Now update the profile the signal created
+            profile = user.profile
+            profile.user_type = form.cleaned_data['user_type']
+            profile.mobile_number = form.cleaned_data.get('mobile_number', '')
+            profile.country = form.cleaned_data.get('country', '')
+            profile.onboarding_quiz_completed = (form.cleaned_data['user_type'] != 'student')
+            profile.facilitator_profile_completed = (form.cleaned_data['user_type'] != 'facilitator')
+            if form.cleaned_data.get('profile_picture'):
+                profile.profile_picture = form.cleaned_data['profile_picture']
+            profile.save()
+ 
             login(request, user)
             messages.success(request, 'Registration successful.')
-            return redirect('onboarding_quiz')
+ 
+            if form.cleaned_data['user_type'] == 'student':
+                return redirect('onboarding_quiz')
+            return redirect('facilitator_application')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
         form = CustomRegistrationForm()
     return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-
 @ratelimit(key='ip', rate='5/m', block=True)
 def user_login(request):
     next_url = request.GET.get('next')
     if request.user.is_authenticated:
         return redirect(next_url or 'student_dashboard')
-    
+ 
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password']
+            )
             if user:
                 login(request, user)
                 AuditLog.objects.create(user=user, action='login', details='User logged in')
+ 
+                # Superusers must pass OTP before reaching admin dashboard
+                if user.is_superuser:
+                    return redirect('two_factor_setup')   # redirects to verify if device exists
+ 
                 return redirect(next_url or 'student_dashboard')
             messages.error(request, 'Invalid username or password.')
         else:
             messages.error(request, 'Invalid input.')
     else:
         form = AuthenticationForm()
-    return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
-def create_profile(request):
+    return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})def create_profile(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
     
@@ -1093,8 +1105,15 @@ def approve_salary(request, submission_id):
 def two_factor_setup(request):
     if not request.user.is_superuser:
         return redirect('student_dashboard')
-    
-    device, created = TOTPDevice.objects.get_or_create(user=request.user, name='default')
+ 
+    device, created = TOTPDevice.objects.get_or_create(
+        user=request.user, name='default'
+    )
+ 
+    # Already confirmed — skip setup, go to verification
+    if not created and device.confirmed:
+        return redirect('verify_admin_access')
+ 
     if request.method == 'POST':
         otp_code = request.POST.get('otp_code')
         if device.verify_token(otp_code):
@@ -1103,28 +1122,30 @@ def two_factor_setup(request):
             Notification.objects.create(
                 user=request.user,
                 type='general',
-                message='Two-Factor Authentication has been enabled.'
+                message='Two-Factor Authentication has been enabled on your account.'
             )
             AuditLog.objects.create(
                 user=request.user,
                 action='2FA Setup',
                 details='2FA enabled for admin account'
             )
-            return redirect('verify_admin_access')
+            messages.success(request, '2FA enabled successfully. You are now verified.')
+            request.session['2fa_verified'] = True
+            return redirect('admindashboard')
         else:
+            messages.error(request, 'Invalid OTP code. Please try again.')
             return render(request, 'core/two_factor_setup.html', {
                 'qr_code_url': get_qr_code_url(request.user, device),
                 'totp_secret': device.config_url.split('secret=')[1].split('&')[0],
                 'error': 'Invalid OTP code',
                 'logo_base64': settings.LOGO_BASE64
             })
-    
+ 
     return render(request, 'core/two_factor_setup.html', {
         'qr_code_url': get_qr_code_url(request.user, device),
         'totp_secret': device.config_url.split('secret=')[1].split('&')[0],
         'logo_base64': settings.LOGO_BASE64
     })
-
 def get_qr_code_url(user, device):
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(device.config_url)
