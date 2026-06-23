@@ -96,7 +96,17 @@ def user_login(request):
             messages.error(request, 'Invalid input.')
     else:
         form = AuthenticationForm()
-    return render(request, 'core/login.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})def create_profile(request):
+    return render(
+    request,
+    'core/login.html',
+    {
+        'form': form,
+        'logo_base64': settings.LOGO_BASE64
+    }
+)
+
+
+def create_profile(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
     
