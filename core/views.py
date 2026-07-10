@@ -1807,7 +1807,7 @@ def create_course(request):
                 Notification.objects.bulk_create(notifications)
                 
                 messages.success(request, f"Course '{course.title}' created successfully.")
-                return redirect('admin_dashboard')
+                return redirect('admindashboard')
             except Exception as e:
                 logger.error(f"Failed to create course: {str(e)}")
                 messages.error(request, f"An error occurred: {str(e)}")
