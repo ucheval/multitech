@@ -62,9 +62,23 @@ def register(request):
  
             login(request, user)
             messages.success(request, 'Registration successful.')
- 
+
+            if getattr(form, 'profile_picture_rejected', False):
+                messages.warning(
+                    request,
+                    "We couldn't use the photo you uploaded (unsupported or damaged file), "
+                    "so your account was created without one. You can add a profile picture "
+                    "any time from Edit Profile."
+                )
+
+            # Students land on the dashboard immediately; the onboarding quiz is offered
+            # there as a dismissible prompt (see student_dashboard) rather than a gate,
+            # so a first-time student can see the platform right away. The welcome
+            # LiveSession is reached separately (e.g. live_session page), and is visible
+            # to everyone because it's marked is_open_to_all=True in admin — no
+            # enrollment or payment needed for that.
             if form.cleaned_data['user_type'] == 'student':
-                return redirect('onboarding_quiz')
+                return redirect('student_dashboard')
             return redirect('facilitator_application')
         else:
             messages.error(request, 'Please correct the errors below.')
@@ -155,13 +169,20 @@ def create_profile(request):
                 )
                 logger.info(f"Created profile for {request.user.username} with passcode {profile.student_passcode}")
                 messages.success(request, 'Profile created successfully.')
+                if getattr(form, 'profile_picture_rejected', False):
+                    messages.warning(
+                        request,
+                        "We couldn't use the photo you uploaded (unsupported or damaged file), "
+                        "so your profile was created without one. You can add one any time "
+                        "from Edit Profile."
+                    )
                 AuditLog.objects.create(
                     user=request.user,
                     action='Profile Created',
                     details=f"User {request.user.username} created profile as {form.cleaned_data['user_type']}"
                 )
-                if form.cleaned_data['user_type'] == 'student' and not form.cleaned_data['course']:
-                    return redirect('onboarding_quiz')
+                # Dashboard first, always — onboarding quiz is a dismissible prompt there,
+                # not a gate a student must clear before seeing anything.
                 return redirect('student_dashboard')
             except Exception as e:
                 logger.error(f"Failed to create profile for {request.user.username}: {str(e)}")
@@ -344,6 +365,47 @@ def course_list(request):
         enrolled_course_ids = CourseEnrollment.objects.filter(user=request.user).values_list('course_id', flat=True)
     return render(request, 'core/course_list.html', {'courses': courses, 'enrolled_course_ids': enrolled_course_ids, 'logo_base64': settings.LOGO_BASE64})
 
+def _assign_cohort(user, course):
+    """Place `user` into an open cohort for `course`, creating a new cohort
+    once the current one hits 15 students. Returns the Cohort."""
+    front_end_keywords = ['HTML', 'CSS', 'JavaScript', 'React', 'Frontend', 'Front-end', 'Web Development', 'UI', 'UX']
+    back_end_keywords = ['Python', 'Django', 'Node', 'Backend', 'Back-end', 'Database', 'API']
+    course_title_lower = course.title.lower()
+    if any(keyword.lower() in course_title_lower for keyword in front_end_keywords):
+        cohort_type = 'Front-end'
+    elif any(keyword.lower() in course_title_lower for keyword in back_end_keywords):
+        cohort_type = 'Back-end'
+    else:
+        cohort_type = 'General'
+    logger.info(f"Course {course.title} assigned cohort type: {cohort_type}")
+
+    latest_cohort = Cohort.objects.filter(
+        course=course,
+        name__startswith=f"{cohort_type} Cohort"
+    ).order_by('-name').first()
+
+    if not latest_cohort or latest_cohort.students.count() >= 15:
+        if latest_cohort:
+            try:
+                last_number = int(latest_cohort.name.split()[-1])
+                new_number = last_number + 1
+            except ValueError:
+                new_number = 1
+        else:
+            new_number = 1
+        cohort_name = f"{cohort_type} Cohort {new_number:02d}"
+        latest_cohort = Cohort.objects.create(
+            course=course,
+            name=cohort_name,
+            whatsapp_link=f"https://chat.whatsapp.com/{cohort_name.replace(' ', '_')}_placeholder"
+        )
+        logger.info(f"Created new cohort {cohort_name} for course {course.title} with placeholder WhatsApp link")
+
+    latest_cohort.students.add(user)
+    logger.info(f"Assigned {user.username} to cohort {latest_cohort.name} for course {course.title}")
+    return latest_cohort
+
+
 @login_required
 def enroll_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -359,41 +421,7 @@ def enroll_course(request, course_id):
         defaults={'status': 'approved' if is_approved_facilitator else 'pending'}
     )
     if created:
-        front_end_keywords = ['HTML', 'CSS', 'JavaScript', 'React', 'Frontend', 'Front-end', 'Web Development', 'UI', 'UX']
-        back_end_keywords = ['Python', 'Django', 'Node', 'Backend', 'Back-end', 'Database', 'API']
-        course_title_lower = course.title.lower()
-        if any(keyword.lower() in course_title_lower for keyword in front_end_keywords):
-            cohort_type = 'Front-end'
-        elif any(keyword.lower() in course_title_lower for keyword in back_end_keywords):
-            cohort_type = 'Back-end'
-        else:
-            cohort_type = 'General'
-        logger.info(f"Course {course.title} assigned cohort type: {cohort_type}")
-        
-        latest_cohort = Cohort.objects.filter(
-            course=course,
-            name__startswith=f"{cohort_type} Cohort"
-        ).order_by('-name').first()
-        
-        if not latest_cohort or latest_cohort.students.count() >= 15:
-            if latest_cohort:
-                try:
-                    last_number = int(latest_cohort.name.split()[-1])
-                    new_number = last_number + 1
-                except ValueError:
-                    new_number = 1
-            else:
-                new_number = 1
-            cohort_name = f"{cohort_type} Cohort {new_number:02d}"
-            latest_cohort = Cohort.objects.create(
-                course=course,
-                name=cohort_name,
-                whatsapp_link=f"https://chat.whatsapp.com/{cohort_name.replace(' ', '_')}_placeholder"
-            )
-            logger.info(f"Created new cohort {cohort_name} for course {course.title} with placeholder WhatsApp link")
-        
-        latest_cohort.students.add(request.user)
-        logger.info(f"Assigned {request.user.username} to cohort {latest_cohort.name} for course {course.title}")
+        latest_cohort = _assign_cohort(request.user, course)
         
         if is_approved_facilitator:
             messages.success(request, f'You are enrolled in {course.title} as a facilitator (no payment required).')
@@ -693,6 +721,7 @@ def student_dashboard(request):
         'quiz_passed': quiz_passed,
         'is_student': user.profile.user_type == 'student',
         'student_passcode': user.profile.student_passcode if user.profile.user_type == 'student' else None,
+        'onboarding_quiz_completed': user.profile.onboarding_quiz_completed,
     }
     return render(request, 'core/student_dashboard.html', context)
 
@@ -1296,6 +1325,8 @@ def edit_portfolio(request):
             )
             messages.success(request, 'Portfolio updated successfully.')
             return redirect('student_dashboard')
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = PortfolioForm(instance=portfolio)
     return render(request, 'core/edit_portfolio.html', {'portfolio': portfolio, 'form': form, 'logo_base64': settings.LOGO_BASE64})
