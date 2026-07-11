@@ -48,7 +48,7 @@ packaging==25.0
 pandas==2.2.3
 phonenumbers==9.0.6
 phonenumberslite==9.0.5
-Pillow==9.5.0
+Pillow==10.4.0
 pillow-heif==0.18.0
 platformdirs==4.3.2
 prompt_toolkit==3.0.51
