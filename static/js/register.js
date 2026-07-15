@@ -10,66 +10,56 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     const countryCode = document.getElementById("id_country_code").value;
 
     const errors = [];
-
+    
     // Clear previous client-side errors
-    document.querySelectorAll(".text-danger").forEach((el) => (el.textContent = ""));
+    document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
 
     // Validation
     if (username === "") {
         errors.push("Username cannot be empty.");
-        document.querySelector("#id_username ~ .text-danger").textContent =
-            "Username cannot be empty.";
+        document.querySelector("#id_username").nextElementSibling.textContent = "Username cannot be empty.";
     } else if (username.length < 3) {
         errors.push("Username too short");
-        document.querySelector("#id_username ~ .text-danger").textContent =
-            "Username must be at least 3 characters.";
+        document.querySelector("#id_username").nextElementSibling.textContent = "Username must be at least 3 characters.";
     }
-
+    
     if (firstName === "") {
         errors.push("First name is required");
-        document.querySelector("#id_first_name ~ .text-danger").textContent =
-            "First name cannot be empty.";
+        document.querySelector("#id_first_name").nextElementSibling.textContent = "First name cannot be empty.";
     }
-
+    
     if (lastName === "") {
         errors.push("Last name is required");
-        document.querySelector("#id_last_name ~ .text-danger").textContent =
-            "Last name cannot be empty.";
+        document.querySelector("#id_last_name").nextElementSibling.textContent = "Last name cannot be empty.";
     }
-
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         errors.push("Invalid email format");
-        document.querySelector("#id_email ~ .text-danger").textContent =
-            "Please enter a valid email address.";
+        document.querySelector("#id_email").nextElementSibling.textContent = "Please enter a valid email address.";
     }
-
+    
     if (password.length < 8) {
-        errors.push("Password too short");
-        document.querySelector("#id_password1 ~ .text-danger").textContent =
-            "Password must be at least 8 characters.";
+        errors.push("Invalid password length");
+        document.querySelector("#id_password1").nextElementSibling.nextElementSibling.textContent = "Password must be at least 8 characters.";
     } else if (!/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
         errors.push("Password must contain letters and numbers");
-        document.querySelector("#id_password1 ~ .text-danger").textContent =
-            "Password must contain both letters and numbers.";
+        document.querySelector("#id_password1").nextElementSibling.nextElementSibling.textContent = "Password must contain both letters and numbers.";
     }
-
+    
     if (password !== password2) {
         errors.push("Passwords don't match");
-        document.querySelector("#id_password2 ~ .text-danger").textContent =
-            "Passwords do not match.";
+        document.querySelector("#id_password2").nextElementSibling.textContent = "Passwords do not match.";
     }
-
+    
     if (!/^\d{7,15}$/.test(localNumber)) {
         errors.push("Invalid phone number");
-        document.querySelector("#id_local_number").parentElement.querySelector(".text-danger").textContent =
-            "Phone number must be 7–15 digits.";
+        document.querySelector("#id_local_number").parentElement.nextElementSibling.nextElementSibling.textContent = "Phone number must be 7–15 digits.";
     }
-
+    
     if (!countryCode) {
         errors.push("Country code required");
-        document.querySelector("#id_country_code").parentElement.querySelector(".text-danger").textContent =
-            "Please select a country code.";
+        document.querySelector("#id_country_code").parentElement.nextElementSibling.nextElementSibling.textContent = "Please select a country code.";
     }
 
     if (errors.length > 0) {
@@ -77,25 +67,24 @@ document.getElementById("registrationForm").addEventListener("submit", function 
         const messagesDiv = document.getElementById("messages") || document.createElement("div");
         messagesDiv.id = "messages";
         messagesDiv.innerHTML = `
-            <div class="alert alert-danger">
-                Please fix ${errors.length} error${errors.length > 1 ? "s" : ""} before submitting.
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Please fix ${errors.length} error${errors.length > 1 ? 's' : ''} before submitting.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;
         if (!document.getElementById("messages")) {
-            document.querySelector(".register-container").insertBefore(
-                messagesDiv,
-                document.getElementById("registrationForm")
-            );
+            document.querySelector(".register-container").insertBefore(messagesDiv, document.getElementById("registrationForm"));
         }
-        submitBtn.classList.remove("loading");
+        submitBtn.classList.remove('loading');
         submitBtn.disabled = false;
-        submitBtn.textContent = "Create Account";
+        submitBtn.textContent = 'Create Account';
         return;
     }
 
-    submitBtn.classList.add("loading");
+    submitBtn.classList.add('loading');
     submitBtn.disabled = true;
-    submitBtn.textContent = "Creating Account...";
+    submitBtn.textContent = 'Creating Account...';
 });
 
 // Sync country and country_code
@@ -111,24 +100,25 @@ if (countrySelect && countryCodeSelect) {
 }
 
 // Password strength indicator
-const passwordInput = document.getElementById("id_password1");
+const passwordInput = document.getElementById('id_password1');
 if (passwordInput) {
-    passwordInput.addEventListener("input", function () {
+    passwordInput.addEventListener('input', function() {
         const password = this.value;
-        const strengthText = this.nextElementSibling.nextElementSibling;
+        // nextElementSibling is the static hint span; the text-danger span is after that.
+        const strengthText = this.nextElementSibling;
 
         if (password.length === 0) {
-            strengthText.textContent = "Password must be at least 8 characters with letters and numbers";
-            strengthText.style.color = "#6c757d"; // Neutral color
+            strengthText.textContent = 'Password must be at least 8 characters with letters and numbers';
+            strengthText.style.color = 'var(--text-primary)';
         } else if (password.length < 8) {
-            strengthText.textContent = "Password too short";
-            strengthText.style.color = "#dc3545"; // Red
+            strengthText.textContent = 'Password too short (needs 8+ characters)';
+            strengthText.style.color = 'var(--danger-text)';
         } else if (!/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
-            strengthText.textContent = "Password needs both letters and numbers";
-            strengthText.style.color = "#ffc107"; // Yellow
+            strengthText.textContent = 'Password needs both letters and numbers';
+            strengthText.style.color = 'var(--danger-text)';
         } else {
-            strengthText.textContent = "Password looks good!";
-            strengthText.style.color = "#28a745"; // Green
+            strengthText.textContent = 'Password looks good!';
+            strengthText.style.color = 'var(--success-text)';
         }
     });
 }

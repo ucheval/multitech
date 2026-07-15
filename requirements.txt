@@ -78,3 +78,5 @@ virtualenv==20.26.4
 virtualenvwrapper-win==1.2.7
 wcwidth==0.2.13
 whitenoise==6.9.0
+django-cloudinary-storage
+cloudinary
