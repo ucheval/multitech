@@ -200,6 +200,11 @@ STORAGES = {
     },
 }
 
+# django-cloudinary-storage's collectstatic command checks this old-style
+# setting directly and crashes if it's missing, even though Django 4.2+
+# actually uses STORAGES above for real behavior. Keep them in sync.
+STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+
 
 # =========================
 # EMAIL (IMPORTANT - KEEP IN ENV)
