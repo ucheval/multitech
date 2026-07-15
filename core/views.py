@@ -682,30 +682,41 @@ def student_dashboard(request):
     course_title = escape(enrollment.course.title) if enrollment else "No Course Enrolled"
     if enrollment and enrollment.status == 'pending':
         course_title += " (Pending Payment/Approval)"
-    
+
     cohort = Cohort.objects.filter(students=user).first()
     cohort_name = cohort.name if cohort else "Not Assigned"
     whatsapp_link = cohort.whatsapp_link if cohort and cohort.whatsapp_link else None
-    
+
     assignments = Assignment.objects.filter(course__courseenrollment__user=user, course__courseenrollment__status='approved')[:3]
     projects = Project.objects.filter(course__courseenrollment__user=user, course__courseenrollment__status='approved')[:3]
     assignment_submission_count = user.submission_set.filter(assignment__isnull=False).count()
-    
+
     live_sessions = LiveSession.objects.filter(course__courseenrollment__user=user, status='scheduled')[:3]
-    
+
     performance_records = PerformanceRecord.objects.filter(user=user).order_by('-month')[:5]
     performance_record_count = performance_records.count()
-    
+
     portfolio = Portfolio.objects.filter(user=user).first()
-    
+
     latest_attempt = user.quizattempt_set.filter(quiz__title__icontains='onboarding').order_by('-attempted_at').first()
     quiz_score_percentage = (latest_attempt.score / 15 * 100) if latest_attempt else 0
     quiz_passed = latest_attempt.passed if latest_attempt else False
-    
+
+    # --- NEW: quiz history log, most recent first ---
+    quiz_history = user.quizattempt_set.select_related('quiz').order_by('-attempted_at')[:10]
+
+    # --- NEW: completed work log (graded assignment/project submissions) ---
+    completed_work = (
+        user.submission_set
+        .select_related('assignment', 'project')
+        .order_by('-submitted_at')[:10]
+    )
+
     context = {
         'user': user,
         'course_title': course_title,
         'enrollment_status': enrollment.status if enrollment else None,
+        'enrollment': enrollment,
         'cohort': cohort,
         'cohort_name': cohort_name,
         'whatsapp_link': whatsapp_link,
@@ -719,6 +730,8 @@ def student_dashboard(request):
         'latest_attempt': latest_attempt,
         'quiz_score_percentage': quiz_score_percentage,
         'quiz_passed': quiz_passed,
+        'quiz_history': quiz_history,
+        'completed_work': completed_work,
         'is_student': user.profile.user_type == 'student',
         'student_passcode': user.profile.student_passcode if user.profile.user_type == 'student' else None,
         'onboarding_quiz_completed': user.profile.onboarding_quiz_completed,
