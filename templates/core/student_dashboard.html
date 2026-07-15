@@ -19,6 +19,14 @@
     --radius: 14px;
     --shadow: 0 2px 10px rgba(15, 23, 41, 0.06);
     --shadow-hover: 0 10px 24px rgba(15, 23, 41, 0.10);
+
+    --blue: #3b82f6;
+    --blue-soft: #eaf2ff;
+    --amber-soft: #fef3e2;
+    --teal-soft: #e3fbf6;
+    --violet: #8b5cf6;
+    --violet-soft: #f2ecfe;
+    --panel-tint: #eef2fb;
   }
 
   body { background: var(--paper); }
@@ -137,7 +145,6 @@
   @media (max-width: 700px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } }
 
   .stat-chip {
-    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 16px;
@@ -145,9 +152,21 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .stat-chip:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-  .stat-chip .stat-icon { font-size: 1.1rem; color: var(--amber); margin-bottom: 8px; }
+  .stat-chip .stat-icon { font-size: 1.1rem; margin-bottom: 8px; }
   .stat-chip .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 700; }
   .stat-chip .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+  .stat-chip:nth-of-type(1) { background: linear-gradient(135deg, #eaf2ff 0%, #d3e4fe 100%); border-color: rgba(59, 130, 246, 0.25); }
+  .stat-chip:nth-of-type(1) .stat-icon { color: var(--blue); }
+
+  .stat-chip:nth-of-type(2) { background: linear-gradient(135deg, #fef3e2 0%, #fbe1b4 100%); border-color: rgba(214, 143, 34, 0.3); }
+  .stat-chip:nth-of-type(2) .stat-icon { color: var(--amber-deep); }
+
+  .stat-chip:nth-of-type(3) { background: linear-gradient(135deg, #e3fbf6 0%, #bff2e6 100%); border-color: rgba(45, 212, 191, 0.3); }
+  .stat-chip:nth-of-type(3) .stat-icon { color: #0f8a72; }
+
+  .stat-chip:nth-of-type(4) { background: linear-gradient(135deg, #f2ecfe 0%, #ddccfb 100%); border-color: rgba(139, 92, 246, 0.3); }
+  .stat-chip:nth-of-type(4) .stat-icon { color: var(--violet); }
 
   /* ---------- Section titles ---------- */
   .dashboard-section { margin-bottom: 26px; }
@@ -170,7 +189,7 @@
 
   /* ---------- Cards ---------- */
   .dashboard-card {
-    background: var(--panel);
+    background: linear-gradient(135deg, #ffffff 0%, var(--panel-tint) 100%);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -188,8 +207,14 @@
   .dashboard-card .card-header i { color: var(--amber-deep); margin-right: 6px; }
   .dashboard-card .card-body { padding: 18px; }
 
+  /* Cycle each dashboard-card through a soft accent gradient so the grid feels alive, not flat */
+  .dashboard-section:nth-of-type(4n+1) .dashboard-card { background: linear-gradient(135deg, #ffffff 0%, #eaf2ff 100%); }
+  .dashboard-section:nth-of-type(4n+2) .dashboard-card { background: linear-gradient(135deg, #ffffff 0%, #fef3e2 100%); }
+  .dashboard-section:nth-of-type(4n+3) .dashboard-card { background: linear-gradient(135deg, #ffffff 0%, #e3fbf6 100%); }
+  .dashboard-section:nth-of-type(4n+4) .dashboard-card { background: linear-gradient(135deg, #ffffff 0%, #f2ecfe 100%); }
+
   .task-card {
-    background: var(--panel);
+    background: linear-gradient(135deg, #ffffff 0%, var(--panel-tint) 100%);
     border: 1px solid var(--border);
     border-radius: 12px;
     height: 100%;
