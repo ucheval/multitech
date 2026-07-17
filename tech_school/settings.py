@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
     raise Exception("SECRET_KEY is missing in environment variables")
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'techinovaedu.com',
