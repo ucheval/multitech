@@ -383,6 +383,9 @@
             <a href="/portfolio/{{ user.username }}/" target="_blank" class="portfolio-link">
                 <i class="fas fa-briefcase"></i> View Portfolio
             </a>
+            <a href="{% url 'edit_profile' %}" class="portfolio-link" style="background: var(--gradient-purple); margin-left: 0.75rem;">
+                <i class="fas fa-user-edit"></i> Edit Profile
+            </a>
         </div>
     </div>
 

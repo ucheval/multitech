@@ -7,7 +7,7 @@ from django_otp.decorators import otp_required
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from django_otp import devices_for_user
 from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
-from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm
+from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm, UserBasicInfoForm, ProfileEditForm
 from django.utils import timezone
 from django.db.models import Count, Sum, Avg
 from django.utils.html import escape
@@ -1372,12 +1372,15 @@ def portfolio_view(request, username):
     })
 @login_required
 def get_notifications(request):
-    notifications = Notification.objects.filter(user=request.user, read=False).order_by('-created_at')[:5]
+    notifications = list(Notification.objects.filter(user=request.user, read=False).order_by('-created_at')[:5])
     data = [{
         'message': n.message,
         'type': n.type,
         'created_at': n.created_at.strftime('%Y-%m-%d %H:%M:%S')
     } for n in notifications]
+    # Mark as read now that they've actually been sent to the client, so the
+    # same notification doesn't pop up again on the next page load.
+    Notification.objects.filter(id__in=[n.id for n in notifications]).update(read=True)
     return JsonResponse({'notifications': data})
 
 @login_required
@@ -1800,16 +1803,22 @@ def create_assignment(request, course_id):
 def edit_profile(request):
     profile = request.user.profile
     if request.method == 'POST':
-        form = CustomRegistrationForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            request.user.email = form.cleaned_data['email']
-            request.user.save()
+        user_form = UserBasicInfoForm(request.POST, instance=request.user)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
             messages.success(request, 'Profile updated successfully.')
             return redirect('student_dashboard')
+        messages.error(request, 'Please correct the errors below.')
     else:
-        form = CustomRegistrationForm(instance=profile, initial={'email': request.user.email})
-    return render(request, 'core/edit_profile.html', {'form': form})
+        user_form = UserBasicInfoForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=profile)
+    return render(request, 'core/edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'logo_base64': settings.LOGO_BASE64,
+    })
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)

@@ -50,6 +50,7 @@
                                     <li><a class="dropdown-item" href="{% url 'facilitator_dashboard' %}">Dashboard</a></li>
                                     <li><a class="dropdown-item" href="{% url 'facilitator_application' %}">Apply for Courses</a></li>
                                 {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
@@ -127,6 +128,9 @@
                                 <a class="nav-link" href="{% url 'change_course' %}"><i class="fas fa-exchange-alt me-2"></i> Change Course</a>
                             </li>
                             <li><a class="nav-link" href="{% url 'live_session' %}"><i class="fas fa-video me-2"></i>Join Live Classes</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit me-2"></i> Edit Profile</a>
+                            </li>
 
                         {% elif user.profile.user_type == 'facilitator' %}
                             <li class="nav-item">
@@ -145,6 +149,9 @@
                                 <a class="nav-link" href="{% url 'schedule_session' %}"><i class="fas fa-calendar-alt me-2"></i> Schedule Session</a>
                             </li>
                             <li><a href="{% url 'create_course' %}">Create Course</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit me-2"></i> Edit Profile</a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>

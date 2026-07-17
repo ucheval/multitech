@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Edit Profile - MultiTechSpace{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Edit Your Profile</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="text-center mb-4">
+                {% if user.profile.profile_picture %}
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Photo"
+                         style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #007bff;">
+                {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Photo"
+                         style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #007bff;">
+                {% endif %}
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h5 class="mb-3">Account Info</h5>
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    {{ user_form.first_name }}
+                    {% if user_form.first_name.errors %}<p class="text-danger small mb-0">{{ user_form.first_name.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    {{ user_form.last_name }}
+                    {% if user_form.last_name.errors %}<p class="text-danger small mb-0">{{ user_form.last_name.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    {{ user_form.email }}
+                    {% if user_form.email.errors %}<p class="text-danger small mb-0">{{ user_form.email.errors.0 }}</p>{% endif %}
+                </div>
+
+                <hr class="my-4">
+
+                <h5 class="mb-3">Profile Info</h5>
+                <div class="mb-3">
+                    <label class="form-label">Profile Picture</label>
+                    {{ profile_form.profile_picture }}
+                    {% if profile_form.profile_picture.errors %}<p class="text-danger small mb-0">{{ profile_form.profile_picture.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Country</label>
+                    {{ profile_form.country }}
+                    {% if profile_form.country.errors %}<p class="text-danger small mb-0">{{ profile_form.country.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mobile Number</label>
+                    {{ profile_form.mobile_number }}
+                    <div class="form-text">Include country code, e.g., +2341234567890</div>
+                    {% if profile_form.mobile_number.errors %}<p class="text-danger small mb-0">{{ profile_form.mobile_number.errors.0 }}</p>{% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Apply Bootstrap form-control styling to Django's rendered widgets
+    document.querySelectorAll('form input, form select').forEach(function (el) {
+        if (el.type !== 'checkbox' && el.type !== 'submit') {
+            el.classList.add('form-control');
+        }
+    });
+</script>
+{% endblock %}

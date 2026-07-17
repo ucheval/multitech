@@ -49,6 +49,28 @@ for country in sorted(pycountry.countries, key=lambda c: c.name):
         # Skip countries without valid phone numbers
         continue
 
+class UserBasicInfoForm(forms.ModelForm):
+    """Editable account info that lives on the User model."""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+
+class ProfileEditForm(forms.ModelForm):
+    """
+    Edit-profile form for an *existing* account. Deliberately separate from
+    CustomRegistrationForm: that form is a UserCreationForm (requires
+    password1/password2 and targets the User model), so reusing it here with
+    a Profile instance crashes on save() (Profile has no set_password).
+    """
+    class Meta:
+        model = Profile
+        fields = ['profile_picture', 'country', 'mobile_number']
+        widgets = {
+            'country': forms.Select(choices=COUNTRY_CHOICES),
+        }
+
+
 class CustomRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
