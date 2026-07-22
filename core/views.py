@@ -25,6 +25,7 @@ from django_ratelimit.decorators import ratelimit
 from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
 from django.urls import reverse
+from django.db import transaction
 
 
 logger = logging.getLogger(__name__)
@@ -38,54 +39,82 @@ logger = logging.getLogger(__name__)
 def register(request):
     if request.method == 'POST':
         form = CustomRegistrationForm(request.POST, request.FILES)
+
         if form.is_valid():
             username = form.cleaned_data['username']
+
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Username already exists.')
-                return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
- 
-            # save() creates the User → signal fires → Profile auto-created
-            user = form.save()
-            user.email = form.cleaned_data['email']
-            user.save()
- 
-            # Now update the profile the signal created
-            profile = user.profile
-            profile.user_type = form.cleaned_data['user_type']
-            profile.mobile_number = form.cleaned_data.get('mobile_number', '')
-            profile.country = form.cleaned_data.get('country', '')
-            profile.onboarding_quiz_completed = (form.cleaned_data['user_type'] != 'student')
-            profile.facilitator_profile_completed = (form.cleaned_data['user_type'] != 'facilitator')
-            if form.cleaned_data.get('profile_picture'):
-                profile.profile_picture = form.cleaned_data['profile_picture']
-            profile.save()
- 
-            login(request, user)
-            messages.success(request, 'Registration successful.')
-
-            if getattr(form, 'profile_picture_rejected', False):
-                messages.warning(
+                return render(
                     request,
-                    "We couldn't use the photo you uploaded (unsupported or damaged file), "
-                    "so your account was created without one. You can add a profile picture "
-                    "any time from Edit Profile."
+                    'core/register.html',
+                    {
+                        'form': form,
+                        'logo_base64': settings.LOGO_BASE64
+                    }
                 )
 
-            # Students land on the dashboard immediately; the onboarding quiz is offered
-            # there as a dismissible prompt (see student_dashboard) rather than a gate,
-            # so a first-time student can see the platform right away. The welcome
-            # LiveSession is reached separately (e.g. live_session page), and is visible
-            # to everyone because it's marked is_open_to_all=True in admin — no
-            # enrollment or payment needed for that.
-            if form.cleaned_data['user_type'] == 'student':
-                return redirect('student_dashboard')
-            return redirect('facilitator_application')
+            try:
+                with transaction.atomic():
+                    # Create the User (signal creates the Profile)
+                    user = form.save()
+                    user.email = form.cleaned_data['email']
+                    user.save()
+
+                    # Update the auto-created Profile
+                    profile = user.profile
+                    profile.user_type = form.cleaned_data['user_type']
+                    profile.mobile_number = form.cleaned_data.get('mobile_number', '')
+                    profile.country = form.cleaned_data.get('country', '')
+                    profile.onboarding_quiz_completed = (
+                        form.cleaned_data['user_type'] != 'student'
+                    )
+                    profile.facilitator_profile_completed = (
+                        form.cleaned_data['user_type'] != 'facilitator'
+                    )
+
+                    if form.cleaned_data.get('profile_picture'):
+                        profile.profile_picture = form.cleaned_data['profile_picture']
+
+                    profile.save()
+
+                # Only log in after everything has succeeded
+                login(request, user)
+                messages.success(request, 'Registration successful.')
+
+                if getattr(form, 'profile_picture_rejected', False):
+                    messages.warning(
+                        request,
+                        "We couldn't use the photo you uploaded (unsupported or damaged file), "
+                        "so your account was created without one. You can add a profile picture "
+                        "any time from Edit Profile."
+                    )
+
+                if form.cleaned_data['user_type'] == 'student':
+                    return redirect('student_dashboard')
+
+                return redirect('facilitator_application')
+
+            except Exception:
+                messages.error(
+                    request,
+                    "Registration could not be completed. Please check your details and try again."
+                )
+
         else:
             messages.error(request, 'Please correct the errors below.')
+
     else:
         form = CustomRegistrationForm()
-    return render(request, 'core/register.html', {'form': form, 'logo_base64': settings.LOGO_BASE64})
 
+    return render(
+        request,
+        'core/register.html',
+        {
+            'form': form,
+            'logo_base64': settings.LOGO_BASE64
+        }
+    )
 
 def user_login(request):
 
