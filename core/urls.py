@@ -49,7 +49,7 @@ urlpatterns = [
     path('assign_student_leader/<int:cohort_id>/', views.assign_student_leader, name='assign_student_leader'),
     path('get_notifications/', views.get_notifications, name='get_notifications'),
     path('apply_for_course/', views.apply_for_course, name='apply_for_course'),
-    path('create_profile/', views.create_profile, name='create_profile'),  # Added
+    path('create_profile/', views.create_profile, name='create_profile'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='core/password_reset.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='core/password_reset_done.html'), name='password_reset_done'),

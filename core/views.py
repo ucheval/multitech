@@ -36,6 +36,24 @@ from .forms import CustomRegistrationForm, CourseChangeForm
 
 logger = logging.getLogger(__name__)
 
+# --- 2FA ENFORCEMENT ---
+from functools import wraps
+
+def admin_2fa_required(view_func):
+    """
+    Requires the logged-in superuser to have completed 2FA verification
+    in THIS session before accessing the wrapped view. Use this on every
+    superuser-only admin view instead of checking session keys by hand.
+    """
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if request.session.get('2fa_verified_user') != request.user.id:
+            return redirect('verify_admin_access')
+        if not request.session.get('2fa_verified'):
+            return redirect('verify_admin_access')
+        return view_func(request, *args, **kwargs)
+    return _wrapped
+
 # --- AUTHENTICATION VIEWS ---
 
 def register(request):
@@ -327,6 +345,7 @@ def change_course(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
+@admin_2fa_required
 def manage_facilitators(request):
     applications = FacilitatorApplication.objects.all()
     if request.method == 'POST':
@@ -471,9 +490,7 @@ def enroll_course(request, course_id):
 
 @login_required
 @user_passes_test(lambda u: u.is_staff or u.is_superuser)
-# @otp_required
-@login_required
-@user_passes_test(lambda u: u.is_staff or u.is_superuser)
+@admin_2fa_required
 def manage_cohorts(request):
     # Fetch all cohorts once
     cohorts = Cohort.objects.all().select_related('course').prefetch_related('students').order_by('name')
@@ -960,16 +977,8 @@ def inbox(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
+@admin_2fa_required
 def admin_dashboard(request):
-
-    # 🔐 ensure same logged-in user owns this 2FA session
-    if request.session.get('2fa_verified_user') != request.user.id:
-        return redirect('verify_admin_access')
-
-    # 🔐 ensure 2FA was completed
-    if not request.session.get('2fa_verified'):
-        return redirect('verify_admin_access')
-
     slips = PaymentSlip.objects.filter(status='pending').order_by('-uploaded_at')
     salary_submissions = SalarySubmission.objects.filter(status='pending').order_by('-submitted_at')
     portfolios = Portfolio.objects.all()
@@ -1868,6 +1877,7 @@ def edit_profile(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
+@admin_2fa_required
 def create_course(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
