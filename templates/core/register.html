@@ -365,7 +365,7 @@ button:hover:not(:disabled) {
         <div class="input-box">
           <label>Password</label>
           {{ form.password1 }}
-          <span>Password must be at least 8 characters with letters and numbers</span>
+          <span>Password must contain letters and numbers</span>
           <span class="text-danger"></span>
           {% if form.password1.errors %}
           <p class="error">{{ form.password1.errors.0 }}</p>
