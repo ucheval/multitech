@@ -75,64 +75,172 @@ class CustomRegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     email = forms.EmailField(required=True)
-    user_type = forms.ChoiceField(choices=Profile.USER_TYPES, required=True, label="Registering as")
-    country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=True, label="Country of Residence")
-    country_code = forms.ChoiceField(choices=COUNTRY_CODE_CHOICES, required=True, label="Country Code")
-    local_number = forms.CharField(max_length=15, required=True, label="Phone Number")
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), required=False, label="Course (optional)")
-    profile_picture = forms.ImageField(required=False, label="Profile Picture (optional)")
+
+    user_type = forms.ChoiceField(
+        choices=Profile.USER_TYPES,
+        required=True,
+        label="Registering as"
+    )
+
+    country = forms.ChoiceField(
+        choices=COUNTRY_CHOICES,
+        required=True,
+        label="Country of Residence"
+    )
+
+    country_code = forms.ChoiceField(
+        choices=COUNTRY_CODE_CHOICES,
+        required=True,
+        label="Country Code"
+    )
+
+    local_number = forms.CharField(
+        max_length=15,
+        required=True,
+        label="Phone Number"
+    )
+
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        required=False,
+        label="Course (optional)"
+    )
+
+    profile_picture = forms.ImageField(
+        required=False,
+        label="Profile Picture (optional)"
+    )
+
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'user_type', 'country', 'country_code', 'local_number', 'course', 'profile_picture']
-        
-        
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password1',
+            'password2',
+            'user_type',
+            'country',
+            'country_code',
+            'local_number',
+            'course',
+            'profile_picture'
+        ]
+
+
     def clean_password1(self):
         password = self.cleaned_data.get('password1')
+
         if not any(c.isalpha() for c in password) or not any(c.isdigit() for c in password):
-            raise forms.ValidationError("Password must contain both letters and numbers.")
+            raise forms.ValidationError(
+                "Password must contain both letters and numbers."
+            )
+
         return password
+
+
+    def clean_profile_picture(self):
+        image = self.cleaned_data.get('profile_picture')
+
+        if image:
+
+            # Maximum file size: 5MB
+            if image.size > 5 * 1024 * 1024:
+                raise forms.ValidationError(
+                    "Profile picture must be less than 5MB."
+                )
+
+
+            # Allowed image formats
+            if image.content_type not in [
+                'image/jpeg',
+                'image/png',
+                'image/webp'
+            ]:
+                raise forms.ValidationError(
+                    "Only JPG, PNG, and WEBP images are allowed."
+                )
+
+        return image
+
 
     def clean(self):
         cleaned_data = super().clean()
+
         country = cleaned_data.get('country')
         country_code = cleaned_data.get('country_code')
         local_number = cleaned_data.get('local_number')
 
-        # Ensure country and country_code match
+
+        # Ensure country and country code match
         if country and country_code and country != country_code:
-            raise forms.ValidationError("Country and country code must match.")
+            raise forms.ValidationError(
+                "Country and country code must match."
+            )
+
 
         # Validate phone number
         if country_code and local_number:
-            # Find the phone code for the country_code
+
             phone_code = None
+
             for code, name in COUNTRY_CODE_CHOICES:
                 if code == country_code:
                     phone_code = name.split('(')[1].strip(')')
                     break
+
+
             if phone_code:
+
                 try:
-                    phone_number = parse(f"{phone_code}{local_number}", None)
+                    phone_number = parse(
+                        f"{phone_code}{local_number}",
+                        None
+                    )
+
                     if not is_valid_number(phone_number):
-                        raise forms.ValidationError("Invalid phone number.")
-                    cleaned_data['mobile_number'] = format_number(phone_number, PhoneNumberFormat.E164)
+                        raise forms.ValidationError(
+                            "Invalid phone number."
+                        )
+
+
+                    cleaned_data['mobile_number'] = format_number(
+                        phone_number,
+                        PhoneNumberFormat.E164
+                    )
+
+
                 except phonenumbers.NumberParseException:
-                    raise forms.ValidationError("Invalid phone number format.")
+                    raise forms.ValidationError(
+                        "Invalid phone number format."
+                    )
+
+
             else:
-                raise forms.ValidationError("Invalid country code.")
+                raise forms.ValidationError(
+                    "Invalid country code."
+                )
+
 
         return cleaned_data
 
+
     def save(self, commit=True):
+
         user = super().save(commit=False)
+
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
+
+
         if commit:
             user.save()
-        return user
 
+
+        return user
 class PaymentSlipForm(forms.ModelForm):
     class Meta:
         model = PaymentSlip
