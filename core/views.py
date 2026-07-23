@@ -28,6 +28,8 @@ from django.urls import reverse
 from django.db import transaction
 
 
+
+
 logger = logging.getLogger(__name__)
 from .models import Course, PaymentSlip, LiveSession, Cohort, AuditLog, Portfolio, Notification, FacilitatorApplication, Profile, CourseEnrollment, PerformanceRecord, Assignment, Project, SessionAttendance
 from .forms import CustomRegistrationForm, CourseChangeForm
@@ -1270,47 +1272,62 @@ def approve_salary(request, submission_id):
 def two_factor_setup(request):
     if not request.user.is_superuser:
         return redirect('student_dashboard')
- 
-    device, created = TOTPDevice.objects.get_or_create(
-        user=request.user, name='default'
-    )
- 
-    # Already confirmed — skip setup, go to verification
-    if not created and device.confirmed:
-        return redirect('verify_admin_access')
- 
-    if request.method == 'POST':
-        otp_code = request.POST.get('otp_code')
+
+    # If user requested a reset, or no device exists, create a brand-new one
+    if request.GET.get("reset") == "1" or not TOTPDevice.objects.filter(user=request.user).exists():
+        TOTPDevice.objects.filter(user=request.user).delete()
+
+        device = TOTPDevice.objects.create(
+            user=request.user,
+            name="default",
+            confirmed=False,
+        )
+    else:
+        device = TOTPDevice.objects.get(user=request.user, name="default")
+
+    # If already confirmed, don't allow setup again unless reset=1
+    if device.confirmed and request.GET.get("reset") != "1":
+        return redirect("verify_admin_access")
+
+    if request.method == "POST":
+        otp_code = request.POST.get("otp_code")
+
         if device.verify_token(otp_code):
             device.confirmed = True
             device.save()
+
             Notification.objects.create(
                 user=request.user,
-                type='general',
-                message='Two-Factor Authentication has been enabled on your account.'
+                type="general",
+                message="Two-Factor Authentication has been enabled on your account."
             )
+
             AuditLog.objects.create(
                 user=request.user,
-                action='2FA Setup',
-                details='2FA enabled for admin account'
+                action="2FA Setup",
+                details="2FA enabled for admin account"
             )
-            messages.success(request, '2FA enabled successfully. You are now verified.')
-            request.session['2fa_verified'] = True
-            return redirect('admindashboard')
-        else:
-            messages.error(request, 'Invalid OTP code. Please try again.')
-            return render(request, 'core/two_factor_setup.html', {
-                'qr_code_url': get_qr_code_url(request.user, device),
-                'totp_secret': device.config_url.split('secret=')[1].split('&')[0],
-                'error': 'Invalid OTP code',
-                'logo_base64': settings.LOGO_BASE64
-            })
- 
-    return render(request, 'core/two_factor_setup.html', {
-        'qr_code_url': get_qr_code_url(request.user, device),
-        'totp_secret': device.config_url.split('secret=')[1].split('&')[0],
-        'logo_base64': settings.LOGO_BASE64
-    })
+
+            request.session["2fa_verified"] = True
+
+            messages.success(
+                request,
+                "2FA has been configured successfully."
+            )
+
+            return redirect("admindashboard")
+
+        messages.error(request, "Invalid verification code.")
+
+    return render(
+        request,
+        "core/two_factor_setup.html",
+        {
+            "qr_code_url": get_qr_code_url(request.user, device),
+            "totp_secret": device.config_url.split("secret=")[1].split("&")[0],
+            "logo_base64": settings.LOGO_BASE64,
+        },
+    )
 def get_qr_code_url(user, device):
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(device.config_url)
