@@ -1,13 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from phonenumber_field.formfields import PhoneNumberField
 from .models import Course, PaymentSlip, Portfolio, Profile, OnboardingQuizResponse
-import re
 import pycountry
 import phonenumbers
-from phonenumbers import PhoneNumberFormat, parse, format_number, is_valid_number, region_code_for_country_code
-from .models import Course
+from phonenumbers import PhoneNumberFormat, parse, format_number, is_valid_number
+
 
 class CourseForm(forms.ModelForm):
     class Meta:
@@ -72,8 +70,11 @@ class ProfileEditForm(forms.ModelForm):
 
 
 class CustomRegistrationForm(UserCreationForm):
+
     first_name = forms.CharField(max_length=30, required=True)
+
     last_name = forms.CharField(max_length=30, required=True)
+
     email = forms.EmailField(required=True)
 
     user_type = forms.ChoiceField(
@@ -131,76 +132,104 @@ class CustomRegistrationForm(UserCreationForm):
 
 
     def clean_password1(self):
+
         password = self.cleaned_data.get('password1')
 
-        if not any(c.isalpha() for c in password) or not any(c.isdigit() for c in password):
-            raise forms.ValidationError(
-                "Password must contain both letters and numbers."
-            )
+        if password:
+
+            if not any(c.isalpha() for c in password):
+                raise forms.ValidationError(
+                    "Password must contain letters."
+                )
+
+            if not any(c.isdigit() for c in password):
+                raise forms.ValidationError(
+                    "Password must contain numbers."
+                )
 
         return password
 
 
+
     def clean_profile_picture(self):
+
         image = self.cleaned_data.get('profile_picture')
+
 
         if image:
 
-            # Maximum file size: 5MB
+            # Maximum 5MB
             if image.size > 5 * 1024 * 1024:
                 raise forms.ValidationError(
                     "Profile picture must be less than 5MB."
                 )
 
 
-            # Allowed image formats
-            if image.content_type not in [
+            allowed = [
                 'image/jpeg',
+                'image/jpg',
                 'image/png',
                 'image/webp'
-            ]:
+            ]
+
+
+            if image.content_type not in allowed:
+
                 raise forms.ValidationError(
-                    "Only JPG, PNG, and WEBP images are allowed."
+                    "Only JPG, PNG and WEBP images are allowed."
                 )
+
 
         return image
 
 
+
     def clean(self):
+
         cleaned_data = super().clean()
+
 
         country = cleaned_data.get('country')
         country_code = cleaned_data.get('country_code')
         local_number = cleaned_data.get('local_number')
 
 
-        # Ensure country and country code match
         if country and country_code and country != country_code:
+
             raise forms.ValidationError(
                 "Country and country code must match."
             )
 
 
-        # Validate phone number
+
         if country_code and local_number:
+
 
             phone_code = None
 
+
             for code, name in COUNTRY_CODE_CHOICES:
+
                 if code == country_code:
+
                     phone_code = name.split('(')[1].strip(')')
+
                     break
+
 
 
             if phone_code:
 
                 try:
+
                     phone_number = parse(
                         f"{phone_code}{local_number}",
                         None
                     )
 
+
                     if not is_valid_number(phone_number):
+
                         raise forms.ValidationError(
                             "Invalid phone number."
                         )
@@ -213,12 +242,14 @@ class CustomRegistrationForm(UserCreationForm):
 
 
                 except phonenumbers.NumberParseException:
+
                     raise forms.ValidationError(
                         "Invalid phone number format."
                     )
 
 
             else:
+
                 raise forms.ValidationError(
                     "Invalid country code."
                 )
@@ -227,16 +258,21 @@ class CustomRegistrationForm(UserCreationForm):
         return cleaned_data
 
 
+
     def save(self, commit=True):
 
         user = super().save(commit=False)
 
+
         user.first_name = self.cleaned_data['first_name']
+
         user.last_name = self.cleaned_data['last_name']
+
         user.email = self.cleaned_data['email']
 
 
         if commit:
+
             user.save()
 
 
