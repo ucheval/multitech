@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
     raise Exception("SECRET_KEY is missing in environment variables")
 
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     'techinovaedu.com',
@@ -142,8 +142,16 @@ WSGI_APPLICATION = 'tech_school.wsgi.application'
 # DATABASE (RENDER HANDLES THIS)
 # =========================
 
+# =========================
+# DATABASE (RENDER)
+# =========================
+
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
 
 
@@ -171,15 +179,28 @@ USE_TZ = True
 # =========================
 # STATIC / MEDIA
 # =========================
-
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
 MEDIA_URL = '/media/'
-# MEDIA_ROOT is no longer used for storage now that MediaCloudinaryStorage is
-# active below, but Django still wants it defined.
+
+# Required by Django although Cloudinary stores media.
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# -------------------------
+# Cloudinary Storage
+# -------------------------
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -187,11 +208,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+
 STORAGES = {
     "default": {
-        # Render's disk is wiped on every deploy/restart, so uploaded files
-        # (profile pictures, payment slips, course materials) must live on
-        # Cloudinary instead of local disk.
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
@@ -199,10 +218,9 @@ STORAGES = {
     },
 }
 
-# django-cloudinary-storage's collectstatic command checks this old-style
-# setting directly and crashes if it's missing, even though Django 4.2+
-# actually uses STORAGES above for real behavior. Keep them in sync.
-STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+
+# Compatibility with django-cloudinary-storage
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 
 
 # =========================
@@ -240,3 +258,8 @@ if os.path.exists(logo_path):
         LOGO_BASE64 = base64.b64encode(f.read()).decode('utf-8')
 else:
     LOGO_BASE64 = ''
+    # =========================
+# DEFAULT MODEL FIELD
+# =========================
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

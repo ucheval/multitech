@@ -116,10 +116,9 @@ def register(request):
                 return redirect('facilitator_application')
 
             except Exception as e:
-                print("REGISTRATION ERROR:", repr(e))
                 messages.error(
                     request,
-                    f"Registration error: {e}"
+                    "Registration could not be completed. Please check your details and try again."
                 )
 
         else:
