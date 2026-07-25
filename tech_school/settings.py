@@ -43,40 +43,26 @@ CSRF_TRUSTED_ORIGINS = [
 # SESSION & COOKIE SECURITY
 # =========================
 
+SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 1800
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
+CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_NAME = "__Host-csrftoken"
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
-
-# The settings below only make sense once the site is actually served over
-# HTTPS (Render, behind its proxy). Left unconditional, they break local
-# development: SECURE_SSL_REDIRECT forces a redirect the dev server can't
-# fulfill (it only speaks HTTP), and the *_SECURE cookie flags make browsers
-# silently refuse to store the session/CSRF cookies over plain HTTP -- so
-# even past the redirect, login and CSRF protection would quietly fail.
-# Gating on DEBUG keeps production exactly as it was; only local dev changes.
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    CSRF_COOKIE_NAME = "__Host-csrftoken"
-
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-else:
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    CSRF_COOKIE_NAME = "csrftoken"
-    SECURE_SSL_REDIRECT = False
 
 
 # =========================
