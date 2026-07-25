@@ -26,6 +26,7 @@ from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
 from django.urls import reverse
 from django.db import transaction
+import traceback
 
 
 
@@ -131,13 +132,12 @@ def register(request):
 
                 return redirect('facilitator_application')
 
-            except Exception as e:
-                print("REGISTRATION ERROR:", e)
-
+            except Exception:
+                traceback.print_exc()
                 messages.error(
                     request,
-                    "Registration could not be completed. Please try again."
-                )
+                    "Registration could not be completed."
+                    )
 
         else:
             messages.error(
