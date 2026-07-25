@@ -7,7 +7,7 @@ from django_otp.decorators import otp_required
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from django_otp import devices_for_user
 from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
-from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm, UserBasicInfoForm, ProfileEditForm
+from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm, UserBasicInfoForm, ProfileEditForm, DiscussionPostForm
 from django.utils import timezone
 from django.db.models import Count, Sum, Avg, Q
 from django.utils.html import escape
@@ -1926,14 +1926,6 @@ def discussion_board(request, cohort_id):
         'whatsapp_link': cohort.whatsapp_link or None,
         'logo_base64': settings.LOGO_BASE64
     })
-    cohort = get_object_or_404(Cohort, id=cohort_id, students=request.user)
-    posts = DiscussionPost.objects.filter(cohort=cohort).order_by('-created_at')
-    return render(request, 'core/discussion_board.html', {
-        'cohort': cohort,
-        'posts': posts,
-        'whatsapp_link': cohort.whatsapp_link or None,
-        'logo_base64': settings.LOGO_BASE64
-    })
 @login_required
 def create_discussion_post(request, cohort_id):
     cohort = get_object_or_404(Cohort, id=cohort_id, students=request.user)
@@ -1963,7 +1955,7 @@ def create_discussion_post(request, cohort_id):
             messages.error(request, 'Please provide both title and content.')
     else:
         form = DiscussionPostForm()
-    return render(request, 'core/create_discussion', {'form': form, 'cohort': cohort, 'logo_base64': settings.LOGO_BASE64})
+    return render(request, 'core/create_discussion_post.html', {'form': form, 'cohort': cohort, 'logo_base64': settings.LOGO_BASE64})
 
 @login_required
 def add_discussion_comment(request, post_id):
