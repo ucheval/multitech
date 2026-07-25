@@ -209,56 +209,35 @@ class CustomRegistrationForm(UserCreationForm):
 
         if country_code and local_number:
 
+            # country_code's stored value is already the ISO region code
+            # (e.g. "NG", "GH", "US") -- see COUNTRY_CODE_CHOICES above.
+            # Passing it as the region lets phonenumbers apply that
+            # country's actual national dialing rules (trunk prefixes
+            # included), so a Nigerian typing "08085868316" and one typing
+            # "8085868316" both parse correctly -- unlike manually gluing
+            # the country code onto whatever was typed, which only worked
+            # for countries with no leading trunk digit to begin with.
+            try:
 
-            phone_code = None
+                phone_number = parse(local_number, country_code)
 
-
-            for code, name in COUNTRY_CODE_CHOICES:
-
-                if code == country_code:
-
-                    phone_code = name.split('(')[1].strip(')')
-
-                    break
-
-
-
-            if phone_code:
-
-                try:
-
-                    phone_number = parse(
-                        f"{phone_code}{local_number}",
-                        None
-                    )
-
-
-                    if not is_valid_number(phone_number):
-
-                        raise forms.ValidationError(
-                            "Invalid phone number."
-                        )
-
-
-                    cleaned_data['mobile_number'] = format_number(
-                        phone_number,
-                        PhoneNumberFormat.E164
-                    )
-
-
-                except phonenumbers.NumberParseException:
+                if not is_valid_number(phone_number):
 
                     raise forms.ValidationError(
-                        "Invalid phone number format."
+                        "Invalid phone number. Please enter it the way "
+                        "you'd normally dial it within your own country."
                     )
 
-
-            else:
-
-                raise forms.ValidationError(
-                    "Invalid country code."
+                cleaned_data['mobile_number'] = format_number(
+                    phone_number,
+                    PhoneNumberFormat.E164
                 )
 
+            except phonenumbers.NumberParseException:
+
+                raise forms.ValidationError(
+                    "Invalid phone number format."
+                )
 
         return cleaned_data
 
