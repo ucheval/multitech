@@ -206,14 +206,9 @@ def assign_student_to_community_cohort(user):
     """
     Automatically assigns a student to a community cohort.
 
-    - Uses the 'Tech Inova Community' course.
+    - Uses the "Tech Inova Community" course.
     - Maximum of 10 students per cohort.
-    - Creates Cohort 0001, 0002, 0003... automatically.
-
-    Wrapped in @transaction.atomic with select_for_update() so two
-    students registering at nearly the same moment can't both read
-    "9 students, one slot free" and both get added, overshooting 10.
-    The lock is held only for this function's duration.
+    - Creates Cohort 0001, 0002, ... automatically.
     """
 
     community_course, _ = Course.objects.get_or_create(
@@ -226,30 +221,28 @@ def assign_student_to_community_cohort(user):
         }
     )
 
-    # Find the first cohort with fewer than 10 students (locked for update
-    # so a concurrent call can't read the same stale count)
-    cohort = (
+    # Lock cohorts so concurrent registrations don't overfill one.
+    for cohort in (
         Cohort.objects
         .select_for_update()
         .filter(course=community_course)
-        .annotate(student_count=Count("students"))
-        .filter(student_count__lt=10)
         .order_by("name")
-        .first()
+    ):
+        if cohort.students.count() < 10:
+            cohort.students.add(user)
+            return cohort
+
+    # No cohort has space — create a new one.
+    total = Cohort.objects.filter(course=community_course).count() + 1
+
+    cohort = Cohort.objects.create(
+        name=f"Cohort {total:04d}",
+        course=community_course,
     )
-
-    if cohort is None:
-        total = Cohort.objects.filter(course=community_course).count() + 1
-
-        cohort = Cohort.objects.create(
-            name=f"Cohort {total:04d}",
-            course=community_course,
-        )
 
     cohort.students.add(user)
 
     return cohort
-
 def user_login(request):
 
     next_url = request.GET.get('next')
