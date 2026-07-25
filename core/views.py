@@ -9,14 +9,14 @@ from django_otp import devices_for_user
 from .models import Course, PaymentSlip, LiveSession, SessionRecap, Message, Cohort, CourseMaterial, AuditLog, Portfolio, Notification, Quiz, Question, Answer, QuizAttempt, Assignment, Project, Submission, DiscussionPost, DiscussionComment, PerformanceRecord, SalarySubmission, FacilitatorApplication, Profile, CourseEnrollment, SessionAttendance, OnboardingQuizResponse, PaymentDetail
 from .forms import PaymentSlipForm, PortfolioForm, CustomRegistrationForm, OnboardingQuizForm, FacilitatorProfileForm, CourseChangeForm, CourseForm, UserBasicInfoForm, ProfileEditForm
 from django.utils import timezone
-from django.db.models import Count, Sum, Avg
+from django.db.models import Count, Sum, Avg, Q
 from django.utils.html import escape
 import qrcode
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from io import BytesIO
 import base64
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
@@ -26,6 +26,7 @@ from phonenumbers import parse, is_valid_number, NumberParseException
 from decimal import Decimal, InvalidOperation
 from django.urls import reverse
 from django.db import transaction
+
 
 
 
@@ -76,19 +77,22 @@ def register(request):
 
             try:
                 with transaction.atomic():
-                    # Create the User (signal creates the Profile)
+
+                    # Create User
                     user = form.save()
                     user.email = form.cleaned_data['email']
                     user.save()
 
-                    # Update the auto-created Profile
+                    # Update Profile
                     profile = user.profile
                     profile.user_type = form.cleaned_data['user_type']
                     profile.mobile_number = form.cleaned_data.get('mobile_number', '')
                     profile.country = form.cleaned_data.get('country', '')
+
                     profile.onboarding_quiz_completed = (
                         form.cleaned_data['user_type'] != 'student'
                     )
+
                     profile.facilitator_profile_completed = (
                         form.cleaned_data['user_type'] != 'facilitator'
                     )
@@ -96,33 +100,50 @@ def register(request):
                     if form.cleaned_data.get('profile_picture'):
                         profile.profile_picture = form.cleaned_data['profile_picture']
 
+                    # Admin-visibility hint only -- not used for enrollment
+                    # or payment logic, just so staff can see early interest.
+                    profile.preferred_course = form.cleaned_data.get('course')
+
                     profile.save()
 
-                # Only log in after everything has succeeded
+                    # Automatically place every student into a community cohort
+                    if profile.user_type == "student":
+                        assign_student_to_community_cohort(user)
+
+                # Login only after everything succeeds
                 login(request, user)
-                messages.success(request, 'Registration successful.')
+
+                messages.success(
+                    request,
+                    'Registration successful. Welcome to Tech Inova!'
+                )
 
                 if getattr(form, 'profile_picture_rejected', False):
                     messages.warning(
                         request,
-                        "We couldn't use the photo you uploaded (unsupported or damaged file), "
-                        "so your account was created without one. You can add a profile picture "
-                        "any time from Edit Profile."
+                        "We couldn't use the photo you uploaded, so your account "
+                        "was created without a profile picture. You can upload one "
+                        "later from Edit Profile."
                     )
 
-                if form.cleaned_data['user_type'] == 'student':
+                if profile.user_type == 'student':
                     return redirect('student_dashboard')
 
                 return redirect('facilitator_application')
 
             except Exception as e:
+                print("REGISTRATION ERROR:", e)
+
                 messages.error(
                     request,
-                    "Registration could not be completed. Please check your details and try again."
+                    "Registration could not be completed. Please try again."
                 )
 
         else:
-            messages.error(request, 'Please correct the errors below.')
+            messages.error(
+                request,
+                "Please correct the errors below."
+            )
 
     else:
         form = CustomRegistrationForm()
@@ -135,6 +156,99 @@ def register(request):
             'logo_base64': settings.LOGO_BASE64
         }
     )
+
+# Internal placeholder course used only to host registration-time community
+# cohorts (Cohort requires a course FK). Never shown to students as a real
+# course -- other queries that list "real" courses should exclude it.
+COMMUNITY_COURSE_NAME = "Tech Inova Community"
+
+# Central place for the four community platform links, so the dashboard
+# cards, the join-tracking view, and the onboarding quiz all read from one
+# source instead of three separately-maintained dicts.
+COMMUNITY_SOCIAL_LINKS = {
+    'whatsapp': 'https://chat.whatsapp.com/REPLACE_WITH_REAL_INVITE_LINK',
+    'facebook': 'https://www.facebook.com/multitechspace',
+    'instagram': 'https://www.instagram.com/valentineucheena?igsh=MXgzZzE0Nmh1Zzg5aQ%3D%3D&utm_source=qr',
+    'linkedin': 'linkedin.com/in/valentine-uchenna-678355284',
+}
+
+_PLATFORM_FIELD_MAP = {
+    'whatsapp': 'joined_whatsapp',
+    'facebook': 'joined_facebook',
+    'instagram': 'joined_instagram',
+    'linkedin': 'joined_linkedin',
+}
+
+
+@login_required
+def join_community_platform(request, platform):
+    """
+    Dashboard 'Join WhatsApp / Follow Facebook / Instagram / LinkedIn' cards
+    hit this view. Records that the student clicked through, then redirects
+    them to the real link. Works even if they haven't taken the onboarding
+    survey yet -- lazily creates a bare OnboardingQuizResponse row so we
+    still capture the click (has_laptop/occupation/bio stay blank until
+    they actually complete the real survey).
+    """
+    if platform not in COMMUNITY_SOCIAL_LINKS:
+        raise Http404("Unknown platform")
+
+    response, _ = OnboardingQuizResponse.objects.get_or_create(user=request.user)
+    field_name = _PLATFORM_FIELD_MAP[platform]
+    setattr(response, field_name, True)
+    response.save(update_fields=[field_name])
+
+    return redirect(COMMUNITY_SOCIAL_LINKS[platform])
+
+
+@transaction.atomic
+def assign_student_to_community_cohort(user):
+    """
+    Automatically assigns a student to a community cohort.
+
+    - Uses the 'Tech Inova Community' course.
+    - Maximum of 10 students per cohort.
+    - Creates Cohort 0001, 0002, 0003... automatically.
+
+    Wrapped in @transaction.atomic with select_for_update() so two
+    students registering at nearly the same moment can't both read
+    "9 students, one slot free" and both get added, overshooting 10.
+    The lock is held only for this function's duration.
+    """
+
+    community_course, _ = Course.objects.get_or_create(
+        title=COMMUNITY_COURSE_NAME,
+        defaults={
+            "description": "General community for all Tech Inova students.",
+            "duration": 0,
+            "level": "Beginner",
+            "price": 0,
+        }
+    )
+
+    # Find the first cohort with fewer than 10 students (locked for update
+    # so a concurrent call can't read the same stale count)
+    cohort = (
+        Cohort.objects
+        .select_for_update()
+        .filter(course=community_course)
+        .annotate(student_count=Count("students"))
+        .filter(student_count__lt=10)
+        .order_by("name")
+        .first()
+    )
+
+    if cohort is None:
+        total = Cohort.objects.filter(course=community_course).count() + 1
+
+        cohort = Cohort.objects.create(
+            name=f"Cohort {total:04d}",
+            course=community_course,
+        )
+
+    cohort.students.add(user)
+
+    return cohort
 
 def user_login(request):
 
@@ -409,7 +523,7 @@ def manage_facilitators(request):
     return render(request, 'core/manage_facilitators.html', {'applications': applications, 'logo_base64': settings.LOGO_BASE64})
 
 def course_list(request):
-    courses = Course.objects.all()
+    courses = Course.objects.exclude(title=COMMUNITY_COURSE_NAME)
     enrolled_course_ids = []
     if request.user.is_authenticated:
         enrolled_course_ids = CourseEnrollment.objects.filter(user=request.user).values_list('course_id', flat=True)
@@ -628,7 +742,7 @@ def schedule_session(request):
         )
         return redirect('live_session')
 
-    courses = Course.objects.filter(facilitator=request.user) if request.user.profile.user_type == 'facilitator' else Course.objects.all()
+    courses = Course.objects.filter(facilitator=request.user) if request.user.profile.user_type == 'facilitator' else Course.objects.exclude(title=COMMUNITY_COURSE_NAME)
     return render(request, 'core/schedule_session.html', {
         'courses': courses,
         'logo_base64': settings.LOGO_BASE64
@@ -717,7 +831,7 @@ def join_session(request, session_id):
     )
     return redirect(session.zoom_url)
 def landing(request):
-    courses = Course.objects.all()
+    courses = Course.objects.exclude(title=COMMUNITY_COURSE_NAME)
     for i, course in enumerate(courses):
         course.image_path = f'images/course-{(i % 6) + 1}.jpg'
     featured_portfolios = Portfolio.objects.filter(is_public=True, is_featured=True)
@@ -727,24 +841,63 @@ def landing(request):
 def student_dashboard(request):
     user = request.user
     enrollment = CourseEnrollment.objects.filter(user=user).first()
-    course_title = escape(enrollment.course.title) if enrollment else "No Course Enrolled"
-    if enrollment and enrollment.status == 'pending':
-        course_title += " (Pending Payment/Approval)"
 
-    cohort = Cohort.objects.filter(students=user).first()
-    cohort_name = cohort.name if cohort else "Not Assigned"
-    whatsapp_link = cohort.whatsapp_link if cohort and cohort.whatsapp_link else None
+    if enrollment:
+        course_title = enrollment.course.title
+        if enrollment.status == 'pending':
+            course_title += " (Pending Payment/Approval)"
+    else:
+        course_title = "No Course Selected Yet"
+
+    community_cohort = (
+        Cohort.objects
+        .filter(students=user, course__title=COMMUNITY_COURSE_NAME)
+        .first()
+    )
+    cohort_name = community_cohort.name if community_cohort else "Waiting for Intake Assignment"
+    whatsapp_link = (
+        community_cohort.whatsapp_link
+        if community_cohort and community_cohort.whatsapp_link
+        else None
+    )
+
+    # Community platform cards (separate from the cohort-specific WhatsApp
+    # group above -- these are the general Tech Inova social channels).
+    onboarding_response = OnboardingQuizResponse.objects.filter(user=user).first()
+    social_joined = {
+        'whatsapp': bool(onboarding_response and onboarding_response.joined_whatsapp),
+        'facebook': bool(onboarding_response and onboarding_response.joined_facebook),
+        'instagram': bool(onboarding_response and onboarding_response.joined_instagram),
+        'linkedin': bool(onboarding_response and onboarding_response.joined_linkedin),
+    }
 
     assignments = Assignment.objects.filter(course__courseenrollment__user=user, course__courseenrollment__status='approved')[:3]
     projects = Project.objects.filter(course__courseenrollment__user=user, course__courseenrollment__status='approved')[:3]
     assignment_submission_count = user.submission_set.filter(assignment__isnull=False).count()
 
-    live_sessions = LiveSession.objects.filter(course__courseenrollment__user=user, status='scheduled')[:3]
+    # Open-to-all sessions are visible to every student regardless of
+    # payment (matches the free-tier "upcoming live sessions" access and
+    # the is_open_to_all convention already used in join_session below).
+    # Course-specific sessions still require an approved enrollment.
+    live_sessions = LiveSession.objects.filter(
+        Q(is_open_to_all=True) |
+        Q(course__courseenrollment__user=user, course__courseenrollment__status='approved'),
+        status='scheduled'
+    ).distinct()[:3]
 
     performance_records = PerformanceRecord.objects.filter(user=user).order_by('-month')[:5]
     performance_record_count = performance_records.count()
 
     portfolio = Portfolio.objects.filter(user=user).first()
+    
+    payment_verified = (
+    enrollment is not None and
+    enrollment.status == "approved"
+)
+    payment_pending = (
+    enrollment is not None and
+    enrollment.status == "pending"
+     )
 
     latest_attempt = user.quizattempt_set.filter(quiz__title__icontains='onboarding').order_by('-attempted_at').first()
     quiz_score_percentage = (latest_attempt.score / 15 * 100) if latest_attempt else 0
@@ -764,10 +917,14 @@ def student_dashboard(request):
         'user': user,
         'course_title': course_title,
         'enrollment_status': enrollment.status if enrollment else None,
+        'payment_verified': payment_verified,
+        'payment_pending': payment_pending,
         'enrollment': enrollment,
-        'cohort': cohort,
+        'cohort': community_cohort,
         'cohort_name': cohort_name,
         'whatsapp_link': whatsapp_link,
+        'social_links': COMMUNITY_SOCIAL_LINKS,
+        'social_joined': social_joined,
         'assignments': assignments,
         'projects': projects,
         'live_sessions': live_sessions,
@@ -985,8 +1142,8 @@ def admin_dashboard(request):
     quiz_attempts = QuizAttempt.objects.order_by('-attempted_at')
     performance_records = PerformanceRecord.objects.all()
 
-    student_count = User.objects.filter(is_staff=False).count()
-    course_count = Course.objects.count()
+    student_count = User.objects.filter(profile__user_type='student').count()
+    course_count = Course.objects.exclude(title=COMMUNITY_COURSE_NAME).count()
     slip_count = slips.count()
 
     audit_logs = AuditLog.objects.order_by('-timestamp')[:5]
@@ -998,7 +1155,7 @@ def admin_dashboard(request):
     }
 
     payment_detail = PaymentDetail.objects.first() or PaymentDetail.objects.create()
-    courses = Course.objects.all().order_by('title')
+    courses = Course.objects.exclude(title=COMMUNITY_COURSE_NAME).order_by('title')
 
     if request.method == 'POST':
 
@@ -1105,7 +1262,127 @@ def admin_dashboard(request):
             'logo_base64': settings.LOGO_BASE64
         }
     )
-    
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+@admin_2fa_required
+def intake_analytics(request):
+    """
+    Read-only aggregate view of the current student intake: demographics,
+    survey completion, payment status, and cohort/course breakdowns.
+    Nothing here writes to the DB -- purely additive, so it can't affect
+    any existing flow.
+    """
+    students = User.objects.filter(profile__user_type='student')
+    total_students = students.count()
+
+    countries = (
+        Profile.objects.filter(user_type='student')
+        .exclude(country__isnull=True).exclude(country='')
+        .values('country')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    # Only count fully-submitted surveys for demographic breakdowns -- a
+    # row can also exist just from a "Join WhatsApp" dashboard click before
+    # the real survey was ever taken, and that partial row shouldn't be
+    # counted as if the student answered "no laptop" etc.
+    completed_responses = OnboardingQuizResponse.objects.filter(
+        user__profile__onboarding_quiz_completed=True
+    )
+    survey_responses = completed_responses.count()
+    survey_completion_rate = round((survey_responses / total_students * 100), 1) if total_students else 0
+
+    laptop_owners = completed_responses.filter(has_laptop=True).count()
+    laptop_ownership_rate = round((laptop_owners / survey_responses * 100), 1) if survey_responses else 0
+
+    occupations = (
+        completed_responses.exclude(occupation='')
+        .values('occupation')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:10]
+    )
+
+    programming_experience = (
+        completed_responses.exclude(programming_experience__isnull=True).exclude(programming_experience='')
+        .values('programming_experience')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    how_heard = (
+        completed_responses.exclude(how_heard__isnull=True).exclude(how_heard='')
+        .values('how_heard')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    # Social platform joins count every response row, including partial
+    # ones from a dashboard click -- unlike the demographic stats above,
+    # this is exactly what that feature is meant to track.
+    social_joins = OnboardingQuizResponse.objects.aggregate(
+        whatsapp=Count('id', filter=Q(joined_whatsapp=True)),
+        facebook=Count('id', filter=Q(joined_facebook=True)),
+        instagram=Count('id', filter=Q(joined_instagram=True)),
+        linkedin=Count('id', filter=Q(joined_linkedin=True)),
+    )
+
+    enrolled_user_ids = CourseEnrollment.objects.values_list('user', flat=True).distinct()
+    approved_user_ids = CourseEnrollment.objects.filter(status='approved').values_list('user', flat=True).distinct()
+    students_with_payment = students.filter(id__in=approved_user_ids).count()
+    students_without_payment = total_students - students_with_payment
+
+    community_cohorts = (
+        Cohort.objects.filter(course__title=COMMUNITY_COURSE_NAME)
+        .annotate(student_count=Count('students'))
+        .order_by('name')
+    )
+
+    course_cohorts = (
+        Cohort.objects.exclude(course__title=COMMUNITY_COURSE_NAME)
+        .annotate(student_count=Count('students'))
+        .order_by('course__title', 'name')
+    )
+
+    students_by_course = (
+        CourseEnrollment.objects.exclude(course__title=COMMUNITY_COURSE_NAME)
+        .values('course__title')
+        .annotate(count=Count('user', distinct=True))
+        .order_by('-count')
+    )
+
+    # Interest expressed at registration (before any enrollment/payment) via
+    # the optional "Course (optional)" field -- distinct from actual paid
+    # enrollments above, useful for gauging early demand.
+    preferred_course_interest = (
+        Profile.objects.filter(user_type='student', preferred_course__isnull=False)
+        .values('preferred_course__title')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    return render(request, 'core/intake_analytics.html', {
+        'total_students': total_students,
+        'countries': countries,
+        'laptop_ownership_rate': laptop_ownership_rate,
+        'occupations': occupations,
+        'programming_experience': programming_experience,
+        'how_heard': how_heard,
+        'survey_responses': survey_responses,
+        'survey_completion_rate': survey_completion_rate,
+        'students_with_payment': students_with_payment,
+        'students_without_payment': students_without_payment,
+        'community_cohorts': community_cohorts,
+        'course_cohorts': course_cohorts,
+        'students_by_course': students_by_course,
+        'preferred_course_interest': preferred_course_interest,
+        'social_joins': social_joins,
+        'logo_base64': settings.LOGO_BASE64,
+    })
+
+
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def verify_admin_access(request):
@@ -1447,24 +1724,18 @@ def onboarding_quiz(request):
     if request.user.profile.onboarding_quiz_completed:
         return redirect('student_dashboard')
     
-    social_media_links = {
-        'facebook': 'https://www.facebook.com/multitechspace',
-        'twitter': 'https://x.com/firstso14272266?s=21',
-        'instagram': 'https://www.instagram.com/valentineucheena?igsh=MXgzZzE0Nmh1Zzg5aQ%3D%3D&utm_source=qr',
-        'linkedin': 'linkedin.com/in/valentine-uchenna-678355284'
-    }
-    
+    # Reuse a partial row if one already exists (e.g. the student clicked
+    # "Join WhatsApp" on the dashboard before taking the survey) so this
+    # submission updates it in place instead of creating a duplicate.
+    existing_response = OnboardingQuizResponse.objects.filter(user=request.user).first()
+
     if request.method == 'POST':
-        form = OnboardingQuizForm(request.POST)
+        form = OnboardingQuizForm(request.POST, instance=existing_response)
         logger.debug(f"Form data: {request.POST}")
         if form.is_valid():
-            OnboardingQuizResponse.objects.create(
-                user=request.user,
-                has_laptop=form.cleaned_data['has_laptop'],
-                occupation=form.cleaned_data['occupation'],
-                bio=form.cleaned_data['bio'],
-                followed_social_media=form.cleaned_data.get('followed_social_media', False)
-            )
+            response = form.save(commit=False)
+            response.user = request.user
+            response.save()
             request.user.profile.onboarding_quiz_completed = True
             request.user.profile.save()
             Notification.objects.create(
@@ -1483,11 +1754,11 @@ def onboarding_quiz(request):
             logger.warning(f"Onboarding quiz failed: {form.errors}")
             messages.error(request, 'Please correct the errors below.')
     else:
-        form = OnboardingQuizForm()
+        form = OnboardingQuizForm(instance=existing_response)
     
     return render(request, 'core/onboarding_quiz.html', {
         'form': form,
-        'social_media_links': social_media_links,
+        'social_media_links': COMMUNITY_SOCIAL_LINKS,
         'logo_base64': settings.LOGO_BASE64
     })
 
@@ -1507,17 +1778,17 @@ def facilitator_application(request):
         form = FacilitatorProfileForm(request.POST)
         if form.is_valid():
             profile = request.user.profile
-            profile.linkedin_url = form.cleaned_data['linkedin']
-            profile.twitter_url = form.cleaned_data['twitter']
-            profile.github_url = form.cleaned_data['github']
-            profile.facebook_url = form.cleaned_data['facebook']
+            profile.linkedin_url = form.cleaned_data['linkedin_url']
+            profile.twitter_url = form.cleaned_data['twitter_url']
+            profile.github_url = form.cleaned_data['github_url']
+            profile.facebook_url = form.cleaned_data['facebook_url']
             profile.internship_available = form.cleaned_data['internship_available']
             profile.facilitator_profile_completed = True
             profile.save()
             new_course = form.cleaned_data['course']
             existing_application = FacilitatorApplication.objects.filter(user=request.user, course=new_course).first()
             if existing_application:
-                messages.warning(request, f'You have already applied for {new_course.title}.')
+                message = f'You have already applied for {new_course.title}.'
             else:
                 FacilitatorApplication.objects.create(
                     user=request.user,
@@ -1533,11 +1804,13 @@ def facilitator_application(request):
                     type='application',
                     message=notification_message
                 )
-                messages.success(request, 'Application submitted successfully.')
-            return redirect('facilitator_application_dashboard')
+                message = 'Application submitted successfully.'
+            # JSON, not a redirect: the template's fetch() call parses this
+            # response as JSON. Redirecting here made every successful
+            # submission look like a failure in the browser.
+            return JsonResponse({'success': True, 'message': message})
         else:
             logger.warning(f"Facilitator application failed: {form.errors}")
-            messages.error(request, 'Please correct the errors below.')
             return JsonResponse({'success': False, 'message': form.errors.as_json()}, status=400)
     else:
         form = FacilitatorProfileForm()
@@ -1625,19 +1898,21 @@ def submit_project(request, project_id):
 @user_passes_test(lambda u: u.is_staff or u.profile.user_type == 'facilitator')
 def facilitator_application_dashboard(request):
     assigned_courses = Course.objects.filter(facilitator=request.user)
-    available_courses = Course.objects.filter(facilitator__isnull=True)
+    available_courses = Course.objects.filter(facilitator__isnull=True).exclude(title=COMMUNITY_COURSE_NAME)
     submissions = (
         Submission.objects.filter(assignment__course__facilitator=request.user) |
         Submission.objects.filter(project__course__facilitator=request.user)
     )
-    latest_submission = submissions.order_by('-created_at').first()
+    latest_submission = submissions.order_by('-submitted_at').first()
     applications = FacilitatorApplication.objects.filter(user=request.user)
+    has_approved_application = applications.filter(status='approved').exists()
     return render(request, 'core/facilitator_dashboard.html', {
         'assigned_courses': assigned_courses,
         'available_courses': available_courses,
         'submissions': submissions,
         'latest_submission': latest_submission,
         'applications': applications,
+        'has_approved_application': has_approved_application,
         'logo_base64': settings.LOGO_BASE64
     })
 

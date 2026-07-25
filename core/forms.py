@@ -6,6 +6,11 @@ import pycountry
 import phonenumbers
 from phonenumbers import PhoneNumberFormat, parse, format_number, is_valid_number
 
+# Must match COMMUNITY_COURSE_NAME in views.py -- the internal placeholder
+# course used to host registration-time community cohorts. Never offered
+# as a real course choice.
+COMMUNITY_COURSE_NAME = "Tech Inova Community"
+
 
 class CourseForm(forms.ModelForm):
     class Meta:
@@ -102,7 +107,7 @@ class CustomRegistrationForm(UserCreationForm):
     )
 
     course = forms.ModelChoiceField(
-        queryset=Course.objects.all(),
+        queryset=Course.objects.exclude(title=COMMUNITY_COURSE_NAME),
         required=False,
         label="Course (optional)"
     )
@@ -299,32 +304,58 @@ class PortfolioForm(forms.ModelForm):
 class OnboardingQuizForm(forms.ModelForm):
     social_media_platforms = forms.MultipleChoiceField(
         choices=[
+            ('whatsapp', 'WhatsApp'),
             ('facebook', 'Facebook'),
-            ('twitter', 'Twitter'),
             ('instagram', 'Instagram'),
             ('linkedin', 'LinkedIn'),
         ],
         widget=forms.CheckboxSelectMultiple,
         required=False,
-        label="Which social media platforms did you follow?"
+        label="Which of these have you joined so far?"
     )
 
     class Meta:
         model = OnboardingQuizResponse
-        fields = ['has_laptop', 'occupation', 'bio']
+        fields = [
+            'has_laptop', 'occupation', 'bio',
+            'programming_experience', 'how_heard',
+            'age_range', 'gender',
+        ]
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 4}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # The model allows blank occupation/bio (so a lazily-created row from
+        # a "Join WhatsApp" click doesn't need them yet), but an actual quiz
+        # submission through this form still should require them.
+        self.fields['occupation'].required = True
+        self.fields['bio'].required = True
+        # Optional per your spec: only has_laptop/occupation/bio are required
+        self.fields['programming_experience'].required = False
+        self.fields['how_heard'].required = False
+        self.fields['age_range'].required = False
+        self.fields['gender'].required = False
+
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.followed_social_media = bool(self.cleaned_data['social_media_platforms'])
+        platforms = self.cleaned_data.get('social_media_platforms', [])
+        # OR'd with the existing value so a platform already marked joined
+        # (e.g. via a dashboard "Join WhatsApp" click before the survey was
+        # taken) isn't wiped out just because this checkbox wasn't re-ticked.
+        instance.joined_whatsapp = instance.joined_whatsapp or 'whatsapp' in platforms
+        instance.joined_facebook = instance.joined_facebook or 'facebook' in platforms
+        instance.joined_instagram = instance.joined_instagram or 'instagram' in platforms
+        instance.joined_linkedin = instance.joined_linkedin or 'linkedin' in platforms
+        # Kept in sync for backward compatibility with the old aggregate field
+        instance.followed_social_media = bool(platforms) or instance.followed_social_media
         if commit:
             instance.save()
         return instance
 
 class FacilitatorProfileForm(forms.ModelForm):
-    course = forms.ModelChoiceField(queryset=Course.objects.all(), required=True)
+    course = forms.ModelChoiceField(queryset=Course.objects.exclude(title=COMMUNITY_COURSE_NAME), required=True)
 
     class Meta:
         model = Profile
@@ -342,7 +373,7 @@ class FacilitatorProfileForm(forms.ModelForm):
 
 class CourseChangeForm(forms.Form):
     course = forms.ModelChoiceField(
-        queryset=Course.objects.all(),
+        queryset=Course.objects.exclude(title=COMMUNITY_COURSE_NAME),
         required=True,
         label="Select New Course",
         help_text="Choose the course you wish to enroll in."

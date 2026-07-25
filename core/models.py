@@ -23,6 +23,13 @@ class Profile(models.Model):
     github_url = models.URLField(blank=True, null=True)
     facebook_url = models.URLField(blank=True, null=True)
     internship_available = models.BooleanField(default=False)
+    # Captured from the optional "Course (optional)" field at registration.
+    # Admin-visibility hint only -- never used to drive enrollment or
+    # payment logic. String reference since Course is defined later below.
+    preferred_course = models.ForeignKey(
+        'Course', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='interested_students'
+    )
 
     def generate_passcode(self):
         while True:
@@ -80,11 +87,62 @@ class CourseEnrollment(models.Model):
         return f"{self.user.username} - {self.course.title}"
 
 class OnboardingQuizResponse(models.Model):
+    PROGRAMMING_EXPERIENCE_CHOICES = (
+        ('none', 'No experience'),
+        ('beginner', 'Beginner (less than 1 year)'),
+        ('intermediate', 'Intermediate (1-3 years)'),
+        ('advanced', 'Advanced (3+ years)'),
+    )
+    HOW_HEARD_CHOICES = (
+        ('whatsapp', 'WhatsApp'),
+        ('facebook', 'Facebook'),
+        ('instagram', 'Instagram'),
+        ('linkedin', 'LinkedIn'),
+        ('friend', 'Friend/Referral'),
+        ('search', 'Search Engine'),
+        ('other', 'Other'),
+    )
+    AGE_RANGE_CHOICES = (
+        ('under_18', 'Under 18'),
+        ('18_24', '18-24'),
+        ('25_34', '25-34'),
+        ('35_44', '35-44'),
+        ('45_plus', '45+'),
+    )
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+        ('prefer_not_to_say', 'Prefer not to say'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    has_laptop = models.BooleanField()
-    occupation = models.CharField(max_length=100)
-    bio = models.TextField()
+    has_laptop = models.BooleanField(default=False)
+    occupation = models.CharField(max_length=100, blank=True, default='')
+    bio = models.TextField(blank=True, default='')
+
+    # Kept for backward compatibility with any existing rows/reports.
+    # New code should read the per-platform fields below instead.
     followed_social_media = models.BooleanField(default=False)
+
+    programming_experience = models.CharField(
+        max_length=20, choices=PROGRAMMING_EXPERIENCE_CHOICES, blank=True, null=True
+    )
+    how_heard = models.CharField(
+        max_length=20, choices=HOW_HEARD_CHOICES, blank=True, null=True
+    )
+    age_range = models.CharField(
+        max_length=20, choices=AGE_RANGE_CHOICES, blank=True, null=True
+    )
+    gender = models.CharField(
+        max_length=20, choices=GENDER_CHOICES, blank=True, null=True
+    )
+
+    joined_whatsapp = models.BooleanField(default=False)
+    joined_facebook = models.BooleanField(default=False)
+    joined_instagram = models.BooleanField(default=False)
+    joined_linkedin = models.BooleanField(default=False)
+
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

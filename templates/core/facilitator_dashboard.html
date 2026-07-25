@@ -451,7 +451,7 @@ h2.mb-4::after {
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% if not applications|filter:status='approved' %}
+                    {% if not has_approved_application %}
                         <p>Your application(s) are pending admin approval. You can apply for other courses via the sidebar or header.</p>
                     {% endif %}
                 </div>

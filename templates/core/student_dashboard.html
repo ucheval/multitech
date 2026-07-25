@@ -316,6 +316,16 @@
   {% endfor %}
   {% endif %}
 
+  <!-- Payment pending banner -->
+  {% if payment_pending %}
+  <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2" role="alert">
+    <span><i class="fas fa-hourglass-half me-2"></i>Your payment for <strong>{{ enrollment.course.title }}</strong> is awaiting approval. You can keep exploring the platform in the meantime.</span>
+    {% if enrollment.course %}
+    <a href="{% url 'upload_payment_slip' enrollment.course.id %}" class="btn btn-warning btn-sm">Upload Payment Slip</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
   <!-- Stat strip -->
   <div class="stat-strip">
     <div class="stat-chip">
@@ -427,6 +437,44 @@
               <p class="mb-0">You are not assigned to any cohort yet.</p>
             </div>
             {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Join Our Community -->
+    <div class="col-lg-6">
+      <div class="dashboard-section">
+        <h3 class="dashboard-section-title">Join Our Community</h3>
+        <div class="dashboard-card">
+          <div class="card-header"><i class="fas fa-hashtag"></i>Stay Connected</div>
+          <div class="card-body">
+            <p class="text-muted mb-3">Optional, but a great way to meet other students and stay in the loop.</p>
+            <div class="d-flex flex-wrap gap-2">
+              {% if social_joined.whatsapp %}
+              <span class="btn btn-success btn-sm disabled"><i class="fab fa-whatsapp me-1"></i> Joined WhatsApp</span>
+              {% else %}
+              <a href="{% url 'join_community_platform' 'whatsapp' %}" class="btn btn-outline-success btn-sm"><i class="fab fa-whatsapp me-1"></i> Join WhatsApp</a>
+              {% endif %}
+
+              {% if social_joined.facebook %}
+              <span class="btn btn-primary btn-sm disabled"><i class="fab fa-facebook me-1"></i> Followed Facebook</span>
+              {% else %}
+              <a href="{% url 'join_community_platform' 'facebook' %}" class="btn btn-outline-primary btn-sm"><i class="fab fa-facebook me-1"></i> Follow Facebook</a>
+              {% endif %}
+
+              {% if social_joined.instagram %}
+              <span class="btn btn-primary btn-sm disabled"><i class="fab fa-instagram me-1"></i> Followed Instagram</span>
+              {% else %}
+              <a href="{% url 'join_community_platform' 'instagram' %}" class="btn btn-outline-primary btn-sm"><i class="fab fa-instagram me-1"></i> Follow Instagram</a>
+              {% endif %}
+
+              {% if social_joined.linkedin %}
+              <span class="btn btn-primary btn-sm disabled"><i class="fab fa-linkedin me-1"></i> Followed LinkedIn</span>
+              {% else %}
+              <a href="{% url 'join_community_platform' 'linkedin' %}" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin me-1"></i> Follow LinkedIn</a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
