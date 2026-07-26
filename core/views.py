@@ -157,43 +157,51 @@ def register(request):
         }
     )
 
-# Internal placeholder course used only to host registration-time community
-# cohorts (Cohort requires a course FK). Never shown to students as a real
-# course -- other queries that list "real" courses should exclude it.
+# ==========================================================
+# COMMUNITY CONFIGURATION
+# ==========================================================
+
+# Internal placeholder course used only for community cohorts.
 COMMUNITY_COURSE_NAME = "Tech Inova Community"
 
-# Central place for the four community platform links, so the dashboard
-# cards, the join-tracking view, and the onboarding quiz all read from one
-# source instead of three separately-maintained dicts.
+# Maximum students allowed in one cohort.
+MAX_STUDENTS_PER_COHORT = 10
+
+# Community platform links.
 COMMUNITY_SOCIAL_LINKS = {
-    'whatsapp': 'https://chat.whatsapp.com/REPLACE_WITH_REAL_INVITE_LINK',
-    'facebook': 'https://www.facebook.com/multitechspace',
-    'instagram': 'https://www.instagram.com/valentineucheena?igsh=MXgzZzE0Nmh1Zzg5aQ%3D%3D&utm_source=qr',
-    'linkedin': 'linkedin.com/in/valentine-uchenna-678355284',
+    "whatsapp": "https://chat.whatsapp.com/REPLACE_WITH_REAL_INVITE_LINK",
+    "facebook": "https://www.facebook.com/multitechspace",
+    "instagram": "https://www.instagram.com/valentineucheena?igsh=MXgzZzE0Nmh1Zzg5aQ%3D%3D&utm_source=qr",
+    "linkedin": "https://www.linkedin.com/in/valentine-uchenna-678355284",
 }
 
+# Maps each platform to its onboarding tracking field.
 _PLATFORM_FIELD_MAP = {
-    'whatsapp': 'joined_whatsapp',
-    'facebook': 'joined_facebook',
-    'instagram': 'joined_instagram',
-    'linkedin': 'joined_linkedin',
+    "whatsapp": "joined_whatsapp",
+    "facebook": "joined_facebook",
+    "instagram": "joined_instagram",
+    "linkedin": "joined_linkedin",
 }
 
+
+# ==========================================================
+# COMMUNITY PLATFORM JOIN
+# ==========================================================
 
 @login_required
 def join_community_platform(request, platform):
     """
-    Dashboard 'Join WhatsApp / Follow Facebook / Instagram / LinkedIn' cards
-    hit this view. Records that the student clicked through, then redirects
-    them to the real link. Works even if they haven't taken the onboarding
-    survey yet -- lazily creates a bare OnboardingQuizResponse row so we
-    still capture the click (has_laptop/occupation/bio stay blank until
-    they actually complete the real survey).
+    Records that a student clicked a community platform
+    before redirecting them.
     """
+
     if platform not in COMMUNITY_SOCIAL_LINKS:
         raise Http404("Unknown platform")
 
-    response, _ = OnboardingQuizResponse.objects.get_or_create(user=request.user)
+    response, _ = OnboardingQuizResponse.objects.get_or_create(
+        user=request.user
+    )
+
     field_name = _PLATFORM_FIELD_MAP[platform]
     setattr(response, field_name, True)
     response.save(update_fields=[field_name])
@@ -201,14 +209,21 @@ def join_community_platform(request, platform):
     return redirect(COMMUNITY_SOCIAL_LINKS[platform])
 
 
+# ==========================================================
+# COMMUNITY COHORT ASSIGNMENT
+# ==========================================================
+
+
 @transaction.atomic
 def assign_student_to_community_cohort(user):
     """
-    Automatically assigns a student to a community cohort.
+    Automatically assigns a newly registered student
+    to a community cohort.
 
-    - Uses the "Tech Inova Community" course.
-    - Maximum of 10 students per cohort.
-    - Creates Cohort 0001, 0002, ... automatically.
+    - Uses the internal Tech Inova Community course.
+    - Maximum of MAX_STUDENTS_PER_COHORT students.
+    - Creates Cohort 0001, 0002, 0003...
+    - Safe for concurrent registrations.
     """
 
     community_course, _ = Course.objects.get_or_create(
@@ -218,32 +233,40 @@ def assign_student_to_community_cohort(user):
             "duration": 0,
             "level": "Beginner",
             "price": 0,
-        }
+        },
     )
 
-    # Lock cohorts so concurrent registrations don't overfill one.
+    # Lock existing cohorts while assigning.
     for cohort in (
         Cohort.objects
         .select_for_update()
         .filter(course=community_course)
         .order_by("name")
     ):
-        student_count = cohort.students.count()
-        if student_count < 10:
+        if cohort.students.count() < MAX_STUDENTS_PER_COHORT:
             cohort.students.add(user)
             return cohort
 
-    # No cohort has space — create a new one.
-    total = Cohort.objects.filter(course=community_course).count() + 1
+    # Lock again before creating a new cohort to avoid
+    # duplicate cohort numbers under heavy concurrent registrations.
+    existing = (
+        Cohort.objects
+        .select_for_update()
+        .filter(course=community_course)
+        .order_by("name")
+    )
 
-    cohort = Cohort.objects.create(
-        name=f"Cohort {total:04d}",
+    next_number = existing.count() + 1
+
+    new_cohort = Cohort.objects.create(
+        name=f"Cohort {next_number:04d}",
         course=community_course,
     )
 
-    cohort.students.add(user)
+    new_cohort.students.add(user)
 
-    return cohort
+    return new_cohort
+
 def user_login(request):
 
     next_url = request.GET.get('next')

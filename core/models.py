@@ -60,8 +60,9 @@ class Course(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     def __str__(self):
         return self.title
+    
 class Cohort(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     facilitator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cohort_facilitator')
     students = models.ManyToManyField(User, related_name='cohorts')
