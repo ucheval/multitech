@@ -266,23 +266,47 @@
         <a href="{% url 'register' %}" class="custom-btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 30px;">Sign Up Now</a>
     </section>
 
-    <!-- Footer Area -->
-    <footer>
-        <div class="footer-links">
-            <a href="{% url 'course_list' %}">Home</a>
-            <a href="{% url 'course_library' %}">Courses</a>
-            <a href="{% url 'inbox' %}">Contact Hub</a>
+   <!-- Footer Area -->
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4 footer-about">
+                <h5>About Tech Inova</h5>
+                <p>Tech Inova is the training arm of MultiTechSpace Ltd, a technology company building real apps, websites, and digital solutions. We teach what we practice — helping the next generation of tech professionals learn by building for real.</p>
+            </div>
         </div>
-        <div class="social-icons">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        <div class="row footer-links-row">
+            <div class="col-md-6 mb-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'landing' %}" class="text-white text-decoration-none">Home</a></li>
+                    <li><a href="{% url 'course_list' %}" class="text-white text-decoration-none">Courses</a></li>
+                    <li><a href="{% url 'register' %}" class="text-white text-decoration-none">Register</a></li>
+                    <li><a href="{% url 'user_login' %}" class="text-white text-decoration-none">Login</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h5>Connect With Us</h5>
+                <div class="mb-3">
+                    <a href="https://chat.whatsapp.com/REPLACE_WITH_REAL_INVITE_LINK" class="text-white me-3" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/multitechspace" class="text-white me-3" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    {% comment %} <a href="https://www.instagram.com/valentineucheena?igsh=MXgzZzE0Nmh1Zzg5aQ%3D%3D&utm_source=qr" class="text-white me-3" aria-label="Instagram"><i class="fab fa-instagram"></i></a> {% endcomment %}
+                    {% comment %} <a href="https://linkedin.com/in/valentine-uchenna-678355284" class="text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a> {% endcomment %}
+                </div>
+                <h5>Subscribe to Newsletter</h5>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email">
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <p class="copyright">© 2026 Techinovaedu. All rights reserved.</p>
-    </footer>
-
+        <div class="text-center mt-4">
+            <p class="mb-0">&copy; {% now "Y" %} TechInovaEdu. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
     <!-- JavaScript Dependencies & Engine logic -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
