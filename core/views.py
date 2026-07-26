@@ -228,7 +228,8 @@ def assign_student_to_community_cohort(user):
         .filter(course=community_course)
         .order_by("name")
     ):
-        if cohort.students.count() < 10:
+        student_count = cohort.students.count()
+        if student_count < 10:
             cohort.students.add(user)
             return cohort
 
