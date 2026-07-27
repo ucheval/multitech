@@ -1,0 +1,202 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Intake Analytics -  TechInovaEdu{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Intake Analytics</h2>
+    <p class="text-muted">Read-only overview of the current student intake. Nothing here can be edited from this page.</p>
+
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Total Students</h5>
+                    <p style="font-size: 2rem; margin: 0;">{{ total_students }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Survey Completion</h5>
+                    <p style="font-size: 2rem; margin: 0;">{{ survey_completion_rate }}%</p>
+                    <p class="text-muted mb-0">{{ survey_responses }} of {{ total_students }} students</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Have Paid</h5>
+                    <p style="font-size: 2rem; margin: 0;">{{ students_with_payment }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Not Yet Paid</h5>
+                    <p style="font-size: 2rem; margin: 0;">{{ students_without_payment }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Countries Represented</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Country</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for c in countries %}
+                                <tr><td>{{ c.country }}</td><td>{{ c.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No country data yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Occupations</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Occupation</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for o in occupations %}
+                                <tr><td>{{ o.occupation }}</td><td>{{ o.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No survey data yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Programming Experience</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Level</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for p in programming_experience %}
+                                <tr><td>{{ p.programming_experience|title }}</td><td>{{ p.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No survey data yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>How They Heard About Us</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Source</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for h in how_heard %}
+                                <tr><td>{{ h.how_heard|title }}</td><td>{{ h.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No survey data yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Laptop Ownership</h3>
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <p style="font-size: 2rem; margin: 0;">{{ laptop_ownership_rate }}%</p>
+                    <p class="text-muted mb-0">of students who completed the survey own a laptop</p>
+                </div>
+            </div>
+
+            <h3>Community Platform Joins</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <p>WhatsApp: {{ social_joins.whatsapp }}</p>
+                    <p>Facebook: {{ social_joins.facebook }}</p>
+                    <p>Instagram: {{ social_joins.instagram }}</p>
+                    <p>LinkedIn: {{ social_joins.linkedin }}</p>
+                </div>
+            </div>
+
+            <h3>Students Per Intake Cohort</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Cohort</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for cohort in community_cohorts %}
+                                <tr><td>{{ cohort.name }}</td><td>{{ cohort.student_count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No intake cohorts yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Students Per Course Cohort</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Cohort</th><th>Course</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for cohort in course_cohorts %}
+                                <tr><td>{{ cohort.name }}</td><td>{{ cohort.course.title }}</td><td>{{ cohort.student_count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="3">No course cohorts yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Students By Course</h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Course</th><th>Students</th></tr></thead>
+                        <tbody>
+                            {% for row in students_by_course %}
+                                <tr><td>{{ row.course__title }}</td><td>{{ row.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No course enrollments yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Preferred Course Interest <small class="text-muted" style="font-size: 0.6em;">(at registration, before payment)</small></h3>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <table class="table table-bordered mb-0">
+                        <thead><tr><th>Course</th><th>Students Interested</th></tr></thead>
+                        <tbody>
+                            {% for row in preferred_course_interest %}
+                                <tr><td>{{ row.preferred_course__title }}</td><td>{{ row.count }}</td></tr>
+                            {% empty %}
+                                <tr><td colspan="2">No preferred-course data yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{% url 'admindashboard' %}" class="btn btn-outline-primary mb-4">Back to Admin Dashboard</a>
+</div>
+{% endblock %}
